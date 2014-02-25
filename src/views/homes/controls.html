@@ -1,0 +1,170 @@
+<div class="ui">
+
+    <div class="ui fields" style="margin-bottom:10px;margin-top:8px">
+        <div class="ui buttons">
+            <div  class="mini ui button" ng-class="{ green : isSelected(queryType.daily) }" ng-click="selectQueryType(queryType.daily)">
+                รายวัน
+            </div>
+            <div class="mini ui button" ng-class="{ green : isSelected(queryType.monthly) }" ng-click="selectQueryType(queryType.monthly)">
+                รายเดือน
+            </div>
+            <div class="mini ui button" ng-class="{ green :  isSelected(queryType.yearly) }" ng-click="selectQueryType(queryType.yearly)">
+                รายปี
+            </div>
+        </div>
+    </div>
+
+    <div class="ui form animated fadeIn" ng-show="isSelected(queryType.daily)" style="z-index: 100">   <!-- DAY -->
+        <div class="inline fields">
+            <div class="field" style="display:inline-block;">
+                <span>เดือน</span>
+
+                <div class="ui selection dropdown month-dropdown" style="width: 100px" id="dailyMonth">
+                    <input type="hidden" ng-model="dailyMonth"/>
+
+                    <div class="text" data-value="-1">ทั้งหมด</div>
+
+                    <div class="menu">
+                        <div ng-repeat="month in months"
+                             class="item " data-value="{{month.key}}">{{month.value}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="field">
+                <span for="">ปี</span>
+                <div class="ui selection dropdown month-dropdown" style="width: 100px" id="dailyYear">
+                    <input type="hidden"/>
+
+                    <div class="text" data-value="-1">ทั้งหมด</div>
+                    <div class="menu">
+                        <div ng-repeat="year in years"
+                             class="item " data-value="{{year.key}}">{{year.value}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="ui form animated fadeIn" ng-show="isSelected(queryType.monthly)" style="z-index: 100"> <!-- MONTH -->
+        <div class="inline fields">
+            <div class="field" style="display:inline-block">
+                <span>เดือน</span>
+
+                <div class="ui selection dropdown month-dropdown" style="width: 100px" id="monthlyFrom">
+                    <input type="hidden"/>
+
+                    <div class="text" data-value="-1">ทั้งหมด</div>
+                    <div class="menu">
+                        <div ng-repeat="month in months"
+                             class="item " data-value="{{month.key}}">{{month.value}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="field">
+
+                <span>ถึง</span>
+                <div class="ui selection dropdown month-dropdown" style="width: 100px" id="monthlyTo">
+                    <input type="hidden"/>
+
+                    <div class="text" data-value="-1">ทั้งหมด</div>
+                    <div class="menu">
+                        <div ng-repeat="month in months"
+                             class="item " data-value="{{month.key}}">{{month.value}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="ui form animated fadeIn" ng-show="isSelected(queryType.yearly)" style="z-index: 100">
+        <div class="inline fields">
+            <div class="field" style="display:inline-block">
+                <span>ปี</span>
+
+                <div class="ui selection dropdown month-dropdown" style="width: 100px" id="yearlyFrom">
+                    <input type="hidden"/>
+
+                    <div class="text" data-value="-1">ทั้งหมด</div>
+                    <div class="menu">
+                        <div ng-repeat="year in years" class="item " data-value="{{year.key}}">
+                            {{year.value}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="field">
+                <span for="">ถึง</span>
+
+                <div class="ui selection dropdown month-dropdown" style="width: 100px" id="yearlyTo">
+                    <input type="hidden"/>
+
+                    <div class="text" data-value="-1">ทั้งหมด</div>
+                    <div class="menu">
+                        <div ng-repeat="year in years" class="item " data-value="{{year.key}}">
+                            {{year.value}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="ui form">
+
+        <div class="inline fields">
+            <div class="field" style="display:inline-block">
+                <span>เวลา</span>
+
+                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 50" id="timeFrom">
+                    <input type="hidden"/>
+
+                    <div class="text" data-value="-1">ทั้งหมด</div>
+                    <div class="menu">
+                        <div ng-repeat="time in times" class="item " data-value="{{time.key}}">
+                            {{time.value}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="field">
+
+                <span>ถึง</span>
+                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 50" id="timeTo">
+                    <input type="hidden"/>
+
+                    <div class="text" data-value="-1">ทั้งหมด</div>
+                    <div class="menu">
+                        <div ng-repeat="time in times" class="item " data-value="{{time.key}}">
+                            {{time.value}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div style="padding-left: 100px">
+        <div class="ui mini black button" ng-click="startQuery()">แสดงผล</div>
+        <div class="ui mini black button" ng-click="clear()">เคลียร์</div>
+    </div>
+
+</div>

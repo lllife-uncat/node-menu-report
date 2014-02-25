@@ -1,0 +1,106 @@
+@font-face {
+    font-family: 'bebas_neueregular';
+    src: url('/venders/fonts/BebasNeue-webfont.eot');
+    src: url('/venders/fonts/BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/venders/fonts/BebasNeue-webfont.woff') format('woff'),
+    url('/venders/fonts/BebasNeue-webfont.ttf') format('truetype'),
+    url('/venders/fonts/BebasNeue-webfont.svg#bebas_neueregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'droid_sansregular';
+    src: url('/venders/fonts/DroidSans-webfont.eot');
+    src: url('/venders/fonts/DroidSans-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/venders/fonts/DroidSans-webfont.woff') format('woff'),
+    url('/venders/fonts/DroidSans-webfont.ttf') format('truetype'),
+    url('/venders/fonts/DroidSans-webfont.svg#droid_sansregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'BEBAS___';
+    src: url('/venders/fonts/BEBAS___-webfont.eot');
+    src: url('/venders/fonts/BEBAS___-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/venders/fonts/BEBAS___-webfont.woff') format('woff'),
+    url('/venders/fonts/BEBAS___-webfont.ttf') format('truetype'),
+    url('/venders/fonts/BEBAS___-webfont.svg#droid_sansregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'gooddogregular';
+    src: url('/venders/fonts/GoodDog-webfont.eot');
+    src: url('/venders/fonts/GoodDog-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/venders/fonts/GoodDog-webfont.woff') format('woff'),
+    url('/venders/fonts/GoodDog-webfont.ttf') format('truetype'),
+    url('/venders/fonts/GoodDog-webfont.svg#gooddogregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'walkway_boldregular';
+    src: url('/venders/fonts/Walkway_Bold-webfont.eot');
+    src: url('/venders/fonts/Walkway_Bold-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/venders/fonts/Walkway_Bold-webfont.woff') format('woff'),
+    url('/venders/fonts/Walkway_Bold-webfont.ttf') format('truetype'),
+    url('/venders/fonts/Walkway_Bold-webfont.svg#walkway_boldregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'pt_sansregular';
+    src: url('/venders/fonts/PTS55F-webfont.eot');
+    src: url('/venders/fonts/PTS55F-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/venders/fonts/PTS55F-webfont.woff') format('woff'),
+    url('/venders/fonts/PTS55F-webfont.ttf') format('truetype'),
+    url('/venders/fonts/PTS55F-webfont.svg#pt_sansregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+body {
+	background-color: white;
+	font-family: pt_sansregular;
+}
+
+.field input[type=text] {
+    height: 30px;
+}
+
+/*div.ui div.form div.fields div.field > label{*/
+    /*display: inline-block;*/
+    /*width: 150px;*/
+/*}*/
+
+
+.ui.form .fields .field > span{
+    display: inline-block;
+    margin: 0em 0em 0.3em;
+    color: #555555;
+    font-size: 0.875em;
+    width: 80;
+    text-align: right;
+}
+
+/*div.inline.fields div.field div {*/
+    /*font-family: pt_sansregular;*/
+    /*font-size:80%;*/
+    /*display:inline-block;*/
+    /*width:100px;*/
+/*}*/
+
+.ui.segment {
+    padding:10px;
+}
