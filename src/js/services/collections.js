@@ -26,7 +26,24 @@ app.factory("collectionService", function () {
         this.timeFrom = 0;
         this.timeTo = 0;
 
+        this.categoryAId = "";
+        this.categoryBId = "";
+        this.categoryCId = "";
+        this.productId = "";
+        this.branchId = "";
+
         Object.preventExtensions(this);
+    };
+
+    QueryInfo.prototype.parse = function(){
+        this.dailyMonth = parseInt(this.dailyMonth);
+        this.dailyYear = parseInt(this.dailyYear);
+        this.monthlyFrom = parseInt(this.monthlyFrom);
+        this.monthlyTo = parseInt(this.monthlyTo);
+        this.yearlyFrom = parseInt(this.yearlyFrom);
+        this.yearlyTo = parseInt(this.yearlyTo);
+        this.timeFrom = parseInt(this.timeFrom);
+        this.timeTo = parseInt(this.timeTo);
     };
 
     function Property(key, value) {
@@ -51,7 +68,7 @@ app.factory("collectionService", function () {
         monthList.push(month);
     }
 
-    for(var i = 2013; i < 2016; i++){
+    for(var i = 2014; i < 2020; i++){
         var year = new Property(i, i.toString());
         yearList.push(year);
     }

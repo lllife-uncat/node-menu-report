@@ -1,58 +1,59 @@
 <html>
 <head>
-	<script src="venders/angular/angular.js"></script>
-	<script src="venders/angular-route/angular-route.js"></script>
+    <script src="venders/angular/angular.js"></script>
+    <script src="venders/angular-route/angular-route.js"></script>
 
-	<script src="venders/jquery/jquery.js"></script>
-	<script src="venders/semantic/javascript/semantic.js"></script>
+    <script src="venders/jquery/jquery.js"></script>
+    <script src="venders/semantic/javascript/semantic.js"></script>
 
     <script src="venders/momentjs/moment.js"></script>
     <script src="venders/chart.js/Chart.js"></script>
 
-	<script src="venders/onepage-scroll/jquery.onepage-scroll.js"></script>
+    <!--
+    <script src="venders/onepage-scroll/jquery.onepage-scroll.js"></script>
+    -->
 
-	<script src="http://10.0.0.67:8888/livereload.js"></script>
-	<script src="js/final.js"></script>		
+    <script src="http://10.0.0.67:8888/livereload.js"></script>
+    <script src="js/final.js"></script>
 
-	<!--
-	<script src="venders/bootstrap/js/bootstrap.min.js"></script>
-	 <script src="venders/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-	 -->
+    <!--
+    <script src="venders/bootstrap/js/bootstrap.min.js"></script>
+     <script src="venders/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="venders/onepage-scroll/onepage-scroll.css">
+     -->
 
-	<link rel="stylesheet" href="venders/semantic/css/semantic.css"> 
-	<link rel="stylesheet" href="css/style.css">
-	<link rel="stylesheet" href="venders/onepage-scroll/onepage-scroll.css">
+    <link rel="stylesheet" href="venders/semantic/css/semantic.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="venders/animate.css/animate.css"/>
-	<!--<link rel="stylesheet" href="venders/bootstrap/css/bootstrap.css">-->
+    <!--<link rel="stylesheet" href="venders/bootstrap/css/bootstrap.css">-->
 
 </head>
 
 <body ng-app="menuReport" ng-controller="mainController">
 
-	<div style="padding:3px;">
+<div>
+    <div class=""></div>
 
-		<div class="">  </div>
+    <div class="ui tiered menu small inverted animated fadeIn">
+        <div class="menu">
+            <a class="active item"> <i class="users icon"></i> รายงานเปรียบเทียบ </a>
+            <a class="item"> <i class="grid layout icon"></i> PIR </a>
+            <a class="item"> <i class="grid layout icon"></i> Touch Screen </a>
 
-		<div class="ui tiered menu small inverted">
-			<div class="menu">
-				<a class="active item"> <i class="users icon"></i> รายงานเปรียบเทียบ </a>
-				<a class="item"> <i class="grid layout icon"></i> PIR </a>
-				<a class="item"> <i class="grid layout icon"></i> Touch Screen </a>
+            <div class="right menu"></div>
+        </div>
 
-				<div class="right menu">  </div>
-			</div>
+        <div class="ui sub menu">
+            <a class="active item">แบ่งตามจำนวนคลิก</a>
+            <a class="item">แบ่งตามช่วงเวลา</a>
+        </div>
 
-			<div class="ui sub menu">
-				<a class="active item">แบ่งตามจำนวนคลิก</a>
-				<a class="item">แบ่งตามช่วงเวลา</a>
-			</div>
+    </div>
+</div>
 
-		</div>
-	</div>
-
-	<div style="padding:10px">
-		<div ng-view></div>
-	</div>
+<div style="padding:10px">
+    <div ng-view></div>
+</div>
 
 </body>
 </html>

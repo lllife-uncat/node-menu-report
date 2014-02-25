@@ -22,7 +22,7 @@
                 <div class="ui selection dropdown month-dropdown" style="width: 100px" id="dailyMonth">
                     <input type="hidden" ng-model="dailyMonth"/>
 
-                    <div class="text" data-value="-1">ทั้งหมด</div>
+                    <div class="text" data-value="{{months[0].key}}">{{months[0].value}}</div>
 
                     <div class="menu">
                         <div ng-repeat="month in months"
@@ -158,6 +158,75 @@
                 </div>
 
             </div>
+        </div>
+    </div>
+
+
+    <div class="ui form"> <!-- category -->
+
+        <div class="inline fields">
+            <div class="field" style="display:inline-block">
+                <span>ประเภท</span>
+
+                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 40" id="categoryB">
+                    <input type="hidden"/>
+
+                    <div class="text" data-value="-1">ทั้งหมด</div>
+                    <div class="menu">
+                        <div ng-repeat="cat in categoryBs" class="item " data-value="{{cat.identifier}}">
+                            {{cat.title}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="field">
+
+                <span>หมวดหมู่</span>
+                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 40" id="categoryC">
+                    <input type="hidden"/>
+
+                    <div class="text" data-value="-1">ทั้งหมด</div>
+                    <div class="menu">
+                        <div ng-repeat="cat in categoryCs" class="item " data-value="{{cat.identifer}}">
+                            {{cat.title}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+             <div class="field">
+
+                <span>รายการ</span>
+                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 40" id="product">
+                    <input type="hidden"/>
+
+                    <div class="text" data-value="">ทั้งหมด</div>
+                    <div class="menu">
+                        <div ng-repeat="product in products" class="item " data-value="{{product.identifier}}">
+                            {{product.name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <div class="field">
+
+                <span>สาขา</span>
+                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 40" id="branch">
+                    <input type="hidden"/>
+
+                    <div class="text" data-value="">ทั้งหมด</div>
+                    <div class="menu">
+                        <div ng-repeat="branch in branchs" class="item " data-value="{{branch.identifier}}">
+                            {{branch.name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
