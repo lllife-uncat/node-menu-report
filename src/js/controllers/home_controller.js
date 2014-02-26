@@ -1,4 +1,4 @@
-app.controller("homeController", function ($scope, collectionService, homeService, globalService) {
+app.controller("homeController", function ($scope, $log, collectionService, homeService, globalService) {
 
     ///////////////////////////////////////////////////////////
     // ***** PRIVATE ******
@@ -24,21 +24,17 @@ app.controller("homeController", function ($scope, collectionService, homeServic
 
     function getDropdownValue(id) {
         var value = $(id).dropdown("get value");
-        return value;
-    }
-
-    function resetDropdown(id) {
-        $(id).dropdown();
-
-        setDropdown(id, -1, "ทั้งหมด");
+        console.log(value);
+        if (typeof(value) === "string") return value;
+        return ""
     }
 
     function setDropdown(id, key, value) {
         $(id).dropdown("set value", key).dropdown("set text", value)
     };
 
-    function getScreenWidth(){
-       return $(window).width();
+    function getScreenWidth() {
+        return $(window).width();
     }
 
     // Collection of dropdown id
@@ -69,31 +65,68 @@ app.controller("homeController", function ($scope, collectionService, homeServic
         createChart(data.columns, data.touchDatas, data.passDatas);
     }
 
+    function groupCategory() {
+
+        var all = { identifier: "", title: "All" }
+
+        $scope.categoriesA = [];
+        $scope.categoriesB = [all];
+        $scope.categoriesC = [all];
+
+        $scope.categories.forEach(function (cat) {
+            if (!cat.parentId) {
+                $scope.categoriesA.push(cat);
+            }
+        });
+
+        $scope.categoriesA.forEach(function (a) {
+            $scope.categories.forEach(function (c) {
+                if (c.parentId == a.identifier) {
+                    $scope.categoriesB.push(c);
+                }
+            });
+        });
+
+        $scope.categoriesB.forEach(function (b) {
+            $scope.categories.forEach(function (c) {
+                if (c.parentId == b.identifier) {
+                    $scope.categoriesC.push(c);
+                }
+            });
+
+        });
+    }
+
     function findAllProductCallback(data) {
-        data.forEach(function(d){
+        var all = { identifier: "", name: "All" };
+        $scope.products = [all];
+
+        data.forEach(function (d) {
             $scope.products.push(d);
         });
 
         $scope.productsReady = true;
+
     }
 
+    function findAllCategoryCallback(data) {
 
-    function findAllCategoryCallback(data){
-        data.forEach(function(d){
+        // Collect category data
+        data.forEach(function (d) {
             $scope.categories.push(d);
         });
 
-        $scope.categoreis.forEach(function(d){
-            if(!d.parentId) {
-
-            }
-        });
+        // Group category A, category B, category C
+        groupCategory();
 
         $scope.categoriesReady = true;
     }
 
-    function findAllBranchCallback(data){
-        data.forEach(function(d){
+    function findAllBranchCallback(data) {
+        var all = { identifier: "", name: "All "};
+        $scope.branchs = [all];
+
+        data.forEach(function (d) {
             $scope.branchs.push(d);
         });
 
@@ -105,21 +138,21 @@ app.controller("homeController", function ($scope, collectionService, homeServic
     // * touchs = Bar 1
     // * passes = Bar 2
     // * #chart is canvas element define in "views/homes/chart.html"
-    function createChart(labels, touchs, passes){
+    function createChart(labels, touchs, passes) {
 
         var data = {
-            labels : labels,
-            datasets : [
+            labels: labels,
+            datasets: [
                 {
                     fillColor: "rgba(220,220,220,0.5)",
                     strokeColor: "rgba(220,220,220,1)",
                     data: passes
                 },
                 {
-                    fillColor : "rgba(151,187,205,0.5)",
-                    strokeColor : "rgba(151,187,205,1)",
+                    fillColor: "rgba(151,187,205,0.5)",
+                    strokeColor: "rgba(151,187,205,1)",
                     data: touchs
-                },
+                }
             ]
         };
 
@@ -138,31 +171,37 @@ app.controller("homeController", function ($scope, collectionService, homeServic
 
         setTimeout(initDropdown, 100);
 
-        var id = new DropdownId();
-
-        var categoryInterval = setInterval(function(){
-            if($scope.categoriesReady) {
-                clearInterval(categoryInterval);
-            }
-        }, 1000);
-
-        var productInterval = setInterval(function() {
-            if($scope.productsReady) {
-                clearInterval(productInterval);
-                $(id.product).dropdown();
-            }
-        }, 1000);
-
-        var branchInterval = setInterval(function(){
-            if($scope.branchsReady){
-                clearInterval(branchInterval);
-                $(id.branch).dropdown();
-            }
-        });
-
         globalService.findAllCategory(findAllCategoryCallback);
         globalService.findAllProduct(findAllProductCallback);
         globalService.findAllBranch(findAllBranchCallback);
+
+
+        var id = new DropdownId();
+
+        var pi = setInterval(function () {
+            if ($scope.productsReady) {
+                $scope.$apply();
+                $(id.product).dropdown().dropdown("set value", '"');
+                clearInterval(pi);
+            }
+        }, 500);
+
+        var ci = setInterval(function () {
+            if ($scope.categoriesReady) {
+                $scope.$apply();
+                $(id.categoryB).dropdown().dropdown("set value", "");
+                $(id.categoryC).dropdown().dropdown("set value", "");
+                clearInterval(ci);
+            }
+        }, 500);
+
+        var bi = setInterval(function () {
+            if ($scope.branchsReady) {
+                $scope.$apply();
+                $(id.branch).dropdown().dropdown("set value", "");
+                clearInterval(bi);
+            }
+        }, 500);
     });
 
     ////////////////////////////////////////////////////////////////////////////
@@ -175,6 +214,7 @@ app.controller("homeController", function ($scope, collectionService, homeServic
     // * currentQuery = query object (have many properties, see collections.js)
     // * queryType = can be "Daily", "Monthly" "Yearly" (see collections.js)
     // * screenWidth = current browser width
+
     $scope.months = collectionService.monthList;
     $scope.years = collectionService.yearList;
     $scope.times = collectionService.timeList;
@@ -186,21 +226,33 @@ app.controller("homeController", function ($scope, collectionService, homeServic
     $scope.categories = [];
     $scope.branchs = [];
 
-    $scope.categoryBs = [];
-    $scope.categoryCs = [];
-
     $scope.productsReady = false;
     $scope.categoriesReady = false;
     $scope.branchsReady = false;
 
+    $scope.categoriesA = [];
+    $scope.categoriesB = [];
+    $scope.categoriesC = [];
+
+    $scope.selectedCatB = "";
+    $scope.selectedCatC = "";
+
     // Change query type (trigger by top button [XXX, XXX, XXX])
-    $scope.selectQueryType = function(type){
-       $scope.currentQuery.queryType = type;
+    $scope.selectQueryType = function (type) {
+        $scope.currentQuery.queryType = type;
     };
 
     // Check is given type equal to current query type..
-    $scope.isSelected = function(type){
+    $scope.isSelected = function (type) {
         return type === $scope.currentQuery.queryType;
+    }
+
+    $scope.selectCategoryB = function (cat) {
+        $scope.selectedCatB = cat.identifier;
+    };
+
+    $scope.selectCategoryC = function (cat) {
+        $scope.selectedCatC = cat.identifier;
     }
 
     // Start query process...
@@ -210,6 +262,7 @@ app.controller("homeController", function ($scope, collectionService, homeServic
     // 4. Try to redraw chart width...
     // 5. Start query via homeSevice (see home_service.js)..
     // 6. Return value will process within queryCallback function ( above ^ )
+
     $scope.startQuery = function () {
 
         // Borrow currentQuery instance...
@@ -229,7 +282,18 @@ app.controller("homeController", function ($scope, collectionService, homeServic
         q.timeFrom = getDropdownValue(d.timeFrom);
         q.timeTo = getDropdownValue(d.timeTo);
 
+        q.categoryB = getDropdownValue(d.categoryB);
+        q.categoryC = getDropdownValue(d.categoryC);
+        q.product = getDropdownValue(d.product);
+        q.branch = getDropdownValue(d.branch);
+
+        $log.info("<<Before Parse>>");
+        $log.info(q);
+
         q.parse();
+
+        $log.info("<<After Parse>>");
+        $log.info(q);
 
         $scope.screenWidth = getScreenWidth();
         homeService.queryCoarseCompare(q, queryCallback);

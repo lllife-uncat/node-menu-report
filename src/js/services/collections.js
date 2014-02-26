@@ -26,16 +26,17 @@ app.factory("collectionService", function () {
         this.timeFrom = 0;
         this.timeTo = 0;
 
-        this.categoryAId = "";
-        this.categoryBId = "";
-        this.categoryCId = "";
-        this.productId = "";
-        this.branchId = "";
+        this.categoryA = "";
+        this.categoryB = "";
+        this.categoryC = "";
+        this.product = "";
+        this.branch = "";
 
         Object.preventExtensions(this);
     };
 
     QueryInfo.prototype.parse = function(){
+
         this.dailyMonth = parseInt(this.dailyMonth);
         this.dailyYear = parseInt(this.dailyYear);
         this.monthlyFrom = parseInt(this.monthlyFrom);
@@ -44,6 +45,14 @@ app.factory("collectionService", function () {
         this.yearlyTo = parseInt(this.yearlyTo);
         this.timeFrom = parseInt(this.timeFrom);
         this.timeTo = parseInt(this.timeTo);
+
+        var idLength = 24;
+
+        if(this.categoryA.length != idLength) this.categoryA = "";
+        if(this.categoryB.length != idLength) this.categoryB = "";
+        if(this.categoryC.length != idLength) this.categoryC = "";
+        if(this.product.length != idLength) this.product = "";
+        if(this.branch.length != idLength) this.branch = "";
     };
 
     function Property(key, value) {

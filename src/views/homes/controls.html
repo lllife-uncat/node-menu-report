@@ -166,14 +166,14 @@
 
         <div class="inline fields">
             <div class="field" style="display:inline-block">
-                <span>ประเภท</span>
+                <span><i class="ui tags icon"></i>ประเภท</span>
 
                 <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 40" id="categoryB">
                     <input type="hidden"/>
 
-                    <div class="text" data-value="-1">ทั้งหมด</div>
+                    <div class="text" data-value="">ทั้งหมด</div>
                     <div class="menu">
-                        <div ng-repeat="cat in categoryBs" class="item " data-value="{{cat.identifier}}">
+                        <div ng-repeat="cat in categoriesB" class="item " data-value="{{cat.identifier}}" ng-click="selectCategoryB(cat)">
                             {{cat.title}}
                         </div>
                     </div>
@@ -181,15 +181,19 @@
 
             </div>
 
-            <div class="field">
+            <div class="field" ng-show="selectedCatB != ''">
 
-                <span>หมวดหมู่</span>
+                <span><i class="ui tag icon"></i>หมวดหมู่</span>
                 <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 40" id="categoryC">
                     <input type="hidden"/>
 
-                    <div class="text" data-value="-1">ทั้งหมด</div>
+                    <div class="text" data-value="">ทั้งหมด</div>
                     <div class="menu">
-                        <div ng-repeat="cat in categoryCs" class="item " data-value="{{cat.identifer}}">
+                        <div ng-repeat="cat in categoriesC"
+                             class="item "
+                             ng-show="cat.parentId == selectedCatB || cat.identifier == '' "
+                             data-value="{{cat.identifier}}" ng-click="selectCategoryC(cat)">
+
                             {{cat.title}}
                         </div>
                     </div>
@@ -197,15 +201,18 @@
 
             </div>
 
-             <div class="field">
+             <div class="field" ng-show="(selectedCatC && selectedCatB)">
 
-                <span>รายการ</span>
+                <span><i class="ui cart icon"></i>รายการ</span>
                 <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 40" id="product">
                     <input type="hidden"/>
 
                     <div class="text" data-value="">ทั้งหมด</div>
                     <div class="menu">
-                        <div ng-repeat="product in products" class="item " data-value="{{product.identifier}}">
+                        <div ng-repeat="product in products"
+                             ng-show="product.categoryIds[0] == selectedCatC || product.identifier == '' "
+                             class="item "
+                             data-value="{{product.identifier}}">
                             {{product.name}}
                         </div>
                     </div>
@@ -214,7 +221,7 @@
 
              <div class="field">
 
-                <span>สาขา</span>
+                <span><i class="ui sitemap icon"></i>สาขา</span>
                 <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 40" id="branch">
                     <input type="hidden"/>
 
