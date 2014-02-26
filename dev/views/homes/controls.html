@@ -201,14 +201,14 @@
 
             </div>
 
-             <div class="field" ng-show="(selectedCatC && selectedCatB)">
+             <div class="field " ng-show="(selectedCatC && selectedCatB)">
 
                 <span><i class="ui cart icon"></i>รายการ</span>
-                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 40" id="product">
+                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 400" id="product">
                     <input type="hidden"/>
 
                     <div class="text" data-value="">ทั้งหมด</div>
-                    <div class="menu">
+                    <div class="menu" style="z-index: 400">
                         <div ng-repeat="product in products"
                              ng-show="product.categoryIds[0] == selectedCatC || product.identifier == '' "
                              class="item "
@@ -221,7 +221,7 @@
 
              <div class="field">
 
-                <span><i class="ui sitemap icon"></i>สาขา</span>
+                <span><i class="ui sitemap icon"></i> สาขา</span>
                 <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 40" id="branch">
                     <input type="hidden"/>
 

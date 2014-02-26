@@ -73,6 +73,9 @@
 body {
 	background-color: white;
 	font-family: pt_sansregular;
+
+    background-image: url("/images/crossword.png");
+    background-repeat: repeat;
 }
 
 .field input[type=text] {
@@ -103,4 +106,13 @@ body {
 
 .ui.segment {
     padding:10px;
+    background-image: url("/images/white_wall_hash.png");
+    background-repeat: repeat;
+}
+
+.ui.dropdown {
+    height: 20px;
+}
+#chart {
+    z-index: 100;
 }
