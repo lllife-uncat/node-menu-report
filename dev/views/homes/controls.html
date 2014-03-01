@@ -1,246 +1,48 @@
-<div class="ui">
-
+<div>
     <div class="ui fields" style="margin-bottom:10px;margin-top:8px">
         <div class="ui buttons">
             <div  class="mini ui button" ng-class="{ green : isSelected(queryType.daily) }" ng-click="selectQueryType(queryType.daily)">
+                <i class="ui time icon animated fadeIn" ng-if="isSelected(queryType.daily)" ></i>
                 รายวัน
             </div>
             <div class="mini ui button" ng-class="{ green : isSelected(queryType.monthly) }" ng-click="selectQueryType(queryType.monthly)">
+                <i class="ui time icon animated fadeIn" ng-if="isSelected(queryType.monthly)" ></i>
                 รายเดือน
             </div>
             <div class="mini ui button" ng-class="{ green :  isSelected(queryType.yearly) }" ng-click="selectQueryType(queryType.yearly)">
+                <i class="ui time icon animated fadeIn" ng-if="isSelected(queryType.yearly)" ></i>
                 รายปี
             </div>
         </div>
     </div>
+    <br/>
 
-    <div class="ui form animated fadeIn" ng-show="isSelected(queryType.daily)" style="z-index: 100">   <!-- DAY -->
-        <div class="inline fields">
-            <div class="field" style="display:inline-block;">
-                <span>เดือน</span>
-
-                <div class="ui selection dropdown month-dropdown" style="width: 100px" id="dailyMonth">
-                    <input type="hidden" ng-model="dailyMonth"/>
-
-                    <div class="text" data-value="{{months[0].key}}">{{months[0].value}}</div>
-
-                    <div class="menu">
-                        <div ng-repeat="month in months"
-                             class="item " data-value="{{month.key}}">{{month.value}}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="field">
-                <span for="">ปี</span>
-                <div class="ui selection dropdown month-dropdown" style="width: 100px" id="dailyYear">
-                    <input type="hidden"/>
-
-                    <div class="text" data-value="-1">ทั้งหมด</div>
-                    <div class="menu">
-                        <div ng-repeat="year in years"
-                             class="item " data-value="{{year.key}}">{{year.value}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+    <div ng-include src=" 'views/homes/options/days.html' "
+         class="ui form animated fadeIn"
+         ng-show="isSelected(queryType.daily)" style="z-index: 100">  <!-- DAYS -->
     </div>
 
-
-    <div class="ui form animated fadeIn" ng-show="isSelected(queryType.monthly)" style="z-index: 100"> <!-- MONTH -->
-        <div class="inline fields">
-            <div class="field" style="display:inline-block">
-                <span>เดือน</span>
-
-                <div class="ui selection dropdown month-dropdown" style="width: 100px" id="monthlyFrom">
-                    <input type="hidden"/>
-
-                    <div class="text" data-value="-1">ทั้งหมด</div>
-                    <div class="menu">
-                        <div ng-repeat="month in months"
-                             class="item " data-value="{{month.key}}">{{month.value}}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="field">
-
-                <span>ถึง</span>
-                <div class="ui selection dropdown month-dropdown" style="width: 100px" id="monthlyTo">
-                    <input type="hidden"/>
-
-                    <div class="text" data-value="-1">ทั้งหมด</div>
-                    <div class="menu">
-                        <div ng-repeat="month in months"
-                             class="item " data-value="{{month.key}}">{{month.value}}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
+    <div ng-include src=" 'views/homes/options/months.html' "
+         class="ui form animated fadeIn"
+         ng-show="isSelected(queryType.monthly)" style="z-index: 100">  <-- MONTHS -->
     </div>
 
-    <div class="ui form animated fadeIn" ng-show="isSelected(queryType.yearly)" style="z-index: 100">
-        <div class="inline fields">
-            <div class="field" style="display:inline-block">
-                <span>ปี</span>
-
-                <div class="ui selection dropdown month-dropdown" style="width: 100px" id="yearlyFrom">
-                    <input type="hidden"/>
-
-                    <div class="text" data-value="-1">ทั้งหมด</div>
-                    <div class="menu">
-                        <div ng-repeat="year in years" class="item " data-value="{{year.key}}">
-                            {{year.value}}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="field">
-                <span for="">ถึง</span>
-
-                <div class="ui selection dropdown month-dropdown" style="width: 100px" id="yearlyTo">
-                    <input type="hidden"/>
-
-                    <div class="text" data-value="-1">ทั้งหมด</div>
-                    <div class="menu">
-                        <div ng-repeat="year in years" class="item " data-value="{{year.key}}">
-                            {{year.value}}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+    <div ng-include src=" 'views/homes/options/years.html' "
+         class="ui form animated fadeIn"
+         ng-show="isSelected(queryType.yearly)" style="z-index: 100"> <!-- YEARS -->
     </div>
 
-    <div class="ui form">
-
-        <div class="inline fields">
-            <div class="field" style="display:inline-block">
-                <span>เวลา</span>
-
-                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 50" id="timeFrom">
-                    <input type="hidden"/>
-
-                    <div class="text" data-value="-1">ทั้งหมด</div>
-                    <div class="menu">
-                        <div ng-repeat="time in times" class="item " data-value="{{time.key}}">
-                            {{time.value}}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="field">
-
-                <span>ถึง</span>
-                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 50" id="timeTo">
-                    <input type="hidden"/>
-
-                    <div class="text" data-value="-1">ทั้งหมด</div>
-                    <div class="menu">
-                        <div ng-repeat="time in times" class="item " data-value="{{time.key}}">
-                            {{time.value}}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+    <div ng-include src=" 'views/homes/options/times.html' " class="ui form"> <!-- TIMES -->
     </div>
 
-
-    <div class="ui form"> <!-- category -->
-
-        <div class="inline fields">
-            <div class="field" style="display:inline-block">
-                <span><i class="ui tags icon"></i>ประเภท</span>
-
-                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 40" id="categoryB">
-                    <input type="hidden"/>
-
-                    <div class="text" data-value="">ทั้งหมด</div>
-                    <div class="menu">
-                        <div ng-repeat="cat in categoriesB" class="item " data-value="{{cat.identifier}}" ng-click="selectCategoryB(cat)">
-                            {{cat.title}}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="field" ng-show="selectedCatB != ''">
-
-                <span><i class="ui tag icon"></i>หมวดหมู่</span>
-                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 40" id="categoryC">
-                    <input type="hidden"/>
-
-                    <div class="text" data-value="">ทั้งหมด</div>
-                    <div class="menu">
-                        <div ng-repeat="cat in categoriesC"
-                             class="item "
-                             ng-show="cat.parentId == selectedCatB || cat.identifier == '' "
-                             data-value="{{cat.identifier}}" ng-click="selectCategoryC(cat)">
-
-                            {{cat.title}}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-             <div class="field " ng-show="(selectedCatC && selectedCatB)">
-
-                <span><i class="ui cart icon"></i>รายการ</span>
-                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 400" id="product">
-                    <input type="hidden"/>
-
-                    <div class="text" data-value="">ทั้งหมด</div>
-                    <div class="menu" style="z-index: 400">
-                        <div ng-repeat="product in products"
-                             ng-show="product.categoryIds[0] == selectedCatC || product.identifier == '' "
-                             class="item "
-                             data-value="{{product.identifier}}">
-                            {{product.name}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-             <div class="field">
-
-                <span><i class="ui sitemap icon"></i> สาขา</span>
-                <div class="ui selection dropdown month-dropdown" style="width: 100px; z-index: 40" id="branch">
-                    <input type="hidden"/>
-
-                    <div class="text" data-value="">ทั้งหมด</div>
-                    <div class="menu">
-                        <div ng-repeat="branch in branchs" class="item " data-value="{{branch.identifier}}">
-                            {{branch.name}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+    <div ng-include src=" 'views/homes/options/categories.html' " class="ui form"> <!-- category -->
     </div>
-
 
     <div style="padding-left: 100px">
-        <div class="ui mini black button" ng-click="startQuery()">แสดงผล</div>
-        <div class="ui mini black button" ng-click="clear()">เคลียร์</div>
+        <div class="ui mini black button" ng-click="startQuery()">
+            <i class="desktop icon"></i>
+            แสดงผล
+        </div>
+        <div class="ui mini black button" ng-click="clear()" ng-if="false">เคลียร์</div>
     </div>
-
 </div>

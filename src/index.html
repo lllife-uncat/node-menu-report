@@ -16,11 +16,18 @@
     <script src="http://10.0.0.67:8888/livereload.js"></script>
     <script src="js/final.js"></script>
 
+    <script src="venders/sockjs-client/sockjs-0.3.min.js"></script>
+    <script src="venders/sockjs-client/vertxbus-2.1.js"></script>
+
+    <script src="venders/underscore/underscore.js"></script>
+
     <!--
     <script src="venders/bootstrap/js/bootstrap.min.js"></script>
      <script src="venders/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <link rel="stylesheet" href="venders/onepage-scroll/onepage-scroll.css">
      -->
+
+    <!--<script type='text/javascript' id='lt_ws' src='http://localhost:45973/socket.io/lighttable/ws.js'></script>-->
 
     <link rel="stylesheet" href="venders/semantic/css/semantic.css">
     <link rel="stylesheet" href="css/style.css">
@@ -32,28 +39,48 @@
 <body ng-app="menuReport" ng-controller="mainController">
 
 <div>
-    <div class=""></div>
-
-    <div class="ui tiered menu small inverted animated fadeIn">
-        <div class="menu">
-            <a class="active item"> <i class="grid layout icon"></i> รายงานเปรียบเทียบ </a>
-            <a class="item"> <i class="grid layout icon"></i> PIR </a>
-            <a class="item"> <i class="grid layout icon"></i> Touch Screen </a>
-
-            <div class="right menu"></div>
-        </div>
-
-        <div class="ui sub menu">
-            <a class="active item"><i class="ui payment icon"></i>แบ่งตามจำนวนคลิก</a>
-            <a class="item"><i class="ui payment icon"></i>ตามจำนวนคลิกแบ่งแต่ละช่วงเวลา</a>
-        </div>
-
+    <div class="ui message" ng-if="false">
+        K&O Systems and Consulting
     </div>
-</div>
 
-<div style="padding:10px">
-    <div ng-view></div>
-</div>
+    <div>
+        <div class=""></div>
 
+        <div class="ui small tiered menu inverted animated fadeIn">
+            <div class="menu">
+                <a class="active item"> <i class="grid layout icon red"></i> รายงานเปรียบเทียบ </a>
+                <a class="item"> <i class="grid layout icon"></i> PIR </a>
+                <a class="item"> <i class="grid layout icon"></i> Touch Screen </a>
+
+                <div class="right menu">
+                    <a class="item" href="">
+                        K&O Systems and Consulting
+                    </a>
+                </div>
+            </div>
+
+            <div class="ui sub menu">
+                <a class="item" ng-class="{ active : isSelected(tab.click) }" ng-click="selectTab(tab.click)">
+                    <i class="ui payment icon animated rotateIn" ng-if="isSelected(tab.click)"
+                       ng-class="{ red : isSelected(tab.click) }"></i>
+                    แบ่งตามจำนวนคลิก
+                </a>
+                <a class="item" ng-class="{ active : isSelected(tab.interval) }" ng-click="selectTab(tab.interval)">
+                    <i class="ui payment icon animated rotateIn" ng-if="isSelected(tab.interval)"
+                       ng-class="{ red : isSelected(tab.interval) }"></i>
+                    แบ่งตามจำนวนคลิกแต่ละช่วงเวลา
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <div style="padding:10px">
+        <div ng-view></div>
+    </div>
+
+    <div class="ui clearing divider"></div>
+
+</div>
 </body>
 </html>

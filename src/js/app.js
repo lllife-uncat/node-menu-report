@@ -13,3 +13,9 @@ app.config(function($routeProvider){
 });
 
 
+function Test () {
+  this.x = "xx";
+  this.y = "yy";
+}
+
+

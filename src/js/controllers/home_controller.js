@@ -1,9 +1,13 @@
-app.controller("homeController", function ($scope, $log, collectionService, homeService, globalService) {
+app.controller("homeController", function ($scope, $log, collections, homeService, globalService) {
 
-    ///////////////////////////////////////////////////////////
-    // ***** PRIVATE ******
-    ///////////////////////////////////////////////////////////
-    // init default value
+    // Local function
+    // * initDropdown
+    // * getDropdownValue
+    // * setDropdown
+    // * getScreenWidth
+    // * DropdownId
+    // * queryCallback
+
     function initDropdown() {
         var d = new DropdownId();
 
@@ -22,17 +26,23 @@ app.controller("homeController", function ($scope, $log, collectionService, home
 
     }
 
+    // get dropdown value
     function getDropdownValue(id) {
         var value = $(id).dropdown("get value");
-        console.log(value);
         if (typeof(value) === "string") return value;
         return ""
     }
 
+    // set drop down value
+    // * id = html id value
+    // * key = embedded key in dropdown
+    // * value = dropdown text
     function setDropdown(id, key, value) {
         $(id).dropdown("set value", key).dropdown("set text", value)
     };
 
+    // get current screen width
+    // use jquery command
     function getScreenWidth() {
         return $(window).width();
     }
@@ -57,16 +67,28 @@ app.controller("homeController", function ($scope, $log, collectionService, home
 
         this.product = "#product";
         this.branch = "#branch";
-
     };
 
     function queryCallback(data) {
         console.log(data);
-        createChart(data.columns, data.touchDatas, data.passDatas);
+        createChart(data.columnNames, data.totalTouchs, data.totalPirs);
+    }
+
+    function summaryCallback(data){
+
+        // data from service
+        // data.columnNames = list of column
+        // data.touchInfos = [key, value] of TouchInfo (key = column name)
+        // data.pirInfos = [key, value] of PIRInfo (key = column name)
+        // data.devices = list of DeviceInfo
+
+        console.log("<<SUM>>");
+        console.log(data);
+
+        $scope.sum = data;
     }
 
     function groupCategory() {
-
         var all = { identifier: "", title: "All" }
 
         $scope.categoriesA = [];
@@ -93,7 +115,6 @@ app.controller("homeController", function ($scope, $log, collectionService, home
                     $scope.categoriesC.push(c);
                 }
             });
-
         });
     }
 
@@ -106,7 +127,6 @@ app.controller("homeController", function ($scope, $log, collectionService, home
         });
 
         $scope.productsReady = true;
-
     }
 
     function findAllCategoryCallback(data) {
@@ -140,6 +160,12 @@ app.controller("homeController", function ($scope, $log, collectionService, home
     // * #chart is canvas element define in "views/homes/chart.html"
     function createChart(labels, touchs, passes) {
 
+        var options = {
+           scaleLabel : "<%=value%>",
+            scaleOverlay : true,
+            scaleShowLabels : true
+        };
+
         var data = {
             labels: labels,
             datasets: [
@@ -157,7 +183,7 @@ app.controller("homeController", function ($scope, $log, collectionService, home
         };
 
         var ctx = $("#chart").get(0).getContext("2d");
-        var chart = new Chart(ctx).Bar(data);
+        var chart = new Chart(ctx).Bar(data, options);
     }
 
     // Query default query...
@@ -166,15 +192,14 @@ app.controller("homeController", function ($scope, $log, collectionService, home
     // 3. Init all drop down...
     angular.element(document).ready(function () {
 
-        var defaultQ = new collectionService.QueryInfo();
-        homeService.queryCoarseCompare(defaultQ, queryCallback);
+        var defaultQ = new collections.QueryInfo();
+        homeService.queryChart(defaultQ, queryCallback);
 
         setTimeout(initDropdown, 100);
 
         globalService.findAllCategory(findAllCategoryCallback);
         globalService.findAllProduct(findAllProductCallback);
         globalService.findAllBranch(findAllBranchCallback);
-
 
         var id = new DropdownId();
 
@@ -202,11 +227,13 @@ app.controller("homeController", function ($scope, $log, collectionService, home
                 clearInterval(bi);
             }
         }, 500);
+
+//        if(typeof(window.scrollReveal) === "function"){
+//            window.scrollReveal = new scrollReveal();
+//        }
+
     });
 
-    ////////////////////////////////////////////////////////////////////////////
-    // ***** SCOPE *****
-    ////////////////////////////////////////////////////////////////////////////
     // All scope variables
     // * months = list of months (drop down)
     // * years = list of years (drop down)
@@ -215,11 +242,11 @@ app.controller("homeController", function ($scope, $log, collectionService, home
     // * queryType = can be "Daily", "Monthly" "Yearly" (see collections.js)
     // * screenWidth = current browser width
 
-    $scope.months = collectionService.monthList;
-    $scope.years = collectionService.yearList;
-    $scope.times = collectionService.timeList;
-    $scope.currentQuery = new collectionService.QueryInfo();
-    $scope.queryType = collectionService.queryType;
+    $scope.months = collections.monthList;
+    $scope.years = collections.yearList;
+    $scope.times = collections.getTimeList(false);
+    $scope.currentQuery = new collections.QueryInfo();
+    $scope.queryType = collections.queryType;
     $scope.screenWidth = getScreenWidth();
 
     $scope.products = [];
@@ -236,6 +263,21 @@ app.controller("homeController", function ($scope, $log, collectionService, home
 
     $scope.selectedCatB = "";
     $scope.selectedCatC = "";
+
+    $scope.sum = {};
+
+    // Self apply
+    // from https://coderwall.com/p/ngisma
+    $scope.safeApply = function(fn) {
+        var phase = this.$root.$$phase;
+        if(phase == '$apply' || phase == '$digest') {
+            if(fn && (typeof(fn) === 'function')) {
+                fn();
+            }
+        } else {
+            this.$apply(fn);
+        }
+    };
 
     // Change query type (trigger by top button [XXX, XXX, XXX])
     $scope.selectQueryType = function (type) {
@@ -254,6 +296,51 @@ app.controller("homeController", function ($scope, $log, collectionService, home
     $scope.selectCategoryC = function (cat) {
         $scope.selectedCatC = cat.identifier;
     }
+
+    $scope.getPirInfos = function(key, device) {
+        var pirs = $scope.sum.pirInfos[key];
+        var match = _.where(pirs, { deviceId : device.identifier } );
+        return match;
+    }
+
+    $scope.getTouchInfos = function(key, device) {
+        var touchs = $scope.sum.touchInfos[key];
+        var match = _.where(touchs, { deviceId : device.identifier } );
+
+        if(match){
+//            console.log("<<MATCH>>");
+//            console.log(key);
+//            console.log(device);
+//            console.log(match);
+        }
+
+        return match;
+    }
+
+    $scope.$on("changeSubTab", function(event, selected){
+
+        function resetDropdown() {
+            var tab = new collections.SubTab();
+            if(selected === tab.click) {
+                $scope.currentQuery.groupByTime = false;
+                $scope.times = collections.getTimeList(false);
+            }else {
+                $scope.currentQuery.groupByTime = true;
+                $scope.times = collections.getTimeList(true);
+            }
+
+            setTimeout(function(){
+                // Recreate drop down item...
+                var d = new DropdownId();
+                $(d.timeFrom).dropdown();
+                $(d.timeTo).dropdown();
+                // Set default value...
+                setDropdown(d.timeFrom, $scope.times[9].key, $scope.times[9].value);
+                setDropdown(d.timeTo, $scope.times[10].key, $scope.times[10].value);
+            }, 100);
+        }
+        resetDropdown()
+    });
 
     // Start query process...
     // 1. Get ID object (dedicate for drop down element)
@@ -287,16 +374,11 @@ app.controller("homeController", function ($scope, $log, collectionService, home
         q.product = getDropdownValue(d.product);
         q.branch = getDropdownValue(d.branch);
 
-        $log.info("<<Before Parse>>");
-        $log.info(q);
-
         q.parse();
 
-        $log.info("<<After Parse>>");
-        $log.info(q);
-
         $scope.screenWidth = getScreenWidth();
-        homeService.queryCoarseCompare(q, queryCallback);
+        homeService.queryChart(q, queryCallback);
+        homeService.querySummary(q, summaryCallback);
     };
 
     // Reset all drop down (trigger by clear button)

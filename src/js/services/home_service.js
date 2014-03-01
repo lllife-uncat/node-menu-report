@@ -3,9 +3,26 @@
 app.factory("homeService", function($http, configService, $log){
     var endPoint = configService.endPoint;
 
-    function queryCoarseCompare(queryInfo, callback){
+    function querySummary(queryInfo, callback){
         var request = $http({
-            url : endPoint + "/report/compare/coarse",
+            url : endPoint + "/report/compare/summary",
+            method: "POST",
+            data : JSON.stringify(queryInfo),
+            headers : { "Content-Type" : "multipart/form-data" }
+        });
+
+        request.success(function(data){
+            callback(data);
+        });
+
+        request.error(function(err){
+            $log(err);
+        });
+    }
+
+    function queryChart(queryInfo, callback){
+        var request = $http({
+            url : endPoint + "/report/compare/chart",
             method : "POST",
             data : JSON.stringify(queryInfo),
             headers : { "Content-Type" : "multipart/form-data" }
@@ -21,6 +38,7 @@ app.factory("homeService", function($http, configService, $log){
     }
 
     return {
-        queryCoarseCompare : queryCoarseCompare
+        queryChart : queryChart,
+        querySummary : querySummary
     };
 });

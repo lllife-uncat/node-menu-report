@@ -75,6 +75,8 @@ body {
 	font-family: pt_sansregular;
 
     background-image: url("/images/crossword.png");
+    /*background-image: url("/images/zebra.png");*/
+    /*background-image: url("/images/white_wall_hash.png");*/
     background-repeat: repeat;
 }
 
