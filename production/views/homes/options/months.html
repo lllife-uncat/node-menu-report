@@ -1,0 +1,34 @@
+<div class="inline fields">
+    <div class="field" style="display:inline-block">
+        <span>เดือน</span>
+
+        <div class="ui selection dropdown month-dropdown" style="width: 100px" id="monthlyFrom">
+            <input type="hidden"/>
+
+            <div class="text" data-value="-1">ทั้งหมด</div>
+            <div class="menu">
+                <div ng-repeat="month in months"
+                     class="item " data-value="{{month.key}}">{{month.value}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="field">
+
+        <span>ถึง</span>
+
+        <div class="ui selection dropdown month-dropdown" style="width: 100px" id="monthlyTo">
+            <input type="hidden"/>
+
+            <div class="text" data-value="-1">ทั้งหมด</div>
+            <div class="menu">
+                <div ng-repeat="month in months"
+                     class="item " data-value="{{month.key}}">{{month.value}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

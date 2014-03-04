@@ -51,9 +51,44 @@ app.factory("globalService", function($http, $log, configService){
         });
     }
 
+    function syncPirs() {
+       var url = endPoint + "/pir/sync";
+        var request = $http( {
+            method: "GET",
+            url: url
+        });
+
+        request.success(function(data){
+            console.log("Sync pirs ok...");
+        });
+
+        request.error(function(err){
+            console.log("Sync pirs failed...");
+        });
+    }
+    function syncTouchs() {
+       var url = endPoint + "/touch/sync";
+        var request = $http({
+            method : "GET",
+            url : url
+        });
+
+        request.success(function(data){
+            console.log("Sync touchs ok...");
+        });
+
+        request.error(function(err){
+            console.log("Sync touchs failed...");
+        });
+    }
+
     return {
         findAllProduct : findAllProduct,
         findAllCategory : findAllCategory,
-        findAllBranch : findAllBranch
+        findAllBranch : findAllBranch,
+        syncAll : function() {
+            syncPirs();
+            syncTouchs();
+        }
     };
 });

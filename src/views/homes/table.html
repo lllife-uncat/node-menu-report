@@ -1,41 +1,97 @@
-<table class="ui small table segment">
+<table class="ui celled small table segment">
     <thead>
     <tr>
-        <th >
+        <th>
             <span class="">
                 <i class="ui tablet icon"></i>
                 <i class="ui icon time"></i>
             </span>
         </th>
-        <th ng-repeat="column in sum.columnNames">{{column}}</th>
-        <th></th>
+
+        <th colspan="2" ng-repeat="column in sum.columnNames" style="text-align: center">
+            <span style="white-space: nowrap">
+                {{column}}
+            </span>
+        </th>
+
     </tr>
     </thead>
 
     <tbody>
+    <tr>
+        <td style="text-align: left" ng-if="true">
+            <span style="white-space: nowrap" ng-if="false">
+                PIR & Touch
+            </span>
+        </td>
 
-    <tr ng-repeat="device in sum.devices" data-scrollReveal class="animated fadeIn">
+        <td ng-repeat=" column in [] | range: sum.columnNames.length * 2 " class="right header">
+            <div ng-if="($index % 2 == 0)" class="ui tiny circular image">
+               <img src="images/pir.png" alt=""/>
+            </div>
+            <div ng-if="($index % 2 != 0)" class="ui tiny circular image">
+               <img src="images/touch.png" alt=""/>
+            </div>
+        </td>
+
+        <!--<td ng-repeat="column in sum.columnNames" class="right header">-->
+            <!--<div ng-if="($index % 2 == 0)" class="ui tiny circular image">-->
+                <!--<img src="images/pir.png" alt=""/>-->
+            <!--</div>-->
+            <!--<div ng-if="($index % 2 1= 0)" class="ui tiny circular image">-->
+                <!--<img src="images/touch.png" alt=""/>-->
+            <!--</div>-->
+        <!--</td>-->
+
+    </tr>
+
+    <tr ng-repeat="device in sum.devices">
         <td>
-            <span class="ui black" style="white-space: nowrap; text-transform: none;">
-                <i class="ui tablet icon"></i>
+            <span class="ui black" style="white-space: nowrap" ng-if="false">
+                <!--<i class="ui location icon"></i>-->
                 {{device.createBy}}
             </span>
             <br/>
-
-            <span style="white-space: nowrap" ng-if="false">
+            <span style="white-space: nowrap">
                 <i class="ui tablet icon"></i>
-                {{device.deviceId}}
+                {{device.createBy}}
             </span>
         </td>
-        <td ng-repeat="column in sum.columnNames">
 
-            <span style="white-space: nowrap; font-size: 90%; text-transform: none">
-            {{ getPirInfos(column,device).length }} /
-            {{ getTouchInfos(column,device).length }}
+        <td ng-repeat="column in sum.columnNames" class="right">
+            <span>
+                {{ getPirInfos(column,device).length }}
             </span>
         </td>
-        <td></td>
+
+        <td ng-repeat="column in sum.columnNames" class="right">
+            <span>
+                {{ getTouchInfos(column,device).length }}
+            </span>
+        </td>
     </tr>
 
     </tbody>
+
+    <tfoot>
+    <tr>
+        <th style="font-style: normal">
+            <i class="ui add icon"></i> Totals
+        </th>
+
+        <th ng-repeat="column in sum.columnNames" class="right">
+            <span style="white-space: nowrap; font-size:91%">
+                {{ sum.pirInfos[column].length }}
+            </span>
+        </th>
+
+        <th ng-repeat="column in sum.columnNames" class="right">
+            <span style="white-space: nowrap; font-size:91%">
+                {{ sum.touchInfos[column].length }}
+            </span>
+        </th>
+    </tr>
+
+    </tfoot>
 </table>
+

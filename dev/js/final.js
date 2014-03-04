@@ -145,6 +145,15 @@ app.factory("configService", function(){
     };
 });
 
+app.filter('range', function() {
+    return function(input, total) {
+        total = parseInt(total);
+        for (var i=0; i<total; i++)
+            input.push(i);
+        return input;
+    };
+});
+
 app.factory("globalService", function($http, $log, configService){
 
     var endPoint = configService.endPoint;
@@ -197,10 +206,45 @@ app.factory("globalService", function($http, $log, configService){
         });
     }
 
+    function syncPirs() {
+       var url = endPoint + "/pir/sync";
+        var request = $http( {
+            method: "GET",
+            url: url
+        });
+
+        request.success(function(data){
+            console.log("Sync pirs ok...");
+        });
+
+        request.error(function(err){
+            console.log("Sync pirs failed...");
+        });
+    }
+    function syncTouchs() {
+       var url = endPoint + "/touch/sync";
+        var request = $http({
+            method : "GET",
+            url : url
+        });
+
+        request.success(function(data){
+            console.log("Sync touchs ok...");
+        });
+
+        request.error(function(err){
+            console.log("Sync touchs failed...");
+        });
+    }
+
     return {
         findAllProduct : findAllProduct,
         findAllCategory : findAllCategory,
-        findAllBranch : findAllBranch
+        findAllBranch : findAllBranch,
+        syncAll : function() {
+            syncPirs();
+            syncTouchs();
+        }
     };
 });
 
@@ -258,21 +302,36 @@ app.controller("homeController", function ($scope, $log, collections, homeServic
     // * queryCallback
 
     function initDropdown() {
+
         var d = new DropdownId();
 
-        setDropdown(d.dailyMonth, $scope.months[0].key, $scope.months[0].value);
-        setDropdown(d.dailyYear, $scope.years[0].key, $scope.years[0].value);
+        // Wait 0.1 sec. for drop down created...
+        setTimeout(function(){
+            $(d.dailyMonth).dropdown();
+            $(d.dailyYear).dropdown();
+            $(d.monthlyFrom).dropdown();
+            $(d.monthlyTo).dropdown();
+            $(d.yearlyFrom).dropdown();
+            $(d.yearlyTo).dropdown();
+            $(d.timeTo).dropdown();
+            $(d.timeFrom).dropdown();
+        }, 100);
 
-        setDropdown(d.monthlyFrom, $scope.months[0].key, $scope.months[0].value);
-        setDropdown(d.monthlyTo, $scope.months[11].key, $scope.months[11].value);
+        // Assign default value...
+        setTimeout(function(){
+            setDropdown(d.dailyMonth, $scope.months[0].key, $scope.months[0].value);
+            setDropdown(d.dailyYear, $scope.years[0].key, $scope.years[0].value);
 
-        var yl = $scope.years.length - 1;
-        setDropdown(d.yearlyFrom, $scope.years[0].key, $scope.years[0].value);
-        setDropdown(d.yearlyTo, $scope.years[yl].key, $scope.years[yl].value);
+            setDropdown(d.monthlyFrom, $scope.months[0].key, $scope.months[0].value);
+            setDropdown(d.monthlyTo, $scope.months[11].key, $scope.months[11].value);
 
-        setDropdown(d.timeFrom, $scope.times[9].key, $scope.times[9].value);
-        setDropdown(d.timeTo, $scope.times[10].key, $scope.times[10].value);
+            var yl = $scope.years.length - 1;
+            setDropdown(d.yearlyFrom, $scope.years[0].key, $scope.years[0].value);
+            setDropdown(d.yearlyTo, $scope.years[yl].key, $scope.years[yl].value);
 
+            setDropdown(d.timeFrom, $scope.times[9].key, $scope.times[9].value);
+            setDropdown(d.timeTo, $scope.times[10].key, $scope.times[10].value);
+        }, 200);
     }
 
     // get dropdown value
@@ -444,7 +503,7 @@ app.controller("homeController", function ($scope, $log, collections, homeServic
         var defaultQ = new collections.QueryInfo();
         homeService.queryChart(defaultQ, queryCallback);
 
-        setTimeout(initDropdown, 100);
+        setTimeout(initDropdown, 300);
 
         globalService.findAllCategory(findAllCategoryCallback);
         globalService.findAllProduct(findAllProductCallback);
@@ -477,10 +536,7 @@ app.controller("homeController", function ($scope, $log, collections, homeServic
             }
         }, 500);
 
-//        if(typeof(window.scrollReveal) === "function"){
-//            window.scrollReveal = new scrollReveal();
-//        }
-
+        globalService.syncAll()
     });
 
     // All scope variables
@@ -548,13 +604,19 @@ app.controller("homeController", function ($scope, $log, collections, homeServic
 
     $scope.getPirInfos = function(key, device) {
         var pirs = $scope.sum.pirInfos[key];
-        var match = _.where(pirs, { deviceId : device.identifier } );
+        var match = _.where(pirs, { deviceId : device.serialNumber} );
         return match;
     }
 
     $scope.getTouchInfos = function(key, device) {
+
         var touchs = $scope.sum.touchInfos[key];
-        var match = _.where(touchs, { deviceId : device.identifier } );
+        var match = _.where(touchs, { deviceId : device.serialNumber} );
+
+        if(touchs.length){
+            console.log(device);
+            console.log(touchs);
+        }
 
         if(match){
 //            console.log("<<MATCH>>");

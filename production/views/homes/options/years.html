@@ -1,0 +1,33 @@
+<div class="inline fields">
+    <div class="field" style="display:inline-block">
+        <span>ปี</span>
+
+        <div class="ui selection dropdown month-dropdown" style="width: 100px" id="yearlyFrom">
+            <input type="hidden"/>
+
+            <div class="text" data-value="-1">ทั้งหมด</div>
+            <div class="menu">
+                <div ng-repeat="year in years" class="item " data-value="{{year.key}}">
+                    {{year.value}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="field">
+        <span for="">ถึง</span>
+
+        <div class="ui selection dropdown month-dropdown" style="width: 100px" id="yearlyTo">
+            <input type="hidden"/>
+
+            <div class="text" data-value="-1">ทั้งหมด</div>
+            <div class="menu">
+                <div ng-repeat="year in years" class="item " data-value="{{year.key}}">
+                    {{year.value}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

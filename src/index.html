@@ -48,7 +48,7 @@
 
         <div class="ui small tiered menu inverted animated fadeIn">
             <div class="menu">
-                <a class="active item"> <i class="grid layout icon red"></i> รายงานเปรียบเทียบ </a>
+                <a class="active item"> <i class="grid layout icon blue"></i> รายงานเปรียบเทียบ </a>
                 <a class="item"> <i class="grid layout icon"></i> PIR </a>
                 <a class="item"> <i class="grid layout icon"></i> Touch Screen </a>
 
@@ -62,12 +62,12 @@
             <div class="ui sub menu">
                 <a class="item" ng-class="{ active : isSelected(tab.click) }" ng-click="selectTab(tab.click)">
                     <i class="ui payment icon animated rotateIn" ng-if="isSelected(tab.click)"
-                       ng-class="{ red : isSelected(tab.click) }"></i>
+                       ng-class="{ green : isSelected(tab.click) }"></i>
                     แบ่งตามจำนวนคลิก
                 </a>
                 <a class="item" ng-class="{ active : isSelected(tab.interval) }" ng-click="selectTab(tab.interval)">
                     <i class="ui payment icon animated rotateIn" ng-if="isSelected(tab.interval)"
-                       ng-class="{ red : isSelected(tab.interval) }"></i>
+                       ng-class="{ red: isSelected(tab.interval) }"></i>
                     แบ่งตามจำนวนคลิกแต่ละช่วงเวลา
                 </a>
             </div>

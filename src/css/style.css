@@ -112,9 +112,50 @@ body {
     background-repeat: repeat;
 }
 
-.ui.dropdown {
-    height: 20px;
+.ui.message {
+/*     background-image: url("/images/zebra.png"); */
+/*     background-image: url("/images/redox_02.png"); */
 }
+
+.ui.dropdown {
+    padding: 5px;
+    height: 15px;
+    font-size: 80%;
+    font-weight:bolder;
+    min-width: 150px;
+}
+
 #chart {
     z-index: 100;
 }
+
+
+table.ui.table > tfoot > tr > th.right {
+    text-align: right;
+    font-style: normal;
+    font-weight: bolder;
+}
+
+td.right.header {
+    font-weight: bolder;
+}
+
+table.ui.table > tbody > tr > td.right {
+    text-align: right;
+    font-style: normal;
+}
+
+.wrapper {
+    /*width: 100%;*/
+    /*height: auto;*/
+    /*border: 13px solid #bed5cd;*/
+    /*overflow-x: scroll;*/
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+.scroll{
+    display: inline-block;
+    vertical-align: middle;
+    padding: 10px;
+}
+
