@@ -14,6 +14,8 @@
             </span>
         </th>
 
+        <th></th>
+
     </tr>
     </thead>
 
@@ -26,26 +28,18 @@
         </td>
 
         <td ng-repeat=" column in [] | range: sum.columnNames.length * 2 " class="right header">
-            <div ng-if="($index % 2 == 0)" class="ui tiny circular image">
-               <img src="images/pir.png" alt=""/>
+            <div ng-if="($index % 2 == 0)" class="ui tiny circular image animated fadeInLeft">
+                <img src="images/pir.png" alt=""/>
             </div>
             <div ng-if="($index % 2 != 0)" class="ui tiny circular image">
-               <img src="images/touch.png" alt=""/>
+                <img src="images/touch.png" alt=""/>
             </div>
         </td>
 
-        <!--<td ng-repeat="column in sum.columnNames" class="right header">-->
-            <!--<div ng-if="($index % 2 == 0)" class="ui tiny circular image">-->
-                <!--<img src="images/pir.png" alt=""/>-->
-            <!--</div>-->
-            <!--<div ng-if="($index % 2 1= 0)" class="ui tiny circular image">-->
-                <!--<img src="images/touch.png" alt=""/>-->
-            <!--</div>-->
-        <!--</td>-->
-
+        <td></td>
     </tr>
 
-    <tr ng-repeat="device in sum.devices">
+    <tr ng-repeat="device in sum.devices" class="animated fadeIn">
         <td>
             <span class="ui black" style="white-space: nowrap" ng-if="false">
                 <!--<i class="ui location icon"></i>-->
@@ -58,17 +52,20 @@
             </span>
         </td>
 
-        <td ng-repeat="column in sum.columnNames" class="right">
-            <span>
-                {{ getPirInfos(column,device).length }}
-            </span>
-        </td>
 
-        <td ng-repeat="column in sum.columnNames" class="right">
-            <span>
-                {{ getTouchInfos(column,device).length }}
+        <td ng-repeat="column in getDuplicateColumns()" class="right">
+            <span ng-if="$index % 2 == 0">
+                {{ getPirInfos(column.replace('pir', '') , device).length }}
+            </span>
+            <span ng-if="$index % 2 != 0">
+                {{ getTouchInfos(column.replace('touch', '') ,device).length }}
+            </span>
+
+            <span ng-if="$index == sum.columnNames.length * 2 -1">
             </span>
         </td>
+        <td></td>
+
     </tr>
 
     </tbody>
@@ -79,17 +76,18 @@
             <i class="ui add icon"></i> Totals
         </th>
 
-        <th ng-repeat="column in sum.columnNames" class="right">
-            <span style="white-space: nowrap; font-size:91%">
-                {{ sum.pirInfos[column].length }}
+
+        <th ng-repeat="column in getDuplicateColumns()" class="right">
+            <span ng-if="$index % 2 == 0">
+                {{ sum.pirInfos[column.replace('pir','')].length }}
+            </span>
+            <span ng-if="$index % 2 != 0">
+                {{ sum.touchInfos[column.replace('touch','')].length }}
             </span>
         </th>
 
-        <th ng-repeat="column in sum.columnNames" class="right">
-            <span style="white-space: nowrap; font-size:91%">
-                {{ sum.touchInfos[column].length }}
-            </span>
-        </th>
+        <th></th>
+
     </tr>
 
     </tfoot>

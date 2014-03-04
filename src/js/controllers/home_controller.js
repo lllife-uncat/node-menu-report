@@ -319,19 +319,6 @@ app.controller("homeController", function ($scope, $log, collections, homeServic
 
         var touchs = $scope.sum.touchInfos[key];
         var match = _.where(touchs, { deviceId : device.serialNumber} );
-
-        if(touchs.length){
-            console.log(device);
-            console.log(touchs);
-        }
-
-        if(match){
-//            console.log("<<MATCH>>");
-//            console.log(key);
-//            console.log(device);
-//            console.log(match);
-        }
-
         return match;
     }
 
@@ -403,4 +390,15 @@ app.controller("homeController", function ($scope, $log, collections, homeServic
     $scope.clear = function () {
         initDropdown();
     };
+
+
+    $scope.getDuplicateColumns = function(){
+       var cs = [];
+       $scope.sum.columnNames.forEach(function(c){
+           cs.push(c + "pir");
+           cs.push(c + "touch");
+       });
+
+        return cs;
+    }
 });

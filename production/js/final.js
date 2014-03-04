@@ -138,7 +138,7 @@ app.factory("collections", function () {
 });
 
 app.factory("configService", function(){
-    var endPoint = "http://192.168.0.109:8877";
+    var endPoint = "http://192.168.0.106:8877";
 
     return {
      endPoint : endPoint
@@ -612,19 +612,6 @@ app.controller("homeController", function ($scope, $log, collections, homeServic
 
         var touchs = $scope.sum.touchInfos[key];
         var match = _.where(touchs, { deviceId : device.serialNumber} );
-
-        if(touchs.length){
-            console.log(device);
-            console.log(touchs);
-        }
-
-        if(match){
-//            console.log("<<MATCH>>");
-//            console.log(key);
-//            console.log(device);
-//            console.log(match);
-        }
-
         return match;
     }
 
@@ -696,6 +683,17 @@ app.controller("homeController", function ($scope, $log, collections, homeServic
     $scope.clear = function () {
         initDropdown();
     };
+
+
+    $scope.getDuplicateColumns = function(){
+       var cs = [];
+       $scope.sum.columnNames.forEach(function(c){
+           cs.push(c + "pir");
+           cs.push(c + "touch");
+       });
+
+        return cs;
+    }
 });
 
 app.controller("mainController", function($scope, collections){
