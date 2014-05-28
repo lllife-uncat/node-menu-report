@@ -93,8 +93,10 @@
       <file leaf-file-name="home.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/views/home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="22" selection-start="754" selection-end="754" vertical-scroll-proportion="0.33825505" vertical-offset="0" max-vertical-offset="745">
-              <folding />
+            <state line="13" column="0" selection-start="662" selection-end="662" vertical-scroll-proportion="0.31409395" vertical-offset="0" max-vertical-offset="745">
+              <folding>
+                <element signature="n#style#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -342,6 +344,7 @@
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Live" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -820,8 +823,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="22" selection-start="754" selection-end="754" vertical-scroll-proportion="0.33825505" vertical-offset="0" max-vertical-offset="745">
-          <folding />
+        <state line="13" column="0" selection-start="662" selection-end="662" vertical-scroll-proportion="0.31409395" vertical-offset="0" max-vertical-offset="745">
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

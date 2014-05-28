@@ -1,4 +1,3 @@
-
 var app = angular.module("menuReport", ["ngRoute"]);
 
 app.config(function($routeProvider){
@@ -12,10 +11,7 @@ app.config(function($routeProvider){
 	});
 });
 
-
 function Test () {
   this.x = "xx";
   this.y = "yy";
 }
-
-

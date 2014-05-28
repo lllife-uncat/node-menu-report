@@ -1,161 +1,190 @@
 @font-face {
-    font-family: 'bebas_neueregular';
-    src: url('/venders/fonts/BebasNeue-webfont.eot');
-    src: url('/venders/fonts/BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/venders/fonts/BebasNeue-webfont.woff') format('woff'),
-    url('/venders/fonts/BebasNeue-webfont.ttf') format('truetype'),
-    url('/venders/fonts/BebasNeue-webfont.svg#bebas_neueregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
+  font-family: 'bebas_neueregular';
+  src: url('/venders/fonts/BebasNeue-webfont.eot');
+  src: url('/venders/fonts/BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/venders/fonts/BebasNeue-webfont.woff') format('woff'),
+  url('/venders/fonts/BebasNeue-webfont.ttf') format('truetype'),
+  url('/venders/fonts/BebasNeue-webfont.svg#bebas_neueregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 
 @font-face {
-    font-family: 'droid_sansregular';
-    src: url('/venders/fonts/DroidSans-webfont.eot');
-    src: url('/venders/fonts/DroidSans-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/venders/fonts/DroidSans-webfont.woff') format('woff'),
-    url('/venders/fonts/DroidSans-webfont.ttf') format('truetype'),
-    url('/venders/fonts/DroidSans-webfont.svg#droid_sansregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
+  font-family: 'droid_sansregular';
+  src: url('/venders/fonts/DroidSans-webfont.eot');
+  src: url('/venders/fonts/DroidSans-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/venders/fonts/DroidSans-webfont.woff') format('woff'),
+  url('/venders/fonts/DroidSans-webfont.ttf') format('truetype'),
+  url('/venders/fonts/DroidSans-webfont.svg#droid_sansregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 
 @font-face {
-    font-family: 'BEBAS___';
-    src: url('/venders/fonts/BEBAS___-webfont.eot');
-    src: url('/venders/fonts/BEBAS___-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/venders/fonts/BEBAS___-webfont.woff') format('woff'),
-    url('/venders/fonts/BEBAS___-webfont.ttf') format('truetype'),
-    url('/venders/fonts/BEBAS___-webfont.svg#droid_sansregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'BEBAS___';
+  src: url('/venders/fonts/BEBAS___-webfont.eot');
+  src: url('/venders/fonts/BEBAS___-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/venders/fonts/BEBAS___-webfont.woff') format('woff'),
+  url('/venders/fonts/BEBAS___-webfont.ttf') format('truetype'),
+  url('/venders/fonts/BEBAS___-webfont.svg#droid_sansregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'gooddogregular';
-    src: url('/venders/fonts/GoodDog-webfont.eot');
-    src: url('/venders/fonts/GoodDog-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/venders/fonts/GoodDog-webfont.woff') format('woff'),
-    url('/venders/fonts/GoodDog-webfont.ttf') format('truetype'),
-    url('/venders/fonts/GoodDog-webfont.svg#gooddogregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'gooddogregular';
+  src: url('/venders/fonts/GoodDog-webfont.eot');
+  src: url('/venders/fonts/GoodDog-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/venders/fonts/GoodDog-webfont.woff') format('woff'),
+  url('/venders/fonts/GoodDog-webfont.ttf') format('truetype'),
+  url('/venders/fonts/GoodDog-webfont.svg#gooddogregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'walkway_boldregular';
-    src: url('/venders/fonts/Walkway_Bold-webfont.eot');
-    src: url('/venders/fonts/Walkway_Bold-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/venders/fonts/Walkway_Bold-webfont.woff') format('woff'),
-    url('/venders/fonts/Walkway_Bold-webfont.ttf') format('truetype'),
-    url('/venders/fonts/Walkway_Bold-webfont.svg#walkway_boldregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'walkway_boldregular';
+  src: url('/venders/fonts/Walkway_Bold-webfont.eot');
+  src: url('/venders/fonts/Walkway_Bold-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/venders/fonts/Walkway_Bold-webfont.woff') format('woff'),
+  url('/venders/fonts/Walkway_Bold-webfont.ttf') format('truetype'),
+  url('/venders/fonts/Walkway_Bold-webfont.svg#walkway_boldregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
 
 }
 
 @font-face {
-    font-family: 'pt_sansregular';
-    src: url('/venders/fonts/PTS55F-webfont.eot');
-    src: url('/venders/fonts/PTS55F-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/venders/fonts/PTS55F-webfont.woff') format('woff'),
-    url('/venders/fonts/PTS55F-webfont.ttf') format('truetype'),
-    url('/venders/fonts/PTS55F-webfont.svg#pt_sansregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'pt_sansregular';
+  src: url('/venders/fonts/PTS55F-webfont.eot');
+  src: url('/venders/fonts/PTS55F-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/venders/fonts/PTS55F-webfont.woff') format('woff'),
+  url('/venders/fonts/PTS55F-webfont.ttf') format('truetype'),
+  url('/venders/fonts/PTS55F-webfont.svg#pt_sansregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
 
+}
+
+.ko-title{
+/*   height: 30px; */
+/*   //background-color: lighgreen; */
+  background-image: url("images/crossword.png")
+  margin: 15px -1px;
+  padding-top: 2px;
+  padding-left: 2px;
+  padding-bottom: 15px;
+  min-height: 100px;
+/*   box-shadow: 1px 1px 5px lightgray, -1px -1px 5px lightgray; */
+}
+
+div.ui.message {
+  border-radius: 2px;
+}
+
+.mini.ui.button {
+  border-radius: 0;
+}
+
+div.ui.buttons {
+  border-radius: 0;
+}
+
+.ko-content {
+  padding: 30px 10px;
+}
+
+.ko-body{
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 1200px;
+  padding-bottom: 0px;
+
+  box-shadow: 1px 1px 5px lightgray, -1px -1px 5px lightgray;
+  background-image: url("/images/crossword.png");
+}
+.ko-menu {
+  padding: 0 8px;
+}
+'
+
+.ko-graph {
+  max-width: 100%;
 }
 
 body {
-	background-color: white;
-	font-family: pt_sansregular;
-
-    background-image: url("/images/crossword.png");
-    /*background-image: url("/images/zebra.png");*/
-    /*background-image: url("/images/white_wall_hash.png");*/
-    background-repeat: repeat;
+  background-color: white;
+  font-family: pt_sansregular;
+  /*background-image: url("/images/crossword.png"); */
+/*   background-image: url("/images/zebra.png"); */
+  background-image: url("/images/white_wall_hash.png");
+  background-repeat: repeat;
+/*   max-width: 1100px; */
 }
 
 .field input[type=text] {
-    height: 30px;
+  height: 30px;
 }
-
-/*div.ui div.form div.fields div.field > label{*/
-    /*display: inline-block;*/
-    /*width: 150px;*/
-/*}*/
 
 
 .ui.form .fields .field > span{
-    display: inline-block;
-    margin: 0em 0em 0.3em;
-    color: #555555;
-    font-size: 0.875em;
-    width: 80;
-    text-align: right;
+  display: inline-block;
+  margin: 0em 0em 0.3em;
+  color: #555555;
+  font-size: 0.875em;
+  width: 80;
+  text-align: right;
 }
 
-/*div.inline.fields div.field div {*/
-    /*font-family: pt_sansregular;*/
-    /*font-size:80%;*/
-    /*display:inline-block;*/
-    /*width:100px;*/
-/*}*/
-
 .ui.segment {
-    padding:10px;
-    background-image: url("/images/white_wall_hash.png");
-    background-repeat: repeat;
+  padding:10px;
+  background-image: url("/images/white_wall_hash.png");
+  background-repeat: repeat;
 }
 
 .ui.message {
-/*     background-image: url("/images/zebra.png"); */
-/*     background-image: url("/images/redox_02.png"); */
+  /*     background-image: url("/images/zebra.png"); */
+  /*     background-image: url("/images/redox_02.png"); */
 }
 
 .ui.dropdown {
-    padding: 5px;
-    height: 15px;
-    font-size: 80%;
-    font-weight:bolder;
-    min-width: 150px;
+  padding: 5px;
+  height: 15px;
+  font-size: 80%;
+  font-weight:bolder;
+  min-width: 150px;
 }
 
 #chart {
-    z-index: 100;
+  z-index: 100;
 }
 
 
 table.ui.table > tfoot > tr > th.right {
-    text-align: right;
-    font-style: normal;
-    font-weight: bolder;
+  text-align: right;
+  font-style: normal;
+  font-weight: bolder;
 }
 
 td.right.header {
-    font-weight: bolder;
+  font-weight: bolder;
 }
 
 table.ui.table > tbody > tr > td.right {
-    text-align: right;
-    font-style: normal;
+  text-align: right;
+  font-style: normal;
 }
 
 .wrapper {
-    /*width: 100%;*/
-    /*height: auto;*/
-    /*border: 13px solid #bed5cd;*/
-    /*overflow-x: scroll;*/
-    overflow-y: hidden;
-    white-space: nowrap;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 .scroll{
-    display: inline-block;
-    vertical-align: middle;
-    padding: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 10px;
 }
 

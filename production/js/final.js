@@ -138,7 +138,7 @@ app.factory("collections", function () {
 });
 
 app.factory("configService", function(){
-    var endPoint = "http://192.168.0.106:8877";
+    var endPoint = "http://emenu.ecmxpert.com:8877";
 
     return {
      endPoint : endPoint
