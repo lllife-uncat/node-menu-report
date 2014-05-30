@@ -41,12 +41,12 @@
                     </div>
 
                     <div class="ui sub menu">
-                        <a class="item" ng-class="{ active : isSelected(tab.click) }" ng-click="selectTab(tab.click)">
+                        <a class="item" ng-class="{ activeX : isSelected(tab.click) }" ng-click="selectTab(tab.click)">
                             <i class="ui payment icon animatedX rotateIn" ng-if="isSelected(tab.click)"
                                ng-class="{ greenX : isSelected(tab.click) }"></i>
                             แบ่งตามจำนวนคลิก
                         </a>
-                        <a class="item" ng-class="{ active : isSelected(tab.interval) }" ng-click="selectTab(tab.interval)">
+                        <a class="item" ng-class="{ activeX : isSelected(tab.interval) }" ng-click="selectTab(tab.interval)">
                             <i class="ui payment icon animatedX rotateIn" ng-if="isSelected(tab.interval)"
                                ng-class="{ redX : isSelected(tab.interval) }"></i>
                             แบ่งตามจำนวนคลิกแต่ละช่วงเวลา

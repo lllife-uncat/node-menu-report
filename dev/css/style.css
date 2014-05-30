@@ -67,17 +67,83 @@
   font-style: normal;
 
 }
+.ko-field {
+  display: inline;
+}
+
+.ko-field label {
+  font-size: 80%;
+  width: 60px;
+  display: inline-block;
+  text-align: right;
+}
+
+.ko-report-type {
+  padding: 15px;
+  width: 500px;
+}
+
+.ko-report-type span.active {
+  background-color: green;
+  box-shadow: 0px -1px 5px gray;
+  border-width: 0;
+  color: white;
+}
+
+.ko-report-type span {
+/*   width: 80px; */
+  height: 20px;
+  vertical-align: middle;
+  display: inline-block;
+  font-size: 80%;
+  font-weight: bolder;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: lightgray;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top:3px;
+  padding-bottom:0px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+.ko-field input[type="text"], .ko-field select{
+  height: 28px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: lightgray;
+  border-radius: 0;
+  padding: 2px 6px;
+  margin: 5px;
+  width: 150px;
+  border-radius: 5px;
+}
+
+.ko-chart-label {
+  position: relative;
+  font-size: 80%;
+  float:right;
+  padding-right: 50px;
+  padding-top: 10px;
+}
+
+td:nth-child(3n+4) {
+  background-color: rgba(151,187,205,0.3);
+}
+
+th:nth-child(3n+1) {
+}
 
 .ko-title{
-/*   height: 30px; */
-/*   //background-color: lighgreen; */
   background-image: url("images/crossword.png")
   margin: 15px -1px;
   padding-top: 2px;
   padding-left: 2px;
   padding-bottom: 15px;
   min-height: 100px;
-/*   box-shadow: 1px 1px 5px lightgray, -1px -1px 5px lightgray; */
 }
 
 div.ui.message {
@@ -118,11 +184,8 @@ div.ui.buttons {
 body {
   background-color: white;
   font-family: pt_sansregular;
-  /*background-image: url("/images/crossword.png"); */
-/*   background-image: url("/images/zebra.png"); */
   background-image: url("/images/white_wall_hash.png");
   background-repeat: repeat;
-/*   max-width: 1100px; */
 }
 
 .field input[type=text] {

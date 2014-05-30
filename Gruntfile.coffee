@@ -1,6 +1,6 @@
-module.exports = (grunt) -> 
-	grunt.initConfig 
-		copy: 
+module.exports = (grunt) ->
+	grunt.initConfig
+		copy:
 			venders:
 				files: [
 					{
@@ -23,17 +23,17 @@ module.exports = (grunt) ->
 					{ cwd: "venders", src: "**/*.*", dest: "dev/" }
 				]
 			}
-		connect: 
-			options: 
+		connect:
+			options:
 				port: 8000
 				hostname: "0.0.0.0"
-				base: "dev/" 
+				base: "dev/"
 
-			livereload: 
+			livereload:
 				options:
 					open: false
-		watch: 
-			js: 
+		watch:
+			js:
 				files: ["src/js/*.js", "src/js/**/*.js"]
 				tasks: ["concat:js"]
 			css:
@@ -45,19 +45,20 @@ module.exports = (grunt) ->
 			index:
 				files: ["src/index.html"]
 				tasks: ["sync"]
-			options: 
+			options:
 				livereload :
                 	port: 8888
 
-		concat: 
-			js: 
+		concat:
+			js:
 				src: [
 					"src/js/app.js"
 					"src/js/services/**/*.js"
 					"src/js/controllers/**/*.js"
+          "src/js/directives/**/*.js"
 				]
 				dest: "dev/js/final.js"
-			css: 
+			css:
 				src: ["src/css/*.css"]
 				dest: "dev/css/style.css"
 
