@@ -147,11 +147,21 @@ app.factory("configService", function(){
     };
 });
 
+/**
+* Database service.
+*/
 app.factory("dbService", function($http){
-  function findAllBranch(callback){
-    var req =  $http({
+
+  /**
+  * Request get api.
+  * @param {String} url.
+  * @param {Function} callback.
+  * @api {Private}
+  */
+  function get(url, callback) {
+     var req =  $http({
       method: "GET",
-      url: "/api/branch"
+      url: url
     });
 
     req.success(function(data){
@@ -159,10 +169,32 @@ app.factory("dbService", function($http){
     });
 
     req.error(function(err){
+      $scope.$emit("error", err);
       console.log(err);
     });
   }
 
+  /**
+  * Request all branchs.
+  * @param {Function} callback.
+  * @api {Public}
+  */
+  function findAllBranch(callback){
+    get("/api/branch", callback);
+  }
+
+  /**
+  * Request all products.
+  * @param {Function} callback.
+  * @api {Public}
+  */
+  function findAllProduct(callback) {
+    get("/api/product", callback);
+  }
+
+  /**
+  * Export all public function here.
+  */
   return {
     findAllBranch: findAllBranch
   };
