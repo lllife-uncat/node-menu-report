@@ -147,6 +147,27 @@ app.factory("configService", function(){
     };
 });
 
+app.factory("dbService", function($http){
+  function findAllBranch(callback){
+    var req =  $http({
+      method: "GET",
+      url: "/api/branch"
+    });
+
+    req.success(function(data){
+      callback(data);
+    });
+
+    req.error(function(err){
+      console.log(err);
+    });
+  }
+
+  return {
+    findAllBranch: findAllBranch
+  };
+});
+
 
 app.filter('range', function() {
     return function(input, total) {
@@ -308,7 +329,7 @@ app.factory("models", function(collections, globalService){
     this.timeFrom = init.timeFrom;
     this.timeTo = init.timeTo;
 
-    this.reportType = "";
+    this.reportType =  init.reportType;
 
     this.branchs = [];
     this.months = collections.monthList;
@@ -810,44 +831,91 @@ app.controller("mainController", function($scope, collections){
 
     $scope.selectTab = function(tab){
         $scope.selectedTab = tab;
-
         $scope.$broadcast("changeSubTab", tab);
     }
 
     $scope.isSelected = function(tab){
         return $scope.selectedTab == tab;
     }
+
+    angular.element(document).ready(function(){
+      $(".ko-touch-dropdown").dropdown();
+      $(".ko-comparison-dropdown").dropdown();
+    });
+
 });
+
 app.controller("touch003Controller", function($scope, models){
-  $scope.form = new models.TouchCondition({ reportType: "Daily"});
+
+  /**
+  * Listen to ((Display)) event from condition form.
+  * Update recreive condition to $scope.form.
+  */
+  $scope.$on("startQuery", function(env, data){
+    console.log(":: start query");
+    console.log(data);
+
+    $scope.form = data;
+  });
+
+
+  /**
+  * Scrop variable.
+  */
+  $scope.form = {};
+
 });
 
-app.directive("touchForm", function(models, globalService){
+app.directive("touchForm", function(models, dbService){
 
-  function controller($scope, models) {
-    $scope.form = new models.TouchCondition({reportType: "Dialy"});
-    $scope.type = "Daily";
+  /**
+  * Directive :controller definition.
+  */
+  function controller($scope) {
 
-    $scope.setType = function(type) {
-       $scope.type = type;
-    };
-
-    $scope.isSet = function(type) {
-      return $scope.type === type;
-    };
-
-    globalService.findAllBranch(function(data){
+    dbService.findAllBranch(function(data){
       $scope.form.branchs = data;
     });
 
+    /**
+    * Init query condition.
+    * Default report type is "Daily".
+    */
+    $scope.form = new models.TouchCondition();
+    $scope.form.reportType = "Daily";
+
+    /**
+    * Set report type. (Dialy, Monthly or Yearly).
+    */
+    $scope.setType = function(type) {
+      $scope.form.reportType = type;
+    };
+
+    /**
+    * Is current type match given type.
+    */
+    $scope.isSet = function(type) {
+      return $scope.form.reportType === type;
+    };
+
+    /**
+    * Emit start query event to parent conroller.
+    */
+    $scope.startQuery = function() {
+      $scope.$emit("startQuery", $scope.form);
+    };
   }
 
+  /**
+  * Directive :link definition.
+  */
   function link(scope, el, attr) {
 
-    console.log(scope.form.months);
-
   }
 
+  /**
+  * Directive object definition.
+  */
   return {
     restrict: "E",
     controller: controller,

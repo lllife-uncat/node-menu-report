@@ -1,3 +1,4 @@
+<!doctype HTML>
 <html>
     <head>
         <script src="venders/angular/angular.js"></script>
@@ -11,55 +12,58 @@
         <script src="venders/sockjs-client/sockjs-0.3.min.js"></script>
         <script src="venders/sockjs-client/vertxbus-2.1.js"></script>
         <script src="venders/underscore/underscore.js"></script>
-
         <link rel="stylesheet" href="venders/semantic/css/semantic.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="venders/animate.css/animate.css"/>
-
     </head>
 
     <body ng-app="menuReport" ng-controller="mainController">
 
         <div class="ko-body">
-
-            <div class="ui ko-title" ng-if="true">
-<!--                 <img src="http://ds.serving-sys.com/BurstingRes//Site-16990/Type-0/b69e725a-2a50-4a4b-be98-3942fea3ac95.gif" alt=""> -->
-            </div>
-
+            <div class="ui ko-title" ng-if="true"> </div>
             <div class="ko-menu">
-                <div class="ui small menu tired animated fadeIn">
+                <div class="ui compact menu">
                     <div class="menu">
-                        <a class="active item"> <i class="grid layout icon"></i> รายงานเปรียบเทียบ </a>
-                        <a class="item"> <i class="grid layout icon"></i> PIR </a>
-                        <a class="item"> <i class="grid layout icon"></i> Touch Screen </a>
-
-                        <div class="right menu" ng-show="false">
-                            <a class="item" href="">
-                                K&O Systems and Consulting
-                            </a>
+                        <div class="ui pointing dropdown link item ko-touch-dropdown">
+                            <i class="icon grid layout"></i>Motion Sensor<i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a class="item"><i class="grid layout icon"></i>Pir I</a>
+                                <a class="item"><i class="grid layout icon"></i>Pir II</a>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="ui sub menu">
-                        <a class="item" ng-class="{ activeX : isSelected(tab.click) }" ng-click="selectTab(tab.click)">
-                            <i class="ui payment icon animatedX rotateIn" ng-if="isSelected(tab.click)"
-                               ng-class="{ greenX : isSelected(tab.click) }"></i>
-                            แบ่งตามจำนวนคลิก
-                        </a>
-                        <a class="item" ng-class="{ activeX : isSelected(tab.interval) }" ng-click="selectTab(tab.interval)">
-                            <i class="ui payment icon animatedX rotateIn" ng-if="isSelected(tab.interval)"
-                               ng-class="{ redX : isSelected(tab.interval) }"></i>
-                            แบ่งตามจำนวนคลิกแต่ละช่วงเวลา
+                        <div class="ui pointing dropdown link item ko-touch-dropdown">
+                            <i class="icon grid layout"></i>Touch Screen<i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a class="item"><i class="grid layout icon"></i>อัตราการสัมผัสหน้าจอ</a>
+                                <a class="item"><i class="grid layout icon"></i>อัตราการสัมผัสตามจำนวนครั้ง</a>
+                                <a class="item"><i class="grid layout icon"></i>อัตราการสัมผัสของแต่ละประเภท</a>
+                                <a class="item"><i class="grid layout icon"></i>อัตราการสัมผัสของแต่ละหมวดหมู่</a>
+                                <a class="item"><i class="grid layout icon"></i>อัตราการสัมผัสของแต่ละสินค้า</a>
+                                <a class="item"><i class="grid layout icon"></i>อัตราการสัมผัสมากที่สุด 10 อันดับ</a>
+                                <a class="item"><i class="grid layout icon"></i>รายงานอัตราสัมผัสเฉลี่ยต่อครั้ง</a>
+                            </div>
+                        </div>
+
+                        <div class="ui pointing dropdown link item ko-comparison-dropdown">
+                            <i class="icon grid layout"></i>Comparison<i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a href="/#/" class="item" ng-click="selectTab(tab.click)"><i class="grid layout icon"></i>รายงานเปรียบเทียบตามจำนวนคลิก</a>
+                                <a href="/#/" class="item" ng-click="selectTab(tab.interval)"><i class="grid layout icon"></i>รายงานเปรียบเทียบแบ่งตามช่วงเวลา</a>
+                            </div>
+                        </div>
+
+                        <a class="item" ng-if="true">
+                            <i class="question icon"></i> Help
+
                         </a>
                     </div>
-
                 </div>
             </div>
 
             <div class="ko-content">
                 <div ng-view></div>
             </div>
-
         </div>
     </body>
 </html>

@@ -12,7 +12,7 @@ app.factory("models", function(collections, globalService){
     this.timeFrom = init.timeFrom;
     this.timeTo = init.timeTo;
 
-    this.reportType = "";
+    this.reportType =  init.reportType;
 
     this.branchs = [];
     this.months = collections.monthList;

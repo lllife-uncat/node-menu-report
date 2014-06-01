@@ -59,12 +59,13 @@
     <div class="ko-inline-field animated fadeIn">
         <div class="ko-field">
             <label for="">Branch</label>
-            <select name="" id="" ng-options="e.name for e in form.branchs" ng-model="form.timeFrom"></select>
+            <select name="" id="" ng-options="e.name for e in form.branchs" ng-model="form.branch"></select>
         </div>
-        <div class="ko-field" ng-if="false">
-            <label for="">To</label>
-            <select name="" id="" ng-options="e.value for e in form.branchs" ng-model="form.timeTo"></select>
-        </div>
+
+    </div>
+
+    <div class="ko-control-button" ng-click="startQuery()">
+        <div class="ko-button">Display</div>
     </div>
 
 </section>
