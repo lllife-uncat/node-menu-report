@@ -26,6 +26,15 @@ app.factory("dbService", function($http){
   }
 
   /**
+  * Request all device information.
+  * @param {Function} callback.$
+  * @api {Public}
+  */
+  function findAllDevice(callback){
+    get("/api/device", callback);
+  }
+
+  /**
   * Request all branchs.
   * @param {Function} callback.
   * @api {Public}
@@ -47,6 +56,7 @@ app.factory("dbService", function($http){
   * Export all public function here.
   */
   return {
-    findAllBranch: findAllBranch
+    findAllBranch: findAllBranch,
+    findAllDevice: findAllDevice
   };
 });

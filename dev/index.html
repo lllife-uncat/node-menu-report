@@ -1,20 +1,32 @@
 <!doctype HTML>
 <html>
     <head>
-        <script src="venders/angular/angular.js"></script>
-        <script src="venders/angular-route/angular-route.js"></script>
-        <script src="venders/jquery/jquery.js"></script>
-        <script src="venders/semantic/javascript/semantic.js"></script>
-        <script src="venders/momentjs/moment.js"></script>
-        <script src="venders/chart.js/Chart.js"></script>
-        <script src="http://10.0.0.77:8888/livereload.js"></script>
-        <script src="js/final.js"></script>
-        <script src="venders/sockjs-client/sockjs-0.3.min.js"></script>
-        <script src="venders/sockjs-client/vertxbus-2.1.js"></script>
-        <script src="venders/underscore/underscore.js"></script>
         <link rel="stylesheet" href="venders/semantic/css/semantic.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="venders/animate.css/animate.css"/>
+
+        <!-- angular -->
+        <script src="venders/angular/angular.js"></script>
+        <script src="venders/angular-route/angular-route.js"></script>
+
+        <!-- semantic ui -->
+        <script src="venders/jquery/jquery.js"></script>
+        <script src="venders/semantic/javascript/semantic.js"></script>
+
+        <!-- utility -->
+        <script src="venders/momentjs/moment.js"></script>
+        <script src="venders/chart.js/Chart.js"></script>
+        <script src="venders/lodash/lodash.js"></script>
+
+        <!-- dev -->
+        <script src="http://10.0.0.77:8888/livereload.js"></script>
+        <script src="js/final.js"></script>
+
+        <!-- vert.x -->
+        <script src="venders/sockjs-client/sockjs-0.3.min.js"></script>
+        <script src="venders/sockjs-client/vertxbus-2.1.js"></script>
+<!--         <script src="venders/underscore/underscore.js"></script> -->
+
     </head>
 
     <body ng-app="menuReport" ng-controller="mainController">
@@ -35,13 +47,13 @@
                         <div class="ui pointing dropdown link item ko-touch-dropdown">
                             <i class="icon grid layout"></i>Touch Screen<i class="dropdown icon"></i>
                             <div class="menu">
-                                <a class="item"><i class="grid layout icon"></i>อัตราการสัมผัสหน้าจอ</a>
-                                <a class="item"><i class="grid layout icon"></i>อัตราการสัมผัสตามจำนวนครั้ง</a>
-                                <a class="item"><i class="grid layout icon"></i>อัตราการสัมผัสของแต่ละประเภท</a>
-                                <a class="item"><i class="grid layout icon"></i>อัตราการสัมผัสของแต่ละหมวดหมู่</a>
-                                <a class="item"><i class="grid layout icon"></i>อัตราการสัมผัสของแต่ละสินค้า</a>
-                                <a class="item"><i class="grid layout icon"></i>อัตราการสัมผัสมากที่สุด 10 อันดับ</a>
-                                <a class="item"><i class="grid layout icon"></i>รายงานอัตราสัมผัสเฉลี่ยต่อครั้ง</a>
+                                <a href="/#/touch/001" class="item"><i class="grid layout icon"></i>อัตราการสัมผัสหน้าจอ</a>
+                                <a href="/#/touch/002" class="item"><i class="grid layout icon"></i>อัตราการสัมผัสตามจำนวนครั้ง</a>
+                                <a href="/#/touch/003" class="item"><i class="grid layout icon"></i>อัตราการสัมผัสของแต่ละประเภท</a>
+                                <a href="/#/touch/004" class="item"><i class="grid layout icon"></i>อัตราการสัมผัสของแต่ละหมวดหมู่</a>
+                                <a href="/#/touch/005" class="item"><i class="grid layout icon"></i>อัตราการสัมผัสของแต่ละสินค้า</a>
+                                <a href="/#/touch/006" class="item"><i class="grid layout icon"></i>อัตราการสัมผัสมากที่สุด 10 อันดับ</a>
+                                <a href="/#/touch/007" class="item"><i class="grid layout icon"></i>รายงานอัตราสัมผัสเฉลี่ยต่อครั้ง</a>
                             </div>
                         </div>
 

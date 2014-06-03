@@ -1,0 +1,26 @@
+{
+  "name": "client-report",
+  "version": "0.0.0",
+  "homepage": "https://github.com/somnuk-wk/ClientReport",
+  "authors": [
+    "Somnuk Wongkhan <somnuk.wk@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "animate.css": "~3.1.0",
+    "bootstrap-datetimepicker": "~0.0.11",
+    "bootstrap": "~3.1.1",
+    "lodash": "~2.4.1",
+    "momentjs": "~2.5.1",
+    "onepage-scroll": "~1.1.1",
+    "raphael": "2.1.0",
+    "underscore": "~1.6.0"
+  }
+}

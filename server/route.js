@@ -38,8 +38,16 @@ function init(app) {
        res.json(docs);
      });
   });
-}
 
+  /**
+  * Return all devices in database.
+  */
+  app.get("/api/device", function(req, res){
+    query.findAllDevice(function(err, docs){
+      res.json(docs);
+    });
+  });
+}
 
 /**
 * Export only init function.

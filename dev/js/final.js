@@ -6,6 +6,16 @@ app.config(function($routeProvider){
 		controller: "homeController"
 	});
 
+  $routeProvider.when("/touch/001", {
+    templateUrl: "views/touches/touch001.html",
+    controller: "touch001Controller"
+  });
+
+  $routeProvider.when("/touch/002", {
+    templateUrl: "views/touches/touch002.html",
+    controller: "touch002Controller"
+  });
+
   $routeProvider.when("/touch/003", {
     templateUrl: "views/touches/touch003.html",
     controller: "touch003Controller"
@@ -17,127 +27,176 @@ app.config(function($routeProvider){
 
 });
 
-function Test () {
-  this.x = "xx";
-  this.y = "yy";
-}
-
 app.factory("collections", function () {
 
-    var queryType = {
-        daily: "Daily",
-        monthly: "Monthly",
-        yearly: "Yearly"
-    };
+  /**
+  * All avialable query types.
+  */
+  var queryType = {
+    daily: "Daily",
+    monthly: "Monthly",
+    yearly: "Yearly"
+  };
 
-    // All avaiable tab
-    function SubTab(){
-        this.click = "3080634";
-        this.interval = "9403803"
+  /**
+  * Class SubType.
+  * @member {String} click.
+  * @member {String} interval.
+  */
+  function SubTab(){
+    this.click = "3080634";
+    this.interval = "9403803"
+  }
+
+  /**
+  * Class QueryInfo, represent all query condition.
+  * @member {String} queryType.
+  * @member {Number} dailyMonth.
+  * @member {Number} dailyYear.
+  * @member {Number} monthlyFrom.
+  * @member {Number} monthlyTo.
+  * @member {Number} yearlyFrom.
+  * @member {Number} yearlyTo.
+  * @member {Number} timeFrom.
+  * @member {Number} timeTo.
+  * @member {String} categoryA => category id.
+  * @member {String} categoryB => category id.
+  * @member {String} categoryC => category id.
+  * @member {String} product => product id.
+  * @member {String} branch => branch id.
+  * @member {Boolean} groupByTime.
+  */
+  function QueryInfo() {
+    this.queryType = queryType.daily;
+
+    // Daily
+    this.dailyMonth = 0;
+    this.dailyYear = 0;
+
+    // Monthly
+    this.monthlyFrom = 0;
+    this.monthlyTo = 0;
+
+    // Yearly
+    this.yearlyFrom = 0;
+    this.yearlyTo = 0;
+
+    // All type
+    this.timeFrom = 0;
+    this.timeTo = 0;
+
+    this.categoryA = "";
+    this.categoryB = "";
+    this.categoryC = "";
+    this.product = "";
+    this.branch = "";
+
+    // Group by time 10.00 - 11.00, 10.00 - 12.00
+    this.groupByTime = false;
+
+    // Prevent extend property.
+    Object.preventExtensions(this);
+  };
+
+  /**
+  * Function parse().
+  * Convert all member from String to Number.
+  */
+  QueryInfo.prototype.parse = function () {
+
+    this.dailyMonth = parseInt(this.dailyMonth);
+    this.dailyYear = parseInt(this.dailyYear);
+    this.monthlyFrom = parseInt(this.monthlyFrom);
+    this.monthlyTo = parseInt(this.monthlyTo);
+    this.yearlyFrom = parseInt(this.yearlyFrom);
+    this.yearlyTo = parseInt(this.yearlyTo);
+    this.timeFrom = parseInt(this.timeFrom);
+    this.timeTo = parseInt(this.timeTo);
+
+    var idLength = 24;
+
+    if (this.categoryA.length != idLength) this.categoryA = "";
+    if (this.categoryB.length != idLength) this.categoryB = "";
+    if (this.categoryC.length != idLength) this.categoryC = "";
+    if (this.product.length != idLength) this.product = "";
+    if (this.branch.length != idLength) this.branch = "";
+  };
+
+  /**
+  * Class Property.
+  * @param {Object} key.
+  * @param {Object} value.
+  */
+  function Property(key, value) {
+    this.key = key;
+    this.value = value;
+  }
+
+  /**
+  * List of months and years.
+  */
+  var monthList = [];
+  var yearList = [];
+
+  /**
+  * Append data into months.
+  */
+  for (var i = 0; i < 12; i++) {
+    var text = moment(new Date(2012, i, 10)).format("MMMM");
+    var month = new Property(i, text);
+    monthList.push(month);
+  }
+
+  /**
+  * Append data into years.
+  */
+  for (var i = 2014; i < 2020; i++) {
+    var year = new Property(i, i.toString());
+    yearList.push(year);
+  }
+
+  /**
+  * Function getTimeList().
+  * Return list of time series from 00 - 24.
+  * @param {Boolean} plusInterval {Append (-) or not}
+  * @return {Array}
+  */
+  function getTimeList(plusInterval) {
+    var timeList = [];
+
+    function genText(value) {
+      if (value == "25") value = "1";
+
+      var text = ("00" + value + ".00").substring(value.length);
+      return text;
     }
 
-    function QueryInfo() {
-        this.queryType = queryType.daily;
-
-        // Daily
-        this.dailyMonth = 0;
-        this.dailyYear = 0;
-
-        // Monthly
-        this.monthlyFrom = 0;
-        this.monthlyTo = 0;
-
-        // Yearly
-        this.yearlyFrom = 0;
-        this.yearlyTo = 0;
-
-        // All type
-        this.timeFrom = 0;
-        this.timeTo = 0;
-
-        this.categoryA = "";
-        this.categoryB = "";
-        this.categoryC = "";
-        this.product = "";
-        this.branch = "";
-
-        // Group by time 10.00 - 11.00, 10.00 - 12.00
-        this.groupByTime = false;
-
-        Object.preventExtensions(this);
-    };
-
-    QueryInfo.prototype.parse = function () {
-
-        this.dailyMonth = parseInt(this.dailyMonth);
-        this.dailyYear = parseInt(this.dailyYear);
-        this.monthlyFrom = parseInt(this.monthlyFrom);
-        this.monthlyTo = parseInt(this.monthlyTo);
-        this.yearlyFrom = parseInt(this.yearlyFrom);
-        this.yearlyTo = parseInt(this.yearlyTo);
-        this.timeFrom = parseInt(this.timeFrom);
-        this.timeTo = parseInt(this.timeTo);
-
-        var idLength = 24;
-
-        if (this.categoryA.length != idLength) this.categoryA = "";
-        if (this.categoryB.length != idLength) this.categoryB = "";
-        if (this.categoryC.length != idLength) this.categoryC = "";
-        if (this.product.length != idLength) this.product = "";
-        if (this.branch.length != idLength) this.branch = "";
-    };
-
-    function Property(key, value) {
-        this.key = key;
-        this.value = value;
+    for (var i = 1; i <= 24; i++) {
+      var value = (i ).toString();
+      var text = genText(value);
+      if (plusInterval) {
+        text = text + " - " + genText((i + 1).toString());
+      }$
+      var time = new Property(i, text);
+      timeList.push(time);
     }
+    return timeList
+  }
 
-    var monthList = [];
-    var yearList = [];
-
-
-    for (var i = 0; i < 12; i++) {
-        var text = moment(new Date(2012, i, 10)).format("MMMM");
-        var month = new Property(i, text);
-        monthList.push(month);
-    }
-
-    for (var i = 2014; i < 2020; i++) {
-        var year = new Property(i, i.toString());
-        yearList.push(year);
-    }
-
-    function getTimeList(plusInterval) {
-        var timeList = [];
-
-        function genText(value) {
-            if (value == "25") value = "1";
-
-            var text = ("00" + value + ".00").substring(value.length);
-            return text;
-        }
-
-        for (var i = 1; i <= 24; i++) {
-            var value = (i ).toString();
-            var text = genText(value);
-            if (plusInterval) {
-                text = text + " - " + genText((i + 1).toString());
-            }
-            var time = new Property(i, text);
-            timeList.push(time);
-        }
-        return timeList
-    }
-
-    return {
-        yearList: yearList,
-        monthList: monthList,
-        getTimeList: getTimeList,
-        QueryInfo: QueryInfo,
-        queryType: queryType,
-        SubTab : SubTab
-    }
+  /**
+  * Publish all data here.
+  */
+  return {
+    Property: Property,
+    yearList: yearList,
+    monthList: monthList,
+    getTimeList: getTimeList,
+    QueryInfo: QueryInfo,
+    queryType: queryType,
+    SubTab : SubTab
+  }
 });
+
 
 app.factory("configService", function(){
     var endPoint = "http://10.0.0.77:8877";
@@ -175,6 +234,15 @@ app.factory("dbService", function($http){
   }
 
   /**
+  * Request all device information.
+  * @param {Function} callback.$
+  * @api {Public}
+  */
+  function findAllDevice(callback){
+    get("/api/device", callback);
+  }
+
+  /**
   * Request all branchs.
   * @param {Function} callback.
   * @api {Public}
@@ -196,7 +264,8 @@ app.factory("dbService", function($http){
   * Export all public function here.
   */
   return {
-    findAllBranch: findAllBranch
+    findAllBranch: findAllBranch,
+    findAllDevice: findAllDevice
   };
 });
 
@@ -364,10 +433,11 @@ app.factory("models", function(collections, globalService){
     this.reportType =  init.reportType;
 
     this.branchs = [];
+    this.devices = [];
+    this.devicesInBranch = [];
     this.months = collections.monthList;
     this.years = collections.yearList;
     this.times = collections.getTimeList();
-
   }
 
   return {
@@ -877,19 +947,39 @@ app.controller("mainController", function($scope, collections){
 
 });
 
+app.controller("touch001Controller", function($scope, models){
+  $scope.$on("startQuery", function(event, data){
+    console.log(":: start 001 query");
+    console.log(data);
+    $scope.form = data;
+  });
+
+  $scope.form = {};
+});
+
+
+app.controller("touch002Controller", function($scope, models){
+  $scope.$on("startQuery", function(event, data){
+    console.log("::start 002 query");
+    console.log(data);
+    $scope.form = data;
+  });
+
+  $scope.form = {};
+});
+
 app.controller("touch003Controller", function($scope, models){
 
   /**
   * Listen to ((Display)) event from condition form.
   * Update recreive condition to $scope.form.
   */
-  $scope.$on("startQuery", function(env, data){
+  $scope.$on("startQuery", function(event, data){
     console.log(":: start query");
     console.log(data);
 
     $scope.form = data;
   });
-
 
   /**
   * Scrop variable.
@@ -898,23 +988,99 @@ app.controller("touch003Controller", function($scope, models){
 
 });
 
-app.directive("touchForm", function(models, dbService){
+app.directive("touchForm", function(models, collections, dbService){
 
   /**
   * Directive :controller definition.
   */
   function controller($scope) {
 
+    /**
+    * Append 'All' text into dropdwon list.
+    * @param {Array} items - Input array.
+    */
+    function appendAll(items) {
+      var all = new collections.Property(-1, "All");
+      items.unshift(all);
+    }
+
+    /**
+    * Append 'All' into branch dropdown.
+    */
+    function appendDefaultBranch(branchs) {
+      branchs.unshift({name: "All"});
+    }
+
+    /**
+    * Append 'All' into device dropdown.
+    */
+    function appendDefaultDevice(devices) {
+      devices.unshift({deviceId: "All"});
+    }
+
+    /**
+    * Function createQueryCondition().
+    * return {Object} - New instance of TouchCondition with default value.
+    */
+    function createQueryCondition() {
+      var form = new models.TouchCondition();
+      form.reportType = "Daily";
+      return form;
+    }
+
+    /**
+    * Start initilize controller variables here.
+    */
     dbService.findAllBranch(function(data){
+      appendDefaultBranch(data);
       $scope.form.branchs = data;
+      $scope.form.branch = data[0];
+    });
+
+    dbService.findAllDevice(function(data){
+      appendDefaultDevice(data);
+      $scope.form.devices = data;
+      $scope.form.device = data[0];
     });
 
     /**
     * Init query condition.
     * Default report type is "Daily".
     */
-    $scope.form = new models.TouchCondition();
-    $scope.form.reportType = "Daily";
+    $scope.form = createQueryCondition();
+
+    /**
+    * Is user selected any branch.
+    * @return {String} - Null or branch's _id
+    */
+    $scope.isBranchSet = function() {
+      if($scope.form.branch) {
+        return $scope.form.branch._id != null;
+      }
+    };
+
+    /**
+    * User select new branch dropdown.
+    * We need to reload device up to selected branch.
+    */
+    $scope.changeBranch = function() {
+      var devs = $scope.form.devicesInBranch;
+
+      // Result device dropdowns.
+      devs.length = 0;
+      appendDefaultDevice(devs);
+      $scope.form.device = devs[0];
+
+      var branch = $scope.form.branch;
+      var devices = $scope.form.devices;
+
+      if(!branch.deviceIds) return;
+
+      branch.deviceIds.forEach(function(id){
+        var dev = _.find(devices, { _id: id});
+        if(dev) devs.push(dev);
+      });
+    }
 
     /**
     * Set report type. (Dialy, Monthly or Yearly).

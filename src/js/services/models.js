@@ -15,10 +15,11 @@ app.factory("models", function(collections, globalService){
     this.reportType =  init.reportType;
 
     this.branchs = [];
+    this.devices = [];
+    this.devicesInBranch = [];
     this.months = collections.monthList;
     this.years = collections.yearList;
     this.times = collections.getTimeList();
-
   }
 
   return {

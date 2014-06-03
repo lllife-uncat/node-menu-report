@@ -9,7 +9,6 @@
   font-style: normal;
 }
 
-
 @font-face {
   font-family: 'droid_sansregular';
   src: url('/venders/fonts/DroidSans-webfont.eot');
@@ -20,7 +19,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
 
 @font-face {
   font-family: 'BEBAS___';
@@ -70,7 +68,6 @@
 
 div.ui.menu {
   height: auto;
-/*   padding: 5px; */
 }
 
 .ko-menu .dropdown {
@@ -90,12 +87,11 @@ div.ui.menu {
   font-size: 90%;
   display: inline-block;
   width: auto;
-/*   height: 25px; */
   background-color: white;
   border-color: lightgray;
   border-style: solid;
   border-width: 1px;
-  border-radius: 5px;
+  border-radius: 3px;
   cursor: pointer;
 }
 
@@ -116,13 +112,14 @@ div.ui.menu {
 }
 
 .ko-report-type span.active {
-  background-color: green;
-  box-shadow: 0px -1px 5px gray;
+  background-color: hsla(130,70%,50%,.9);
+  box-shadow: 0px -1px 5px lightgray;
   border-width: 0;
   color: white;
 }
 
 .ko-report-type span {
+  color: gray;
 /*   width: 80px; */
   height: 20px;
   vertical-align: middle;
@@ -131,7 +128,7 @@ div.ui.menu {
   font-weight: bolder;
   border-width: 1px;
   border-style: solid;
-  border-radius: 5px;
+  border-radius: 3px;
   border-color: lightgray;
   padding-left: 10px;
   padding-right: 10px;
@@ -147,11 +144,10 @@ div.ui.menu {
   border-width: 1px;
   border-style: solid;
   border-color: lightgray;
-  border-radius: 0;
   padding: 2px 6px;
   margin: 5px;
   width: 150px;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
 .ko-chart-label {
@@ -227,7 +223,6 @@ body {
   height: 3r00px;
 }
 
-
 .ui.form .fields .field > span{
   display: inline-block;
   margin: 0em 0em 0.3em;
@@ -243,11 +238,9 @@ body {
   background-repeat: repeat;
 }
 
-
 #chart {
   z-index: 100;
 }
-
 
 table.ui.table > tfoot > tr > th.right {
   text-align: right;
@@ -268,9 +261,9 @@ table.ui.table > tbody > tr > td.right {
   overflow-y: hidden;
   white-space: nowrap;
 }
+
 .scroll{
   display: inline-block;
   vertical-align: middle;
   padding: 10px;
 }
-

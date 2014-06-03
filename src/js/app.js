@@ -6,6 +6,16 @@ app.config(function($routeProvider){
 		controller: "homeController"
 	});
 
+  $routeProvider.when("/touch/001", {
+    templateUrl: "views/touches/touch001.html",
+    controller: "touch001Controller"
+  });
+
+  $routeProvider.when("/touch/002", {
+    templateUrl: "views/touches/touch002.html",
+    controller: "touch002Controller"
+  });
+
   $routeProvider.when("/touch/003", {
     templateUrl: "views/touches/touch003.html",
     controller: "touch003Controller"
@@ -16,8 +26,3 @@ app.config(function($routeProvider){
 	});
 
 });
-
-function Test () {
-  this.x = "xx";
-  this.y = "yy";
-}
