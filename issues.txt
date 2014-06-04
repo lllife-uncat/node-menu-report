@@ -1,0 +1,28 @@
+[2014.06.04]  Big query failed.
+======================================================================================
+/home/recovery/projects/client-report/node_modules/mongo-sync/lib/mongo-sync.js:14
+        fiber.run(result);
+              ^
+Error: Error: parseError occured
+    at null.<anonymous> (/home/recovery/projects/client-report/node_modules/mongo-sync/node_modules/mongodb/lib/mongodb/connection/connection_pool.js:192:34)
+    at EventEmitter.emit (events.js:98:17)
+    at Socket.<anonymous> (/home/recovery/projects/client-report/node_modules/mongo-sync/node_modules/mongodb/lib/mongodb/connection/connection.js:410:20)
+    at Socket.EventEmitter.emit (events.js:95:17)
+    at Socket.<anonymous> (_stream_readable.js:746:14)
+    at Socket.EventEmitter.emit (events.js:92:17)
+    at emitReadable_ (_stream_readable.js:408:10)
+    at emitReadable (_stream_readable.js:404:5)
+    at readableAddChunk (_stream_readable.js:165:9)
+    at Socket.Readable.push (_stream_readable.js:127:10)
+Followed by:
+    at Cursor.<anonymous> (/home/recovery/projects/client-report/node_modules/mongo-sync/lib/mongo-sync.js:26:13)
+    at Cursor.next (/home/recovery/projects/client-report/node_modules/mongo-sync/lib/mongo-sync.js:203:30)
+    at /home/recovery/projects/client-report/server/syncQuery.js:33:21
+    at Array.forEach (native)
+    at SyncQuery.findByExample (/home/recovery/projects/client-report/server/syncQuery.js:32:11)
+    at SyncQuery.findTouchByExample (/home/recovery/projects/client-report/server/syncQuery.js:56:17)
+    at Touch001.query (/home/recovery/projects/client-report/server/reports/touch001.js:66:20)
+    at Touch001.queryMonthlyReport (/home/recovery/projects/client-report/server/reports/touch001.js:86:23)
+    at Touch001.queryTouch (/home/recovery/projects/client-report/server/reports/touch001.js:123:19)
+    at Touch001.startQuery (/home/recovery/projects/client-report/server/reports/touch001.js:174:23)
+4 Jun 18:08:14 - [nodemon] app crashed - waiting for file changes before starting...

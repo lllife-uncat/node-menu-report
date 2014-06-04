@@ -66,6 +66,27 @@
 
 }
 
+.ko-inline {
+  white-space: nowrap;
+}
+
+.ko-right {
+  display: block;
+  text-align: right;
+}
+
+.ko-table {
+  padding: 20px;
+  padding-bottom: 40px;
+  overflow: auto;
+  overflow-y: hidden;
+}
+
+.ko-graph {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 div.ui.menu {
   height: auto;
 }

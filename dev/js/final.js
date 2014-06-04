@@ -25,6 +25,11 @@ app.config(function($routeProvider){
 		redirectTo : "/"
 	});
 
+  var x = {
+    k: 300,
+    n: 500,
+    z: 800
+  };
 });
 
 app.factory("collections", function () {
@@ -947,27 +952,80 @@ app.controller("mainController", function($scope, collections){
 
 });
 
-app.controller("touch001Controller", function($scope, models){
+/**
+* @controller touch001Controller -
+*/
+app.controller("touch001Controller", function($scope, models, $http, $rootScope){
+
+  /**
+  * Function parseQuery().
+  * @param {Object} data - Query condition from input form.
+  * @return {Object} - New query object.
+  */
+  function parseQuery(data) {
+    var reportType = data.reportType;
+    var query = {};
+    query.reportType= reportType;
+    query.timeFrom= data.timeFrom.key;
+    query.timeTo= data.timeTo.key;
+
+    if(reportType === "Daily") {
+      query.dailyMonth= data.dailyMonth.key;
+      query.dailyYear= data.dailyYear.key;
+    }else if(reportType == "Monthly") {
+      query.monthlyFrom= data.monthlyFrom.key;
+      query.monthlyTo= data.monthlyTo.key;
+    }else {
+      query.yearlyFrom= data.yearlyFrom.key;
+      query.yearlyTo= data.yearlyTo.key;
+    }
+
+    query.branch= data.branch._id;
+    query.device= data.device._id;
+    return query;
+  }
+
+  /**
+  * Start query.
+  * Trigger when user click ((display)) button.
+  */
   $scope.$on("startQuery", function(event, data){
-    console.log(":: start 001 query");
-    console.log(data);
-    $scope.form = data;
+    var query = parseQuery(data);
+    var request = $http({
+      url: "/report/touch001",
+      method: "POST",
+      data: query,
+      header: { "Content-Type": "application/json" }
+    });
+
+    request.success(function(data) {
+      $rootScope.$broadcast("displayGraph", data);
+      $rootScope.$broadcast("displayTable", data);
+    });
+
+    request.error(function(err){
+      console.log(err);
+    });
+
   });
 
   $scope.form = {};
 });
 
-
+/**
+* @controller touch002Controller -
+*/
 app.controller("touch002Controller", function($scope, models){
   $scope.$on("startQuery", function(event, data){
-    console.log("::start 002 query");
-    console.log(data);
     $scope.form = data;
   });
 
   $scope.form = {};
 });
 
+/**
+* @controller touch003Controller -
+*/
 app.controller("touch003Controller", function($scope, models){
 
   /**
@@ -975,9 +1033,6 @@ app.controller("touch003Controller", function($scope, models){
   * Update recreive condition to $scope.form.
   */
   $scope.$on("startQuery", function(event, data){
-    console.log(":: start query");
-    console.log(data);
-
     $scope.form = data;
   });
 
@@ -985,7 +1040,6 @@ app.controller("touch003Controller", function($scope, models){
   * Scrop variable.
   */
   $scope.form = {};
-
 });
 
 app.directive("touchForm", function(models, collections, dbService){
@@ -1048,6 +1102,16 @@ app.directive("touchForm", function(models, collections, dbService){
     * Default report type is "Daily".
     */
     $scope.form = createQueryCondition();
+
+    var form = $scope.form;
+    form.dailyMonth = form.months[0];
+    form.dailyYear = form.years[0];
+    form.timeFrom =  form.times[0];
+    form.timeTo = form.times[form.times.length-1];
+    form.monthlyFrom = form.months[0];
+    form.monthlyTo = form.months[form.months.length-1];
+    form.yearlyFrom = form.years[0];
+    form.yearlyTo = form.years[form.years.length-1];
 
     /**
     * Is user selected any branch.
@@ -1119,5 +1183,108 @@ app.directive("touchForm", function(models, collections, dbService){
     controller: controller,
     templateUrl: "/views/directives/touchFormDirective.html",
     link: link
+  };
+});
+
+app.directive("touchGraph", function(){
+
+  /**
+  * Function renderGraph().
+  * @param {Object} graph - Input datas.
+  * @api {Private}
+  */
+  function renderGraph(graph) {
+
+    var options = {
+      scaleLabel : "<%=value%>",
+      scaleOverlay : true,
+      scaleShowLabels : true
+    };
+
+    var data = {
+      labels: graph.columns,
+      datasets: [
+        {
+          fillColor: "rgba(220,220,220,0.8)",
+          strokeColor: "rgba(220,220,220,1)",
+          data: graph.values
+        }
+      ]
+    };
+
+    var ctx = $("#chart").get(0).getContext("2d");
+    var chart = new Chart(ctx).Bar(data, options);
+  }
+
+  /**
+  * Function controller().
+  * @param {Object} $scope - Angular auto inject $scope.
+  * @api {Private}
+  */
+  function controller($scope) {
+    $scope.$on("displayGraph", function(event, datas){
+      var graph = $scope.graph;
+      graph.values = datas.values;
+      graph.columns = datas.columns;
+      graph.datas = datas.datas;
+      renderGraph(graph);
+    });
+
+    $scope.graph = {};
+  }
+
+  /**
+  * Function link().
+  * @api {Private}
+  */
+  function link() { }
+
+  /**
+  * Return directive object.
+  */
+  return {
+    restrict: "E",
+    controller: controller,
+    link: link,
+    templateUrl: "/views/directives/touchGraphDirective.html"
+  }
+
+});
+
+app.directive("touchTable", function(){
+
+  function controller($scope, dbService) {
+    dbService.findAllDevice(function(data){
+      $scope.devices = data;
+    });
+
+    $scope.getRecord = function(deviceId, columnIndex) {
+      var records = $scope.records;
+      var record = records.datas[columnIndex];
+      var rs = _.filter(record, function(r) { return r.deviceId === deviceId });
+      return rs.length;
+    };
+
+    $scope.getSum = function($index) {
+      var rs = $scope.records.datas[$index].length;
+      return rs;
+    };
+
+    $scope.$on("displayTable", function(event, data){
+      var records = $scope.records = data;
+      window.records = records;
+    });
+
+    $scope.datas = {};
+    $scope.devices = [];
+  }
+
+  function link() {  }
+
+  return {
+    restrict: "E",
+    controller: controller,
+    link: link,
+    templateUrl: "/views/directives/touchTableDirective.html"
   };
 });

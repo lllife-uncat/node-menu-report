@@ -25,4 +25,9 @@ app.config(function($routeProvider){
 		redirectTo : "/"
 	});
 
+  var x = {
+    k: 300,
+    n: 500,
+    z: 800
+  };
 });

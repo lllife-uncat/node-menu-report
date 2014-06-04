@@ -2,16 +2,17 @@
 * Query database with mongo-sync module.
 */
 function SyncQuery() {
-
   /**
   * Load modules.
   */
   var setting = require("./setting");
-  var connectionString = setting.connectionString;
+  var databaseUri = setting.databaseUri;
+  var databaseName = setting.databaseName;
   var Server = require("mongo-sync").Server;
-  var mongo = new Server("localhost:27017");
-  var db = mongo.db("NewEMenuSystems");
+  var mongo = new Server(databaseUri);
+  var db = mongo.db(databaseName);
   var self = this;
+  var _ = require("lodash");
 
   /**
   * Function findByExample().
@@ -20,10 +21,40 @@ function SyncQuery() {
   * @return {Array} - Query results.
   * @api {Public}.
   */
-  this.findByExample = function(entity, example) {
+  this.findByExample = function(entity, example, fields) {
+    fields = fields || {};
     var c = db.getCollection(entity);
-    var rs = c.find(example).toArray();
-    return rs;
+    //var rs = c.find(example).toArray();
+    var rs = c.find(example, fields);
+
+    var datas = [];
+
+    var range = _.range(0, rs.count());
+    range.forEach(function(r){
+      var data = rs.next();
+      datas.push(data);
+    });
+
+    return datas;
+
+  };
+
+  /**
+  * Function findPIRByExample().
+  * @param {Object} example - Query condition.
+  * @return {Array} - List of pir info.
+  */
+  this.findPIRByExample = function(example){
+    return self.findByExample(example);
+  };
+
+  /**
+  * Function findTouchByExample()
+  * @param {Object} example - Query condition.
+  * @return {Array} - List of touch info.
+  */
+  this.findTouchByExample = function(example, fields){
+    return self.findByExample("MenuTouchInfo", example, fields);
   };
 
   /**
@@ -32,9 +63,7 @@ function SyncQuery() {
   * @api {Public}
   */
   this.findAllBranch = function() {
-    var collection = db.getCollection("MenuBranchInfo");
-    var branchs = collection.find().toArray();
-    return branchs;
+    return self.findByExample("MenuBranchInfo", {});
   };
 
   /**
@@ -43,9 +72,7 @@ function SyncQuery() {
   * @api {Public}
   */
   this.findAllDevice = function() {
-    var collection = db.getCollection("MenuDeviceInfo");
-    var devices = collection.find().toArray();
-    return devices;
+    return self.findByExample("MenuDeviceInfo", {});
   };
 }
 

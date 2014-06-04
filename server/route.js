@@ -5,13 +5,8 @@ var setting = require("./setting");
 var mongojs = require("mongojs");
 var db = mongojs(setting.connectionString);
 var query = require("./query")(db);
-
-/**
-* Load report processing module.
-*/
-var SR = new require("./reports/SonicReport");
-var sonic = new SR(db);
-
+var fiber = require("fibers");
+var touchs = require("./touchs");
 /**
 * Init node route.
 * @param {object} app, an expressjs instance.
@@ -26,9 +21,16 @@ function init(app) {
   });
 
   /**
-  * Return sonic report.
+  * Return touch001 report.
   */
-  app.get("/report/sonic", sonic.process);
+  app.post("/report/touch001", function(req, res){
+    fiber(function(){
+      var body = req.body;
+      var touch = new touchs.Touch001(body);
+      var rs = touch.startQuery();
+      res.json(rs);
+    }).run();
+  });
 
   /**
   * Return all branchs in database.

@@ -6,6 +6,20 @@ function Query(db) {
   var self = this;
 
   /**
+  * Function save().
+  * @param {String} entity - Collection name.
+  * @param {Object} obj - Data object.
+  * @param {Function} callback - Callback function.
+  * @api {Public}
+  */
+  this.save = function(entity, obj, callback){
+    var collection = db.collection(entity);
+    collection.save(obj, function(err, obj){
+      callback(err, obj);
+    });
+  };
+
+  /**
   * Function findAll()
   * Find all document by example.
   * @param {String} entity: collection name.

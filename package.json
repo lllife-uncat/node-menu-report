@@ -13,7 +13,8 @@
     "morgan": "~1.1.1",
     "mongo-sync": "~0.2.4",
     "chai": "~1.9.1",
-    "fibers": "~1.0.1"
+    "fibers": "~1.0.1",
+    "lodash": "~2.4.1"
   },
   "devDependencies": {},
   "scripts": {

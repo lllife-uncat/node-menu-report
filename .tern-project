@@ -1,0 +1,3 @@
+{:+ {:tern.config [(:lt.plugins.tern/libs :ecma5)
+                   (:lt.plugins.tern/plugin :node true)]}
+ :- {:tern.config [:lt.plugins.tern/libs]}}$

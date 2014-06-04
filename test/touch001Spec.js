@@ -7,16 +7,19 @@ describe("[Touch 001]", function(){
   it("Should query touch 001 report successful", function(done){
     fiber(function(){
       var cons = {
-        timeFrom: 11,
-        timeTo: 12,
-        dailyMonth: 2,
+        reportType: "Daily",
+        timeFrom: 0,
+        timeTo: 24,
+        dailyMonth: 10,
         dailyYear: 2014
       };
       var q = new touch001.Touch001(cons);
-      var rs = q.queryDailyReport();
+      var rs = q.startQuery();
+
       expect(rs).to.not.equal(null);
       expect(rs.length).to.not.equal(0);
       console.log(rs);
+
       done();
     }).run();;
   });

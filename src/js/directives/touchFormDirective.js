@@ -59,6 +59,16 @@ app.directive("touchForm", function(models, collections, dbService){
     */
     $scope.form = createQueryCondition();
 
+    var form = $scope.form;
+    form.dailyMonth = form.months[0];
+    form.dailyYear = form.years[0];
+    form.timeFrom =  form.times[0];
+    form.timeTo = form.times[form.times.length-1];
+    form.monthlyFrom = form.months[0];
+    form.monthlyTo = form.months[form.months.length-1];
+    form.yearlyFrom = form.years[0];
+    form.yearlyTo = form.years[form.years.length-1];
+
     /**
     * Is user selected any branch.
     * @return {String} - Null or branch's _id

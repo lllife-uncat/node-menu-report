@@ -2,8 +2,14 @@
 * Config object.
 * @property {String} mongo connection string.
 */
+
+var uri = "localhost:27017";
+var databaseName = "TestEMenuSystems";
+
 var config = {
-  connectionString : "localhost:27017/NewEMenuSystems"
+  connectionString : uri + "/" + databaseName,
+  databaseUri :  uri,
+  databaseName: databaseName
 }
 
 /**

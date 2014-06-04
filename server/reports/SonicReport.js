@@ -1,4 +1,4 @@
-/**
+$/**
 * Class sonic report.
 * Constructor.
 * @param {object} db, mongo database object.
