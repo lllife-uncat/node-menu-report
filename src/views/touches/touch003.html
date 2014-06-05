@@ -1,1 +1,11 @@
-<touch-form class="animate fadeIn" start-query="startQuery"> </touch-form>
+<section>
+    <div ng-if="false" class="ko-title-message"> รายงานอัตราการสัมผัสหน้าจอ (Touch Screen) </div>
+    <touch-form class="animate fadeIn" show-category="true"> </touch-form>
+
+    <div class="ko-title-message"> กราฟการใช้งาน Touch Screen </div>
+    <touch-graph chart-type="doughnut"></touch-graph>
+
+    <div class="ko-title-message">ตารางแสดงการ Touch Screen ตามสาขาทั้งหมด</div>
+    <touch-table></touch-table>
+
+</section>

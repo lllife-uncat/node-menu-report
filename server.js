@@ -1,5 +1,5 @@
 /**
-* Load module
+* Load modules.
 * express: default web framework.
 * morgan: express's logger.
 * body-parser: express' body parser.
@@ -28,4 +28,8 @@ app.listen(port);
 * Initial api route.
 */
 route.init(app);
+
+/**
+* Just show server port...
+*/
 console.log("server start @0.0.0.0:" + port);

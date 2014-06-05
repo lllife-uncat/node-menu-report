@@ -1,4 +1,4 @@
-<section class="ko-table">
+<section class="ko-table" ng-if="records.datas">
     <table class="ui small table segment">
         <thead>
             <tr>
@@ -23,7 +23,7 @@
             <tr>
                 <td>Totals</td>
                 <td ng-repeat="column in records.columns">
-                   <span class="ko-right">{{ getSum($index) | number: 0 }}</span>
+                   <span class="ko-right animated fadeInUp">{{ getSum($index) | number: 0 }}</span>
                 </td>
             </tr>
         </tfoot>

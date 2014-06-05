@@ -8,11 +8,14 @@ function SyncQuery() {
   var setting = require("./setting");
   var databaseUri = setting.databaseUri;
   var databaseName = setting.databaseName;
-  var Server = require("mongo-sync").Server;
+  var mongoSync = require("mongo-sync");
+  var Server = mongoSync.Server;
   var mongo = new Server(databaseUri);
   var db = mongo.db(databaseName);
   var self = this;
   var _ = require("lodash");
+
+  this.ObjectId = mongoSync.ObjectId;
 
   /**
   * Function findByExample().
@@ -62,8 +65,8 @@ function SyncQuery() {
   * @return {Array} - All branchs in database.
   * @api {Public}
   */
-  this.findAllBranch = function() {
-    return self.findByExample("MenuBranchInfo", {});
+  this.findAllBranch = function(example) {
+    return self.findByExample("MenuBranchInfo", example || {});
   };
 
   /**
@@ -71,8 +74,8 @@ function SyncQuery() {
   * @return {Array} - All devices in databases.
   * @api {Public}
   */
-  this.findAllDevice = function() {
-    return self.findByExample("MenuDeviceInfo", {});
+  this.findAllDevice = function(example) {
+    return self.findByExample("MenuDeviceInfo", example || {});
   };
 }
 

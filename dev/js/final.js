@@ -239,6 +239,50 @@ app.factory("dbService", function($http){
   }
 
   /**
+  * Function post()
+  * @param {String} url - Request url.
+  * @param {Object} data - Post data.
+  * @param {Function} callback - Request callback.
+  * @api {Public}
+  */
+  function post(url, data, callback){
+    var req = $http({
+      method: "POST",
+      url: url,
+      data: JSON.stringify(data),
+      header: { "Content-Type": "application/json" }
+    });
+
+    req.success(function(data){
+      callback(data);
+    });
+
+    req.error(function(err){
+      console.log(err);
+    });
+  }
+
+  /**
+  * Request product by example.
+  * @param {Object} example - Conditions.
+  * @param {Function} callback - Request callback.
+  * @api {Public}
+  */
+  function findAllProductByExample(example, callback) {
+    post("/api/product/query", example, callback);
+  }
+
+  /**
+  * Request category by example.
+  * @param {Object} example - Conditions.
+  * @param {Function} callback - Request callback.
+  * @api {Public}
+  */
+  function findAllCategoryByExample(example, callback) {
+    post("/api/category/query", example, callback);
+  }
+
+  /**
   * Request all device information.
   * @param {Function} callback.$
   * @api {Public}
@@ -269,8 +313,12 @@ app.factory("dbService", function($http){
   * Export all public function here.
   */
   return {
+    findAllProductByExample: findAllProductByExample,
+    findAllCategoryByExample: findAllCategoryByExample,
     findAllBranch: findAllBranch,
-    findAllDevice: findAllDevice
+    findAllDevice: findAllDevice,
+    post: post,
+    get: get
   };
 });
 
@@ -423,6 +471,39 @@ app.factory("homeService", function($http, configService, $log){
 });
 app.factory("models", function(collections, globalService){
 
+  /**
+  * Function parseQuery().
+  * @param {Object} data - Query condition from input form.
+  * @return {Object} - New query object.
+  */
+  function parseQuery(data) {
+    var reportType = data.reportType;
+    var query = {};
+    query.reportType= reportType;
+    query.timeFrom= data.timeFrom.key;
+    query.timeTo= data.timeTo.key;
+
+    if(reportType === "Daily") {
+      query.dailyMonth= data.dailyMonth.key;
+      query.dailyYear= data.dailyYear.key;
+    }else if(reportType == "Monthly") {
+      query.monthlyFrom= data.monthlyFrom.key;
+      query.monthlyTo= data.monthlyTo.key;
+    }else {
+      query.yearlyFrom= data.yearlyFrom.key;
+      query.yearlyTo= data.yearlyTo.key;
+    }
+
+    query.branch= data.branch._id;
+    query.device= data.device._id;
+    query.categoryA = data.categoryA._id;
+    query.categoryB = data.categoryB._id;
+    query.categoryC = data.categoryC._id;
+    query.product = data.product._id;
+
+    return query;
+  }
+
   function TouchCondition(init) {
     init = init || {};
 
@@ -443,10 +524,21 @@ app.factory("models", function(collections, globalService){
     this.months = collections.monthList;
     this.years = collections.yearList;
     this.times = collections.getTimeList();
+
+    this.products = [];
+    this.categoriesA = [];
+    this.categoriesB = [];
+    this.categoriesB = [];
+
+    this.categoryA = {};
+    this.categoryB = {};
+    this.categoryC = {};
+    this.product = {};
   }
 
   return {
-    TouchCondition: TouchCondition
+    TouchCondition: TouchCondition,
+    parseQuery: parseQuery
   };
 
 });
@@ -955,91 +1047,71 @@ app.controller("mainController", function($scope, collections){
 /**
 * @controller touch001Controller -
 */
-app.controller("touch001Controller", function($scope, models, $http, $rootScope){
-
-  /**
-  * Function parseQuery().
-  * @param {Object} data - Query condition from input form.
-  * @return {Object} - New query object.
-  */
-  function parseQuery(data) {
-    var reportType = data.reportType;
-    var query = {};
-    query.reportType= reportType;
-    query.timeFrom= data.timeFrom.key;
-    query.timeTo= data.timeTo.key;
-
-    if(reportType === "Daily") {
-      query.dailyMonth= data.dailyMonth.key;
-      query.dailyYear= data.dailyYear.key;
-    }else if(reportType == "Monthly") {
-      query.monthlyFrom= data.monthlyFrom.key;
-      query.monthlyTo= data.monthlyTo.key;
-    }else {
-      query.yearlyFrom= data.yearlyFrom.key;
-      query.yearlyTo= data.yearlyTo.key;
-    }
-
-    query.branch= data.branch._id;
-    query.device= data.device._id;
-    return query;
-  }
+app.controller("touch001Controller", function($scope, models, $rootScope, dbService){
 
   /**
   * Start query.
   * Trigger when user click ((display)) button.
   */
   $scope.$on("startQuery", function(event, data){
-    var query = parseQuery(data);
-    var request = $http({
-      url: "/report/touch001",
-      method: "POST",
-      data: query,
-      header: { "Content-Type": "application/json" }
-    });
 
-    request.success(function(data) {
+    // Parse query
+    var query = models.parseQuery(data);
+
+    // Request...
+    dbService.post("/report/touch001", query, function(data){
       $rootScope.$broadcast("displayGraph", data);
       $rootScope.$broadcast("displayTable", data);
     });
 
-    request.error(function(err){
-      console.log(err);
-    });
-
   });
-
-  $scope.form = {};
 });
 
 /**
 * @controller touch002Controller -
 */
-app.controller("touch002Controller", function($scope, models){
-  $scope.$on("startQuery", function(event, data){
-    $scope.form = data;
-  });
+app.controller("touch002Controller", function($scope, models, $rootScope, dbService){
 
-  $scope.form = {};
+  /**
+  * Start query.
+  * Trigger when user click ((display)) button.
+  */
+  $scope.$on("startQuery", function(event, data){
+
+    // Parse query.
+    var query = models.parseQuery(data);
+
+    // Start request.
+    dbService.post("/report/touch001", query, function(data){
+      $rootScope.$broadcast("displayGraph", data);
+      $rootScope.$broadcast("displayTable", data);
+    });
+
+  });
 });
 
 /**
 * @controller touch003Controller -
 */
-app.controller("touch003Controller", function($scope, models){
+app.controller("touch003Controller", function($scope, models, $rootScope, dbService){
 
   /**
-  * Listen to ((Display)) event from condition form.
-  * Update recreive condition to $scope.form.
+  * Start query.
+  * Trigger when user click ((display)) button.
   */
   $scope.$on("startQuery", function(event, data){
-    $scope.form = data;
+
+    // Parse query.
+    var query = models.parseQuery(data);
+
+    // Start request.
+    dbService.post("/report/touch001", query, function(data){
+      $rootScope.$broadcast("displayGraph", data);
+      $rootScope.$broadcast("displayTable", data);
+    });
+
   });
 
-  /**
-  * Scrop variable.
-  */
-  $scope.form = {};
 });
 
 app.directive("touchForm", function(models, collections, dbService){
@@ -1073,6 +1145,20 @@ app.directive("touchForm", function(models, collections, dbService){
     }
 
     /**
+    * Append 'All' as default category title.
+    */
+    function appendDefaultCategory(categories) {
+      categories.unshift({ title: "All", _id: -1 });
+    }
+
+    /**
+    * Prepend 'Alll' as default product title.
+    */
+    function appendDefaultProduct(products){
+      products.unshift({ name: "All"});
+    }
+
+    /**
     * Function createQueryCondition().
     * return {Object} - New instance of TouchCondition with default value.
     */
@@ -1083,7 +1169,7 @@ app.directive("touchForm", function(models, collections, dbService){
     }
 
     /**
-    * Start initilize controller variables here.
+    * Init branchs.
     */
     dbService.findAllBranch(function(data){
       appendDefaultBranch(data);
@@ -1091,10 +1177,23 @@ app.directive("touchForm", function(models, collections, dbService){
       $scope.form.branch = data[0];
     });
 
+    /**
+    * Init products.
+    */
     dbService.findAllDevice(function(data){
       appendDefaultDevice(data);
       $scope.form.devices = data;
       $scope.form.device = data[0];
+    });
+
+    /**
+    * Init level 'A' category.
+    */
+    dbService.findAllCategoryByExample( { parentId: null }, function(data){
+      var form = $scope.form;
+      appendDefaultCategory(data);
+      form.categoriesA = data;
+      form.categoryA = data[0];
     });
 
     /**
@@ -1103,6 +1202,9 @@ app.directive("touchForm", function(models, collections, dbService){
     */
     $scope.form = createQueryCondition();
 
+    /**
+    * Assign default form values.
+    */
     var form = $scope.form;
     form.dailyMonth = form.months[0];
     form.dailyYear = form.years[0];
@@ -1121,6 +1223,56 @@ app.directive("touchForm", function(models, collections, dbService){
       if($scope.form.branch) {
         return $scope.form.branch._id != null;
       }
+    };
+
+    /**
+    * Function changeCategory().
+    * @param {String} category - Category level ('A', 'B' or 'C').
+    * @api {Public}
+    */
+    $scope.changeCategory = function(cat) {
+      var form = $scope.form;
+      if(cat === "A") {
+        // Reset category B...
+        var a = form.categoryA;
+        dbService.findAllCategoryByExample( { parentId: a._id }, function(data){
+          appendDefaultCategory(data);
+          form.categoriesB = data;
+          form.categoryB = data[0];
+        });
+      }else if(cat === "B") {
+        // Reset category C...
+        var b = form.categoryB;
+        dbService.findAllCategoryByExample( { parentId: b._id }, function(data){
+          appendDefaultCategory(data);
+          form.categoriesC = data;
+          form.categoryC = data[0];
+        });
+      }else if(cat === "C") {
+        // Reset product.
+        var c = form.categoryC;
+        var cons = {
+          categoryIds: { $all : [c._id] }
+        };
+
+        dbService.findAllProductByExample(cons,  function(data){
+          appendDefaultProduct(data);
+          form.products = data;
+          form.product = data[0];
+        });
+      }
+    };
+
+    /**
+    * Is specific category valid or not.
+    * @param {String} c - Category level ('A', 'B' or 'C')
+    * @return {Boolean} - Is category ok.
+    */
+    $scope.isCategorySet = function(c){
+      var f = $scope.form;
+      if(c === 'A') return f.categoryA._id !== -1;
+      else if(c === 'B') return f.categoryB._id !== -1;
+      else if(c === 'C') return f.categoryC._id !== -1;
     };
 
     /**
@@ -1165,6 +1317,7 @@ app.directive("touchForm", function(models, collections, dbService){
     */
     $scope.startQuery = function() {
       $scope.$emit("startQuery", $scope.form);
+      console.log($scope.form);
     };
   }
 
@@ -1172,7 +1325,6 @@ app.directive("touchForm", function(models, collections, dbService){
   * Directive :link definition.
   */
   function link(scope, el, attr) {
-
   }
 
   /**
@@ -1180,6 +1332,9 @@ app.directive("touchForm", function(models, collections, dbService){
   */
   return {
     restrict: "E",
+    scope: {
+      showCategory: "="
+    },
     controller: controller,
     templateUrl: "/views/directives/touchFormDirective.html",
     link: link
@@ -1189,18 +1344,57 @@ app.directive("touchForm", function(models, collections, dbService){
 app.directive("touchGraph", function(){
 
   /**
-  * Function renderGraph().
-  * @param {Object} graph - Input datas.
-  * @api {Private}
+  * Function getRandomColor()
+  * @api {Public}
+  * @return {String} - Random color.
   */
-  function renderGraph(graph) {
+  function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  /**
+  * Function doughnut()
+  * @param {Object} graph - Input datas.
+  * @param {Object} ctx - 2D context object.
+  * @param {Object} - Chart object.
+  */
+  function doughnut(graph, ctx) {
+    // Provide doughnut data.
+    var data = [];
+    var range = _.range(0, graph.values.length);
+
+    range.forEach(function(r){
+      data.push({
+        color: getRandomColor(),
+        value: graph.values[r]
+      });
+    });
+
+    console.log(data);
+    // Create doughnut chart.
+    var chart = new Chart(ctx).Doughnut(data);
+  }
+
+  /**
+  * Function bar().
+  * Create bar chart.
+  * @param {Object} graph - Input data.
+  * @param {Object} ctx - 2D context object.
+  * @return {Object} - Chart object.
+  */
+  function bar(graph, ctx) {
 
     var options = {
       scaleLabel : "<%=value%>",
       scaleOverlay : true,
       scaleShowLabels : true
     };
-
+    // Provider bar data.
     var data = {
       labels: graph.columns,
       datasets: [
@@ -1211,9 +1405,25 @@ app.directive("touchGraph", function(){
         }
       ]
     };
-
-    var ctx = $("#chart").get(0).getContext("2d");
+    // Create bar chart.
     var chart = new Chart(ctx).Bar(data, options);
+    return chart;
+
+  }
+
+  /**
+  * Function renderGraph().
+  * @param {Object} graph - Input datas.
+  * @api {Private}
+  */
+  function renderGraph(graph, chartType) {
+    var ctype = chartType || "Bar";
+    var ctx = $("#chart").get(0).getContext("2d");
+    if(ctype === "bar") {
+      var chart = bar(graph, ctx);
+    }else if(ctype === "doughnut") {
+      var graph = doughnut(graph, ctx);
+    }
   }
 
   /**
@@ -1223,14 +1433,12 @@ app.directive("touchGraph", function(){
   */
   function controller($scope) {
     $scope.$on("displayGraph", function(event, datas){
-      var graph = $scope.graph;
+      var graph = $scope.graph = {};
       graph.values = datas.values;
       graph.columns = datas.columns;
       graph.datas = datas.datas;
-      renderGraph(graph);
+      renderGraph(graph, $scope.chartType);
     });
-
-    $scope.graph = {};
   }
 
   /**
@@ -1245,15 +1453,18 @@ app.directive("touchGraph", function(){
   return {
     restrict: "E",
     controller: controller,
+    scope: {
+      chartType: "@"
+    },
     link: link,
     templateUrl: "/views/directives/touchGraphDirective.html"
   }
-
 });
 
 app.directive("touchTable", function(){
 
   function controller($scope, dbService) {
+
     dbService.findAllDevice(function(data){
       $scope.devices = data;
     });

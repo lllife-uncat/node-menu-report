@@ -29,6 +29,20 @@ app.directive("touchForm", function(models, collections, dbService){
     }
 
     /**
+    * Append 'All' as default category title.
+    */
+    function appendDefaultCategory(categories) {
+      categories.unshift({ title: "All", _id: -1 });
+    }
+
+    /**
+    * Prepend 'Alll' as default product title.
+    */
+    function appendDefaultProduct(products){
+      products.unshift({ name: "All"});
+    }
+
+    /**
     * Function createQueryCondition().
     * return {Object} - New instance of TouchCondition with default value.
     */
@@ -39,7 +53,7 @@ app.directive("touchForm", function(models, collections, dbService){
     }
 
     /**
-    * Start initilize controller variables here.
+    * Init branchs.
     */
     dbService.findAllBranch(function(data){
       appendDefaultBranch(data);
@@ -47,10 +61,23 @@ app.directive("touchForm", function(models, collections, dbService){
       $scope.form.branch = data[0];
     });
 
+    /**
+    * Init products.
+    */
     dbService.findAllDevice(function(data){
       appendDefaultDevice(data);
       $scope.form.devices = data;
       $scope.form.device = data[0];
+    });
+
+    /**
+    * Init level 'A' category.
+    */
+    dbService.findAllCategoryByExample( { parentId: null }, function(data){
+      var form = $scope.form;
+      appendDefaultCategory(data);
+      form.categoriesA = data;
+      form.categoryA = data[0];
     });
 
     /**
@@ -59,6 +86,9 @@ app.directive("touchForm", function(models, collections, dbService){
     */
     $scope.form = createQueryCondition();
 
+    /**
+    * Assign default form values.
+    */
     var form = $scope.form;
     form.dailyMonth = form.months[0];
     form.dailyYear = form.years[0];
@@ -77,6 +107,56 @@ app.directive("touchForm", function(models, collections, dbService){
       if($scope.form.branch) {
         return $scope.form.branch._id != null;
       }
+    };
+
+    /**
+    * Function changeCategory().
+    * @param {String} category - Category level ('A', 'B' or 'C').
+    * @api {Public}
+    */
+    $scope.changeCategory = function(cat) {
+      var form = $scope.form;
+      if(cat === "A") {
+        // Reset category B...
+        var a = form.categoryA;
+        dbService.findAllCategoryByExample( { parentId: a._id }, function(data){
+          appendDefaultCategory(data);
+          form.categoriesB = data;
+          form.categoryB = data[0];
+        });
+      }else if(cat === "B") {
+        // Reset category C...
+        var b = form.categoryB;
+        dbService.findAllCategoryByExample( { parentId: b._id }, function(data){
+          appendDefaultCategory(data);
+          form.categoriesC = data;
+          form.categoryC = data[0];
+        });
+      }else if(cat === "C") {
+        // Reset product.
+        var c = form.categoryC;
+        var cons = {
+          categoryIds: { $all : [c._id] }
+        };
+
+        dbService.findAllProductByExample(cons,  function(data){
+          appendDefaultProduct(data);
+          form.products = data;
+          form.product = data[0];
+        });
+      }
+    };
+
+    /**
+    * Is specific category valid or not.
+    * @param {String} c - Category level ('A', 'B' or 'C')
+    * @return {Boolean} - Is category ok.
+    */
+    $scope.isCategorySet = function(c){
+      var f = $scope.form;
+      if(c === 'A') return f.categoryA._id !== -1;
+      else if(c === 'B') return f.categoryB._id !== -1;
+      else if(c === 'C') return f.categoryC._id !== -1;
     };
 
     /**
@@ -121,6 +201,7 @@ app.directive("touchForm", function(models, collections, dbService){
     */
     $scope.startQuery = function() {
       $scope.$emit("startQuery", $scope.form);
+      console.log($scope.form);
     };
   }
 
@@ -128,7 +209,6 @@ app.directive("touchForm", function(models, collections, dbService){
   * Directive :link definition.
   */
   function link(scope, el, attr) {
-
   }
 
   /**
@@ -136,6 +216,9 @@ app.directive("touchForm", function(models, collections, dbService){
   */
   return {
     restrict: "E",
+    scope: {
+      showCategory: "="
+    },
     controller: controller,
     templateUrl: "/views/directives/touchFormDirective.html",
     link: link

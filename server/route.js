@@ -33,6 +33,26 @@ function init(app) {
   });
 
   /**
+  * Find category by example.
+  */
+  app.post("/api/category/query", function(req, res){
+    var body = req.body;
+    query.findAllCategoryByExample(body, function(err, docs){
+      res.json(docs);
+    });
+  });
+
+  /**
+  * Return product by given condition.
+  */
+  app.post("/api/product/query", function(req, res){
+    var body = req.body;
+    query.findAllProductByExample( body, function(err, docs){
+      res.json(docs);
+    });
+  });
+
+  /**
   * Return all branchs in database.
   */
   app.get("/api/branch", function(req, res){

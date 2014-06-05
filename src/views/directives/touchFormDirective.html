@@ -1,11 +1,10 @@
 <section class="ui segment">
 
     <div class="ko-report-type">
-        <span ng-click="setType('Daily')" ng-class="{active: isSet('Daily')}">Dialy</span>
+        <span ng-click="setType('Daily')" ng-class="{active: isSet('Daily')}">Daily</span>
         <span ng-click="setType('Monthly')" ng-class="{active: isSet('Monthly')}">Monthly</span>
         <span ng-click="setType('Yearly')" ng-class="{active: isSet('Yearly')}">Yearly</span>
     </div>
-
 
     <!-- Dialy -->
     <div class="ko-inline-field animated " ng-if="isSet('Daily')">
@@ -61,15 +60,35 @@
             <label for="">Branch</label>
             <select name="" id="" ng-options="e.name for e in form.branchs" ng-model="form.branch" ng-change="changeBranch()"></select>
         </div>
-        <div class="ko-field" ng-if="isBranchSet()">
+        <div class="ko-field animated fadeIn" ng-if="isBranchSet()">
             <label for="">Device</label>
             <select name="" id="" ng-options="e.deviceId for e in form.devicesInBranch" ng-model="form.device"></select>
         </div>
     </div>
 
+      <!-- Category -->
+    <div class="ko-inline-field animated fadeIn" ng-if="showCategory">
+        <div class="ko-field animated fadeIn">
+            <label for="">Main</label>
+            <select name="" id="" ng-options="e.title for e in form.categoriesA" ng-model="form.categoryA" ng-change="changeCategory('A')"></select>
+        </div>
+        <div class="ko-field animated fadeIn" ng-if="isCategorySet('A')">
+            <label for="">Sub</label>
+            <select name="" id="" ng-options="e.title for e in form.categoriesB" ng-model="form.categoryB" ng-change="changeCategory('B')"></select>
+        </div>
+        <div class="ko-field animated fadeIn"  ng-if="isCategorySet('B') && isCategorySet('A')">
+            <label for="">Category</label>
+            <select name="" id="" ng-options="e.title for e in form.categoriesC" ng-model="form.categoryC" ng-change="changeCategory('C')"></select>
+        </div>
+        <div class="ko-field animated fadeIn" ng-if="isCategorySet('C') && isCategorySet('A') && isCategorySet('B')">
+            <label for="">Product</label>
+            <select name="" id="" ng-options="e.name for e in form.products" ng-model="form.product"></select>
+        </div>
+    </div>
+
     <!-- Control button -->
-    <div class="ko-control-button" ng-click="startQuery()">
-        <div class="ko-button">Display</div>
+    <div class="ko-control-button" >
+        <div ng-click="startQuery()" class="ko-button">Display</div>
     </div>
 
 </section>

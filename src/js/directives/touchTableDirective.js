@@ -1,6 +1,7 @@
 app.directive("touchTable", function(){
 
   function controller($scope, dbService) {
+
     dbService.findAllDevice(function(data){
       $scope.devices = data;
     });

@@ -45,7 +45,7 @@ describe("[Test Data]", function(){
 
     var product = createProduct();
     q.save("MenuProductInfo", product, function(err, p){
-      var range = _.range(0, 1000);
+      var range = _.range(0, 100);
       range.forEach(function(r){
 
         var touch = createTouch(p);

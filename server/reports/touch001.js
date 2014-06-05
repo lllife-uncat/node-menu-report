@@ -31,6 +31,46 @@ function Touch001(cons) {
   };
 
   /**
+  * Function append branch and device into query condition.
+  * @param {Array} $and - And condition.
+  * @api {Private}
+  */
+  this.appendBranchAndDeviceCondition = function($and) {
+    if(cons.branch) {
+
+      // Create query object
+      var q = new sync.SyncQuery();
+      var ObjectId = q.ObjectId;
+
+      // Find branch in database.
+      var branch = q.findAllBranch({ _id: new ObjectId(cons.branch)} )[0];
+
+      // Find all devices in branch.
+      var devsInBranch = [];
+      branch.deviceIds.forEach(function(id){
+        var dev = q.findAllDevice({ _id: new ObjectId(id)} )[0];
+        devsInBranch.push(dev);
+      });
+
+      // Create device condition.
+      if(cons.device) {
+
+        // Find specific device serial number.
+        var dev = _.filter(devsInBranch, function(x) { return x._id.toString() === cons.device })[0];
+        $and.push(  { deviceId: dev.serialNumber } );
+
+      } else {
+        // List all devices serial number.
+        //self.log(devsInBranch);
+        var allSerials = _.flatten(devsInBranch, "serialNumber");
+
+        // Create branch condition.
+        $and.push(  { deviceId:  { $in: allSerials } }  );
+      }
+    }
+  };
+
+  /**
   * Function queryYearlyReport().
   * @return {Array} - Touchs information.
   * @api {Private}
@@ -46,12 +86,15 @@ function Touch001(cons) {
     };
 
     self.appendTimeCondition(example.$and);
+    self.appendBranchAndDeviceCondition(example.$and);
+
     var touchs = self.query(example);
     return touchs;
   };
 
   this.log = function(obj){
     var u = util.inspect(obj, { showHidden: false, depth: null});
+    console.log(u);
   };
 
   /**
@@ -97,6 +140,8 @@ function Touch001(cons) {
     };
 
     self.appendTimeCondition(example.$and);
+    self.appendBranchAndDeviceCondition(example.$and);
+
     var touchs = self.query(example);
     return touchs;
   };
@@ -119,6 +164,8 @@ function Touch001(cons) {
     };
 
     self.appendTimeCondition(example.$and);
+    self.appendBranchAndDeviceCondition(example.$and);
+
     var touchs = self.query(example);
     return touchs;
   };
@@ -260,18 +307,3 @@ function Output(columns, values, datas) {
 * Export all public function here.
 */
 module.exports.Touch001 = Touch001;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

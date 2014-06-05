@@ -26,6 +26,50 @@ app.factory("dbService", function($http){
   }
 
   /**
+  * Function post()
+  * @param {String} url - Request url.
+  * @param {Object} data - Post data.
+  * @param {Function} callback - Request callback.
+  * @api {Public}
+  */
+  function post(url, data, callback){
+    var req = $http({
+      method: "POST",
+      url: url,
+      data: JSON.stringify(data),
+      header: { "Content-Type": "application/json" }
+    });
+
+    req.success(function(data){
+      callback(data);
+    });
+
+    req.error(function(err){
+      console.log(err);
+    });
+  }
+
+  /**
+  * Request product by example.
+  * @param {Object} example - Conditions.
+  * @param {Function} callback - Request callback.
+  * @api {Public}
+  */
+  function findAllProductByExample(example, callback) {
+    post("/api/product/query", example, callback);
+  }
+
+  /**
+  * Request category by example.
+  * @param {Object} example - Conditions.
+  * @param {Function} callback - Request callback.
+  * @api {Public}
+  */
+  function findAllCategoryByExample(example, callback) {
+    post("/api/category/query", example, callback);
+  }
+
+  /**
   * Request all device information.
   * @param {Function} callback.$
   * @api {Public}
@@ -56,7 +100,11 @@ app.factory("dbService", function($http){
   * Export all public function here.
   */
   return {
+    findAllProductByExample: findAllProductByExample,
+    findAllCategoryByExample: findAllCategoryByExample,
     findAllBranch: findAllBranch,
-    findAllDevice: findAllDevice
+    findAllDevice: findAllDevice,
+    post: post,
+    get: get
   };
 });
