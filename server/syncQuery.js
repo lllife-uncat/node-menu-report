@@ -55,9 +55,29 @@ function SyncQuery() {
   * Function findTouchByExample()
   * @param {Object} example - Query condition.
   * @return {Array} - List of touch info.
+  * @api {Public}
   */
   this.findTouchByExample = function(example, fields){
     return self.findByExample("MenuTouchInfo", example, fields);
+  };
+
+  /**
+  * Function findAllProduct()
+  * @param {Object} example - Query conditions.
+  * @return {Array} - List of query result
+  * @api {Public}
+  */
+  this.findAllProduct = function(example) {
+    return self.findByExample("MenuProductInfo", example || {});
+  };
+
+  /**
+  * Function findAllCategory().
+  * @return {Array} - All category in database up to example.
+  * @api {Public}
+  */
+  this.findAllCategory = function(example) {
+    return self.findByExample("MenuCategoryInfo", example || {});
   };
 
   /**

@@ -13,6 +13,9 @@ var _ = require("lodash");
 */
 function Touch001(cons) {
 
+  /**
+  * White query conditions to console.
+  */
   console.log(cons);
 
   /**
@@ -71,6 +74,48 @@ function Touch001(cons) {
   };
 
   /**
+  * Function appendCategoryCondition()
+  * Append category 'A' 'B' 'C' and Product as query conditions.
+  * @param {Object} $and - Pre exist conditions.
+  * @api {Private}
+  */
+  this.appendCategoryCondition = function($and) {
+    // Hack
+
+    // Query conditions.
+    var categoryA = cons.categoryA;
+    var categoryB = cons.categoryB;
+    var categoryC = cons.categoryC;
+    var product = cons.product;
+
+    // Query object.
+    var q = new sync.SyncQuery();
+    var ObjectId = q.ObjectId;
+
+    if(categoryA) {
+
+      // Find all top level category.
+      var cbs = q.findAllCategory({ parentId: categoryA });
+      var cbIds = _.map(cbs, function(x) { return x._id.toString() });
+
+      // Find all child level.
+      var ccs = q.findAllCategory( { parentId: { $in: cbIds } } );
+      var ccIds = _.map(ccs, function(x) { return x._id.toString() });
+
+      // Find all product under child level.
+      var pros = q.findAllProduct({
+        categoryIds: { $in: ccIds }
+      });
+      var proIds = _.map(pros, function(x) { return x._id.toString() });
+
+      // Find all touch touch match products.
+      $and.push({
+        objectId: { $in: proIds }
+      });
+    }
+  };
+
+  /**
   * Function queryYearlyReport().
   * @return {Array} - Touchs information.
   * @api {Private}
@@ -85,8 +130,10 @@ function Touch001(cons) {
       ]
     };
 
+    // Append addtion conditions.
     self.appendTimeCondition(example.$and);
     self.appendBranchAndDeviceCondition(example.$and);
+    self.appendCategoryCondition(example.$and);
 
     var touchs = self.query(example);
     return touchs;
@@ -139,8 +186,10 @@ function Touch001(cons) {
       ]
     };
 
+    // Append addition conditions.
     self.appendTimeCondition(example.$and);
     self.appendBranchAndDeviceCondition(example.$and);
+    self.appendCategoryCondition(example.$and);
 
     var touchs = self.query(example);
     return touchs;
@@ -163,8 +212,10 @@ function Touch001(cons) {
       ]
     };
 
+    // Append addition conditions.
     self.appendTimeCondition(example.$and);
     self.appendBranchAndDeviceCondition(example.$and);
+    self.appendCategoryCondition(example.$and);
 
     var touchs = self.query(example);
     return touchs;

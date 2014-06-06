@@ -175,7 +175,7 @@ div.ui.menu {
   margin: 5px;
   width: 150px;
   border-radius: 5px;
-  color: hsla(200, 10%, 80%, .9);
+  color: hsla(200, 10%, 50%, .9);
   font-weight: bold;
 }
 
@@ -220,7 +220,7 @@ div.ui.buttons {
 }
 
 .ko-content {
-  padding: 30px 10px;
+  padding: 30px 20px;
 }
 
 .ko-body{
@@ -234,7 +234,7 @@ div.ui.buttons {
   background-image: url("/images/crossword.png");
 }
 .ko-menu {
-  padding: 0 8px;
+  padding: 0 20px;
 }
 
 .ko-graph {

@@ -475,67 +475,97 @@ app.factory("models", function(collections, globalService){
   * Function parseQuery().
   * @param {Object} data - Query condition from input form.
   * @return {Object} - New query object.
+  * @api {Public}
   */
   function parseQuery(data) {
     var reportType = data.reportType;
+
+    // Create query object.
     var query = {};
     query.reportType= reportType;
     query.timeFrom= data.timeFrom.key;
     query.timeTo= data.timeTo.key;
 
     if(reportType === "Daily") {
+      // Daily conditions.
       query.dailyMonth= data.dailyMonth.key;
       query.dailyYear= data.dailyYear.key;
     }else if(reportType == "Monthly") {
+      // Monthly conditions.
       query.monthlyFrom= data.monthlyFrom.key;
       query.monthlyTo= data.monthlyTo.key;
     }else {
+      // Yearly conditions.
       query.yearlyFrom= data.yearlyFrom.key;
       query.yearlyTo= data.yearlyTo.key;
     }
 
-    query.branch= data.branch._id;
-    query.device= data.device._id;
-    query.categoryA = data.categoryA._id;
-    query.categoryB = data.categoryB._id;
-    query.categoryC = data.categoryC._id;
-    query.product = data.product._id;
+    // Addition conditions.
+    // If 0 will not include as query condition.
+    query.branch= data.branch._id || 0;
+    query.device= data.device._id || 0;
+    query.categoryA = data.categoryA._id || 0;
+    query.categoryB = data.categoryB._id || 0;
+    query.categoryC = data.categoryC._id || 0;
+    query.product = data.product._id || 0;
+
+    // Show in browser console.
+    console.log("::query");
+    console.log(query);
 
     return query;
   }
 
+  /**
+  * Class TouchCondition.
+  * Keep all query conditions and dropdown options.
+  * @api {Public}
+  */
   function TouchCondition(init) {
     init = init || {};
 
+    // Daily conditions.
     this.dailyMonth = init.dailyMonth;
     this.dailyYear = init.dailyYear;
+
+    // Monthly conditions.
     this.monthlyFrom = init.monthlyFrom;
     this.monthlyTo = init.monthlyTo;
+
+    // Yearly conditions.
     this.yearlyFrom = init.yearlyFrom;
     this.yearlyTo = init.yearlyTo;
+
+    // All play all 'Dialy' 'Monthly' and 'Yearly'.
     this.timeFrom = init.timeFrom;
     this.timeTo = init.timeTo;
 
+    // Report type 'Daily' 'Monthly' and 'Yearly'.
     this.reportType =  init.reportType;
 
+    // List of avialabel dropdown condition.
+    // Can dynamic render up to user behavior.
     this.branchs = [];
     this.devices = [];
     this.devicesInBranch = [];
     this.months = collections.monthList;
     this.years = collections.yearList;
     this.times = collections.getTimeList();
-
     this.products = [];
+
+    // Addition conditions can apply to all type of report.
     this.categoriesA = [];
     this.categoriesB = [];
     this.categoriesB = [];
-
     this.categoryA = {};
     this.categoryB = {};
     this.categoryC = {};
     this.product = {};
   }
 
+  /**
+  * Return public api.
+  */
   return {
     TouchCondition: TouchCondition,
     parseQuery: parseQuery
@@ -1096,16 +1126,89 @@ app.controller("touch002Controller", function($scope, models, $rootScope, dbServ
 app.controller("touch003Controller", function($scope, models, $rootScope, dbService){
 
   /**
+  * Cloable log.
+  */
+  function konsole() {
+    return {
+      log: function(message){
+        //console.log(message);
+      }
+    }
+  }
+
+  /**
   * Start query.
   * Trigger when user click ((display)) button.
   */
   $scope.$on("startQuery", function(event, data){
 
+    var console = konsole();
+
+    // Extract category A id..
+    var la = data.categoryA._id;
+    if(la == 0) la = null;
+
+    // Write log...
+    console.log("::query");
+    console.log(data);
+
     // Parse query.
     var query = models.parseQuery(data);
 
-    // Start request.
+    var collectionIndexs = [];
+    var collectionDatas = [];
+
+    /**
+    * Start rest api request.
+    * Endpoint - /report/touch001
+    * Return - List of touch information.
+    */
     dbService.post("/report/touch001", query, function(data){
+
+      // Find all category A
+      // Get only top lavel category.
+      dbService.findAllCategoryByExample( { parentId: null }, function(levelAs){
+        var levelAIds = _.map(levelAs, function(x){ return x._id; });
+        if(la != null) {
+          levelAIds = _.filter(levelAIds, function(x){ return x === la});
+        }
+
+        // Write log...
+        console.log("::LEV-A");
+        console.log(levelAIds);
+
+        // Find all category B
+        dbService.findAllCategoryByExample( { parentId: { $in: levelAIds }}, function(levelBs){
+
+          // Flatten level 'B' id as array of string.
+          var levelBIds = _.map(levelBs, function(x){ return x._id; });
+
+          // Assign all level 'B' as collection index.
+          collectionIndexs = levelBs;
+
+          // Write log...
+          console.log("::LEV-B");
+          console.log(levelBIds);
+
+          // Find all category C
+          dbService.findAllCategoryByExample({ parentId: { $in: levelBIds }}, function(levelCs){
+            var levelCIds = _.map(levelCs,  function(x) { return x._id; });
+
+            // Write log...
+            console.log("::LEV-C");
+            console.log(levelCIds);
+
+            // Find all products.
+            dbService.findAllProductByExample({ categoryIds: { $in: levelCIds }}, function(products){
+
+              // Write log...
+              console.log("::PRODUCT");
+              console.log(products);
+            });
+          });
+        });
+      });
+
       $rootScope.$broadcast("displayGraph", data);
       $rootScope.$broadcast("displayTable", data);
     });
@@ -1126,7 +1229,7 @@ app.directive("touchForm", function(models, collections, dbService){
     * @param {Array} items - Input array.
     */
     function appendAll(items) {
-      var all = new collections.Property(-1, "All");
+      var all = new collections.Property(0, "All");
       items.unshift(all);
     }
 
@@ -1148,7 +1251,7 @@ app.directive("touchForm", function(models, collections, dbService){
     * Append 'All' as default category title.
     */
     function appendDefaultCategory(categories) {
-      categories.unshift({ title: "All", _id: -1 });
+      categories.unshift({ title: "All", _id: 0 });
     }
 
     /**
@@ -1263,6 +1366,25 @@ app.directive("touchForm", function(models, collections, dbService){
       }
     };
 
+    $scope.show = function(cat) {
+      var set = $scope.isCategorySet;
+      var rs = false;
+      if(cat === "A")  {
+        rs = $scope.showCategoryA;
+      }
+      else if(cat === "B") {
+        rs = set("A") && $scope.showCategoryB;
+      }
+      else if(cat === "C") {
+        rs = set("A") && set("B") && $scope.showCategoryC;
+      }
+      else if(cat === "P") {
+        rs = set("A") && set("B") && set("C") && $scope.showProduct;
+      }
+
+      return rs;
+    };
+
     /**
     * Is specific category valid or not.
     * @param {String} c - Category level ('A', 'B' or 'C')
@@ -1270,9 +1392,9 @@ app.directive("touchForm", function(models, collections, dbService){
     */
     $scope.isCategorySet = function(c){
       var f = $scope.form;
-      if(c === 'A') return f.categoryA._id !== -1;
-      else if(c === 'B') return f.categoryB._id !== -1;
-      else if(c === 'C') return f.categoryC._id !== -1;
+      if(c === 'A') return f.categoryA._id !== 0;
+      else if(c === 'B') return f.categoryB._id !== 0;
+      else if(c === 'C') return f.categoryC._id !== 0;
     };
 
     /**
@@ -1333,7 +1455,9 @@ app.directive("touchForm", function(models, collections, dbService){
   return {
     restrict: "E",
     scope: {
-      showCategory: "="
+      showCategoryA: "=",
+      showCategoryB: '=',
+      showCategoryC: '='
     },
     controller: controller,
     templateUrl: "/views/directives/touchFormDirective.html",

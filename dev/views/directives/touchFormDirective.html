@@ -1,5 +1,6 @@
 <section class="ui segment">
 
+    <!-- Type -->
     <div class="ko-report-type">
         <span ng-click="setType('Daily')" ng-class="{active: isSet('Daily')}">Daily</span>
         <span ng-click="setType('Monthly')" ng-class="{active: isSet('Monthly')}">Monthly</span>
@@ -67,20 +68,20 @@
     </div>
 
       <!-- Category -->
-    <div class="ko-inline-field animated fadeIn" ng-if="showCategory">
-        <div class="ko-field animated fadeIn">
+    <div class="ko-inline-field animated fadeIn" ng-if="showCategoryA">
+        <div class="ko-field animated fadeIn" ng-if="show('A')">
             <label for="">Main</label>
             <select name="" id="" ng-options="e.title for e in form.categoriesA" ng-model="form.categoryA" ng-change="changeCategory('A')"></select>
         </div>
-        <div class="ko-field animated fadeIn" ng-if="isCategorySet('A')">
+        <div class="ko-field animated fadeIn" ng-if="show('B')">
             <label for="">Sub</label>
             <select name="" id="" ng-options="e.title for e in form.categoriesB" ng-model="form.categoryB" ng-change="changeCategory('B')"></select>
         </div>
-        <div class="ko-field animated fadeIn"  ng-if="isCategorySet('B') && isCategorySet('A')">
+        <div class="ko-field animated fadeIn"  ng-if="show('C')">
             <label for="">Category</label>
             <select name="" id="" ng-options="e.title for e in form.categoriesC" ng-model="form.categoryC" ng-change="changeCategory('C')"></select>
         </div>
-        <div class="ko-field animated fadeIn" ng-if="isCategorySet('C') && isCategorySet('A') && isCategorySet('B')">
+        <div class="ko-field animated fadeIn" ng-if="show('P')">
             <label for="">Product</label>
             <select name="" id="" ng-options="e.name for e in form.products" ng-model="form.product"></select>
         </div>

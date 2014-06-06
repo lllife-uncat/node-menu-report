@@ -220,7 +220,7 @@ div.ui.buttons {
 }
 
 .ko-content {
-  padding: 30px 10px;
+  padding: 30px 20px;
 }
 
 .ko-body{
@@ -234,7 +234,7 @@ div.ui.buttons {
   background-image: url("/images/crossword.png");
 }
 .ko-menu {
-  padding: 0 8px;
+  padding: 0 20px;
 }
 
 .ko-graph {

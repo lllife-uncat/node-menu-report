@@ -7,28 +7,32 @@ var _ = require("lodash");
 
 describe("[Test Data]", function(){
 
-  function createDevice() {
-
-  }
-
-  function random(max) {
+  function randomInt(max) {
     return Math.floor(Math.random() * max);
   }
 
+  function random(inputs){
+    var index = Math.floor(Math.random() * inputs.length);
+    return inputs[index];
+  };
+
   function createTouch(product) {
+
+    var pros = ["53902890e4b07f9142ba0abc", "539028abe4b07f9142ba0abf", "539028e7e4b07f9142ba0ac3"];
+    var devs = ["DEV001", "DEV002", "DEV003"];
+    var years = [2014, 2015, 2016, 1017, 2018, 1019];
+
     var date = new Date(2014, 10, 30);
     var touch = {
       collectionDate: date,
       touchDate: date,
       objectType: "Product",
-      objectId: product._id.toString(),
-      deviceId: "DEV003",
-      year: date.getFullYear(),
-      //month: date.getMonth(),
-      //date: date.getDate(),
-      month: random(12),
-      date: random(30),
-      hour: date.getHours() + random(24)
+      objectId: random(pros),
+      deviceId: random(devs),
+      year: random(years),
+      month: randomInt(12),
+      date: randomInt(30),
+      hour: date.getHours() + randomInt(24)
     };
     return touch;
   }
@@ -43,19 +47,18 @@ describe("[Test Data]", function(){
 
   it("Should generate test info successful.", function(done){
 
+    this.timeout(8000);
+
     var product = createProduct();
     q.save("MenuProductInfo", product, function(err, p){
-      var range = _.range(0, 100);
+      var range = _.range(0, 5000);
       range.forEach(function(r){
-
         var touch = createTouch(p);
-        q.save("MenuTouchInfo", touch, function(err, doc){
-          console.log(doc);
-        });
-
+        q.save("MenuTouchInfo", touch, function(err, doc){ });
       });
 
-      //done();
+      done();
+
     });
   });
 });

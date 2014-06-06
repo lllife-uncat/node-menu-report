@@ -10,7 +10,7 @@ app.directive("touchForm", function(models, collections, dbService){
     * @param {Array} items - Input array.
     */
     function appendAll(items) {
-      var all = new collections.Property(-1, "All");
+      var all = new collections.Property(0, "All");
       items.unshift(all);
     }
 
@@ -32,7 +32,7 @@ app.directive("touchForm", function(models, collections, dbService){
     * Append 'All' as default category title.
     */
     function appendDefaultCategory(categories) {
-      categories.unshift({ title: "All", _id: -1 });
+      categories.unshift({ title: "All", _id: 0 });
     }
 
     /**
@@ -147,6 +147,25 @@ app.directive("touchForm", function(models, collections, dbService){
       }
     };
 
+    $scope.show = function(cat) {
+      var set = $scope.isCategorySet;
+      var rs = false;
+      if(cat === "A")  {
+        rs = $scope.showCategoryA;
+      }
+      else if(cat === "B") {
+        rs = set("A") && $scope.showCategoryB;
+      }
+      else if(cat === "C") {
+        rs = set("A") && set("B") && $scope.showCategoryC;
+      }
+      else if(cat === "P") {
+        rs = set("A") && set("B") && set("C") && $scope.showProduct;
+      }
+
+      return rs;
+    };
+
     /**
     * Is specific category valid or not.
     * @param {String} c - Category level ('A', 'B' or 'C')
@@ -154,9 +173,9 @@ app.directive("touchForm", function(models, collections, dbService){
     */
     $scope.isCategorySet = function(c){
       var f = $scope.form;
-      if(c === 'A') return f.categoryA._id !== -1;
-      else if(c === 'B') return f.categoryB._id !== -1;
-      else if(c === 'C') return f.categoryC._id !== -1;
+      if(c === 'A') return f.categoryA._id !== 0;
+      else if(c === 'B') return f.categoryB._id !== 0;
+      else if(c === 'C') return f.categoryC._id !== 0;
     };
 
     /**
@@ -217,7 +236,9 @@ app.directive("touchForm", function(models, collections, dbService){
   return {
     restrict: "E",
     scope: {
-      showCategory: "="
+      showCategoryA: "=",
+      showCategoryB: '=',
+      showCategoryC: '='
     },
     controller: controller,
     templateUrl: "/views/directives/touchFormDirective.html",

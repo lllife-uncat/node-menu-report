@@ -43,6 +43,9 @@ function Query(db) {
   */
   this.findAll = function(entity, example, callback) {
 
+    example.delete = false;
+    example.archive = false;
+
     this.log(entity);
     this.log(example);
 
