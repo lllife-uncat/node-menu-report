@@ -1131,10 +1131,59 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
   function konsole() {
     return {
       log: function(message){
-        //console.log(message);
+        console.log(message);
       }
     }
   }
+
+  /**
+  * Find all category B in database.
+  * Keep reference on $scope.categoriesB.
+  */
+  dbService.findAllCategoryByExample({ delete: false}, function(cats){
+    var categoriesA = _.filter(cats, function(x){ return x.parentId === undefined;});
+    var ids = _.map(categoriesA, function(x) { return x._id; });
+    var categoriesB = _.filter(cats, function(x){ return ids.indexOf(x.parentId) != -1; });
+
+    $scope.categories = cats;
+    $scope.categoriesB = categoriesB;
+    $scope.allCategoriesB = categoriesB;
+  });
+
+  dbService.findAllProductByExample({}, function(products){
+    $scope.products = products;
+  });
+
+  /**
+  * Scrop variable.
+  */
+  $scope.categoriesB = [];
+  $scope.categories = [];
+  $scope.products = [];
+  $scope.allCategoriesB = [];
+
+
+  /**
+  * Check is product is under specific category.
+  * @param {String} productId.
+  * @param {String} categoryId.
+  * @return {Boolean}.
+  */
+  $scope.isInCategoryB = function(productId, categoryId) {
+    var all = $scope.categories;
+    var products = $scope.products;
+    var product = _.filter(products, function(x) { return x._id == productId })[0];
+
+    //console.log(">> product <<");
+    //console.log(productId);
+    //console.log(categoryId);
+
+    if(!product) return false;
+
+    var c = _.filter(all, function(x) { return product.categoryIds.indexOf(x._id) != -1; })[0];
+    var b = _.filter(all, function(x) { return c.parentId == x._id; })[0];
+    return b._id == categoryId;
+  };
 
   /**
   * Start query.
@@ -1142,21 +1191,18 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
   */
   $scope.$on("startQuery", function(event, data){
 
-    var console = konsole();
-
-    // Extract category A id..
-    var la = data.categoryA._id;
-    if(la == 0) la = null;
-
-    // Write log...
-    console.log("::query");
-    console.log(data);
-
-    // Parse query.
+    /**
+    * Parse form data as specific query (can understand by server).
+    */
     var query = models.parseQuery(data);
-
-    var collectionIndexs = [];
-    var collectionDatas = [];
+    var levelAId= data.categoryA._id;
+    if(levelAId){
+      var all = $scope.categories;
+      var nbs = _.filter(all, function(x){ return x.parentId === levelAId; });
+      $scope.categoriesB = nbs;
+    }else {
+      $scope.categoriesB = $scope.allCategoriesB;
+    }
 
     /**
     * Start rest api request.
@@ -1165,56 +1211,34 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
     */
     dbService.post("/report/touch001", query, function(data){
 
-      // Find all category A
-      // Get only top lavel category.
-      dbService.findAllCategoryByExample( { parentId: null }, function(levelAs){
-        var levelAIds = _.map(levelAs, function(x){ return x._id; });
-        if(la != null) {
-          levelAIds = _.filter(levelAIds, function(x){ return x === la});
-        }
+      var columns =  _.map($scope.categoriesB, function(x) { return x.title; });
+      var columnIds = _.map($scope.categoriesB, function(x) { return x._id; });
+      var values = [];
 
-        // Write log...
-        console.log("::LEV-A");
-        console.log(levelAIds);
 
-        // Find all category B
-        dbService.findAllCategoryByExample( { parentId: { $in: levelAIds }}, function(levelBs){
-
-          // Flatten level 'B' id as array of string.
-          var levelBIds = _.map(levelBs, function(x){ return x._id; });
-
-          // Assign all level 'B' as collection index.
-          collectionIndexs = levelBs;
-
-          // Write log...
-          console.log("::LEV-B");
-          console.log(levelBIds);
-
-          // Find all category C
-          dbService.findAllCategoryByExample({ parentId: { $in: levelBIds }}, function(levelCs){
-            var levelCIds = _.map(levelCs,  function(x) { return x._id; });
-
-            // Write log...
-            console.log("::LEV-C");
-            console.log(levelCIds);
-
-            // Find all products.
-            dbService.findAllProductByExample({ categoryIds: { $in: levelCIds }}, function(products){
-
-              // Write log...
-              console.log("::PRODUCT");
-              console.log(products);
-            });
+      var index = 0;
+      columnIds.forEach(function(column){
+        var length = 1;
+        data.datas.forEach(function(touchs){
+          touchs.forEach(function(touch){
+            var match = $scope.isInCategoryB(touch.objectId, column);
+            if(match) length ++;
           });
         });
+
+        values[index++] = length;
       });
 
-      $rootScope.$broadcast("displayGraph", data);
+      var graph = {
+        columns: columns,
+        values: values
+      };
+
+      $rootScope.$broadcast("displayGraph", graph);
       $rootScope.$broadcast("displayTable", data);
+
     });
-
   });
-
 });
 
 app.directive("touchForm", function(models, collections, dbService){
@@ -1481,14 +1505,8 @@ app.directive("touchGraph", function(){
     return color;
   }
 
-  /**
-  * Function doughnut()
-  * @param {Object} graph - Input datas.
-  * @param {Object} ctx - 2D context object.
-  * @param {Object} - Chart object.
-  */
-  function doughnut(graph, ctx) {
-    // Provide doughnut data.
+  function generatePie(graph) {
+     // Provide doughnut data.
     var data = [];
     var range = _.range(0, graph.values.length);
 
@@ -1498,10 +1516,35 @@ app.directive("touchGraph", function(){
         value: graph.values[r]
       });
     });
+    return data;
+  }
 
-    console.log(data);
+  /**
+  * Function doughnut()
+  * @param {Object} graph - Input datas.
+  * @param {Object} ctx - 2D context object.
+  * @return {Object} - Chart object.
+  */
+  function doughnut(graph, ctx) {
+    var data = generatePie(graph);
+
+    //console.log(data);
     // Create doughnut chart.
     var chart = new Chart(ctx).Doughnut(data);
+    return chart;
+  }
+
+  /**
+  * Function pie().
+  * Create pie chart.
+  * @param {Object} graph - Input data.
+  * @param {Object} ctx - 2D context object.
+  * @return {Object}
+  */
+  function pie(graph, ctx) {
+    var data = generatePie(graph);
+    var chart = new Chart(ctx).Pie(data);
+    return chart;
   }
 
   /**
@@ -1547,6 +1590,8 @@ app.directive("touchGraph", function(){
       var chart = bar(graph, ctx);
     }else if(ctype === "doughnut") {
       var graph = doughnut(graph, ctx);
+    }else if(ctype === "pie") {
+      var graph = pie(graph, ctx);
     }
   }
 
@@ -1556,11 +1601,17 @@ app.directive("touchGraph", function(){
   * @api {Private}
   */
   function controller($scope) {
-    $scope.$on("displayGraph", function(event, datas){
+
+    function normal(datas) {
       var graph = $scope.graph = {};
       graph.values = datas.values;
       graph.columns = datas.columns;
       graph.datas = datas.datas;
+      return graph;
+    }
+
+    $scope.$on("displayGraph", function(event, datas){
+      var graph = normal(datas);
       renderGraph(graph, $scope.chartType);
     });
   }
@@ -1585,14 +1636,35 @@ app.directive("touchGraph", function(){
   }
 });
 
+/**
+* Directive "touchTable".
+* Render input data as html table.
+*/
 app.directive("touchTable", function(){
 
+  /**
+  * Function controller.
+  * @parem {Object} $scope - Angular auto inject scope.
+  * @param {Object} dbService - Custom service..
+  * @api {Private}
+  */
   function controller($scope, dbService) {
 
+    /**
+    * Find all device in database via web service.
+    * Assign result into $scope.devices.
+    */
     dbService.findAllDevice(function(data){
       $scope.devices = data;
     });
 
+    /**
+    * Function getRecord()
+    * Return lenght of data.
+    * @param {String} deviceId.
+    * @param {Number} columnIndex.
+    * @return {Number}
+    */
     $scope.getRecord = function(deviceId, columnIndex) {
       var records = $scope.records;
       var record = records.datas[columnIndex];
@@ -1600,22 +1672,42 @@ app.directive("touchTable", function(){
       return rs.length;
     };
 
+    /**
+    * Function getSum()
+    * @param {Number} $index - Column index.
+    * @return {Number}
+    */
     $scope.getSum = function($index) {
       var rs = $scope.records.datas[$index].length;
       return rs;
     };
 
+    /**
+    * Broadcast handler.
+    * Watch "displayTable" event from $rootScope.
+    */
     $scope.$on("displayTable", function(event, data){
       var records = $scope.records = data;
       window.records = records;
     });
 
+    /**
+    * All $scope variables.
+    */
     $scope.datas = {};
     $scope.devices = [];
   }
 
+  /**
+  * Function link()
+  * Directive linking function.
+  */
   function link() {  }
 
+
+  /**
+  * Return directive definition here.
+  */
   return {
     restrict: "E",
     controller: controller,

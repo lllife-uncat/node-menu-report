@@ -55,10 +55,59 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
   function konsole() {
     return {
       log: function(message){
-        //console.log(message);
+        console.log(message);
       }
     }
   }
+
+  /**
+  * Find all category B in database.
+  * Keep reference on $scope.categoriesB.
+  */
+  dbService.findAllCategoryByExample({ delete: false}, function(cats){
+    var categoriesA = _.filter(cats, function(x){ return x.parentId === undefined;});
+    var ids = _.map(categoriesA, function(x) { return x._id; });
+    var categoriesB = _.filter(cats, function(x){ return ids.indexOf(x.parentId) != -1; });
+
+    $scope.categories = cats;
+    $scope.categoriesB = categoriesB;
+    $scope.allCategoriesB = categoriesB;
+  });
+
+  dbService.findAllProductByExample({}, function(products){
+    $scope.products = products;
+  });
+
+  /**
+  * Scrop variable.
+  */
+  $scope.categoriesB = [];
+  $scope.categories = [];
+  $scope.products = [];
+  $scope.allCategoriesB = [];
+
+
+  /**
+  * Check is product is under specific category.
+  * @param {String} productId.
+  * @param {String} categoryId.
+  * @return {Boolean}.
+  */
+  $scope.isInCategoryB = function(productId, categoryId) {
+    var all = $scope.categories;
+    var products = $scope.products;
+    var product = _.filter(products, function(x) { return x._id == productId })[0];
+
+    //console.log(">> product <<");
+    //console.log(productId);
+    //console.log(categoryId);
+
+    if(!product) return false;
+
+    var c = _.filter(all, function(x) { return product.categoryIds.indexOf(x._id) != -1; })[0];
+    var b = _.filter(all, function(x) { return c.parentId == x._id; })[0];
+    return b._id == categoryId;
+  };
 
   /**
   * Start query.
@@ -66,21 +115,18 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
   */
   $scope.$on("startQuery", function(event, data){
 
-    var console = konsole();
-
-    // Extract category A id..
-    var la = data.categoryA._id;
-    if(la == 0) la = null;
-
-    // Write log...
-    console.log("::query");
-    console.log(data);
-
-    // Parse query.
+    /**
+    * Parse form data as specific query (can understand by server).
+    */
     var query = models.parseQuery(data);
-
-    var collectionIndexs = [];
-    var collectionDatas = [];
+    var levelAId= data.categoryA._id;
+    if(levelAId){
+      var all = $scope.categories;
+      var nbs = _.filter(all, function(x){ return x.parentId === levelAId; });
+      $scope.categoriesB = nbs;
+    }else {
+      $scope.categoriesB = $scope.allCategoriesB;
+    }
 
     /**
     * Start rest api request.
@@ -89,54 +135,32 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
     */
     dbService.post("/report/touch001", query, function(data){
 
-      // Find all category A
-      // Get only top lavel category.
-      dbService.findAllCategoryByExample( { parentId: null }, function(levelAs){
-        var levelAIds = _.map(levelAs, function(x){ return x._id; });
-        if(la != null) {
-          levelAIds = _.filter(levelAIds, function(x){ return x === la});
-        }
+      var columns =  _.map($scope.categoriesB, function(x) { return x.title; });
+      var columnIds = _.map($scope.categoriesB, function(x) { return x._id; });
+      var values = [];
 
-        // Write log...
-        console.log("::LEV-A");
-        console.log(levelAIds);
 
-        // Find all category B
-        dbService.findAllCategoryByExample( { parentId: { $in: levelAIds }}, function(levelBs){
-
-          // Flatten level 'B' id as array of string.
-          var levelBIds = _.map(levelBs, function(x){ return x._id; });
-
-          // Assign all level 'B' as collection index.
-          collectionIndexs = levelBs;
-
-          // Write log...
-          console.log("::LEV-B");
-          console.log(levelBIds);
-
-          // Find all category C
-          dbService.findAllCategoryByExample({ parentId: { $in: levelBIds }}, function(levelCs){
-            var levelCIds = _.map(levelCs,  function(x) { return x._id; });
-
-            // Write log...
-            console.log("::LEV-C");
-            console.log(levelCIds);
-
-            // Find all products.
-            dbService.findAllProductByExample({ categoryIds: { $in: levelCIds }}, function(products){
-
-              // Write log...
-              console.log("::PRODUCT");
-              console.log(products);
-            });
+      var index = 0;
+      columnIds.forEach(function(column){
+        var length = 1;
+        data.datas.forEach(function(touchs){
+          touchs.forEach(function(touch){
+            var match = $scope.isInCategoryB(touch.objectId, column);
+            if(match) length ++;
           });
         });
+
+        values[index++] = length;
       });
 
-      $rootScope.$broadcast("displayGraph", data);
+      var graph = {
+        columns: columns,
+        values: values
+      };
+
+      $rootScope.$broadcast("displayGraph", graph);
       $rootScope.$broadcast("displayTable", data);
+
     });
-
   });
-
 });

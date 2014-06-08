@@ -14,14 +14,8 @@ app.directive("touchGraph", function(){
     return color;
   }
 
-  /**
-  * Function doughnut()
-  * @param {Object} graph - Input datas.
-  * @param {Object} ctx - 2D context object.
-  * @param {Object} - Chart object.
-  */
-  function doughnut(graph, ctx) {
-    // Provide doughnut data.
+  function generatePie(graph) {
+     // Provide doughnut data.
     var data = [];
     var range = _.range(0, graph.values.length);
 
@@ -31,10 +25,35 @@ app.directive("touchGraph", function(){
         value: graph.values[r]
       });
     });
+    return data;
+  }
 
-    console.log(data);
+  /**
+  * Function doughnut()
+  * @param {Object} graph - Input datas.
+  * @param {Object} ctx - 2D context object.
+  * @return {Object} - Chart object.
+  */
+  function doughnut(graph, ctx) {
+    var data = generatePie(graph);
+
+    //console.log(data);
     // Create doughnut chart.
     var chart = new Chart(ctx).Doughnut(data);
+    return chart;
+  }
+
+  /**
+  * Function pie().
+  * Create pie chart.
+  * @param {Object} graph - Input data.
+  * @param {Object} ctx - 2D context object.
+  * @return {Object}
+  */
+  function pie(graph, ctx) {
+    var data = generatePie(graph);
+    var chart = new Chart(ctx).Pie(data);
+    return chart;
   }
 
   /**
@@ -80,6 +99,8 @@ app.directive("touchGraph", function(){
       var chart = bar(graph, ctx);
     }else if(ctype === "doughnut") {
       var graph = doughnut(graph, ctx);
+    }else if(ctype === "pie") {
+      var graph = pie(graph, ctx);
     }
   }
 
@@ -89,11 +110,17 @@ app.directive("touchGraph", function(){
   * @api {Private}
   */
   function controller($scope) {
-    $scope.$on("displayGraph", function(event, datas){
+
+    function normal(datas) {
       var graph = $scope.graph = {};
       graph.values = datas.values;
       graph.columns = datas.columns;
       graph.datas = datas.datas;
+      return graph;
+    }
+
+    $scope.$on("displayGraph", function(event, datas){
+      var graph = normal(datas);
       renderGraph(graph, $scope.chartType);
     });
   }

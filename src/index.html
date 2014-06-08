@@ -1,6 +1,8 @@
 <!doctype HTML>
 <html>
     <head>
+
+        <!-- style -->
         <link rel="stylesheet" href="venders/semantic/css/semantic.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="venders/animate.css/animate.css"/>
@@ -25,26 +27,26 @@
         <!-- vert.x -->
         <script src="venders/sockjs-client/sockjs-0.3.min.js"></script>
         <script src="venders/sockjs-client/vertxbus-2.1.js"></script>
-<!--         <script src="venders/underscore/underscore.js"></script> -->
-
     </head>
 
     <body ng-app="menuReport" ng-controller="mainController">
 
         <div class="ko-body">
             <div class="ui ko-title" ng-if="true"> </div>
-            <div class="ko-menu">
+
+            <div class="ko-menu"> <!-- menul -->
                 <div class="ui compact menu">
                     <div class="menu">
-                        <div class="ui pointing dropdown link item ko-touch-dropdown">
+
+                        <div class="ui pointing dropdown link item ko-touch-dropdown"> <!-- dropdown -->
                             <i class="icon grid layout"></i>Motion Sensor<i class="dropdown icon"></i>
                             <div class="menu">
                                 <a class="item"><i class="grid layout icon"></i>Pir I</a>
                                 <a class="item"><i class="grid layout icon"></i>Pir II</a>
                             </div>
-                        </div>
+                        </div> <!-- end dropdown -->
 
-                        <div class="ui pointing dropdown link item ko-touch-dropdown">
+                        <div class="ui pointing dropdown link item ko-touch-dropdown"> <!-- dropdown -->
                             <i class="icon grid layout"></i>Touch Screen<i class="dropdown icon"></i>
                             <div class="menu">
                                 <a href="/#/touch/001" class="item"><i class="grid layout icon"></i>อัตราการสัมผัสหน้าจอ</a>
@@ -55,15 +57,15 @@
                                 <a href="/#/touch/006" class="item"><i class="grid layout icon"></i>อัตราการสัมผัสมากที่สุด 10 อันดับ</a>
                                 <a href="/#/touch/007" class="item"><i class="grid layout icon"></i>รายงานอัตราสัมผัสเฉลี่ยต่อครั้ง</a>
                             </div>
-                        </div>
+                        </div><!-- end dropdown -->
 
-                        <div class="ui pointing dropdown link item ko-comparison-dropdown">
+                        <div class="ui pointing dropdown link item ko-comparison-dropdown"> <!-- dropdown -->
                             <i class="icon grid layout"></i>Comparison<i class="dropdown icon"></i>
                             <div class="menu">
                                 <a href="/#/" class="item" ng-click="selectTab(tab.click)"><i class="grid layout icon"></i>รายงานเปรียบเทียบตามจำนวนคลิก</a>
                                 <a href="/#/" class="item" ng-click="selectTab(tab.interval)"><i class="grid layout icon"></i>รายงานเปรียบเทียบแบ่งตามช่วงเวลา</a>
                             </div>
-                        </div>
+                        </div><!--end dropdown -->
 
                         <a class="item" ng-if="true">
                             <i class="question icon"></i> Help
@@ -71,7 +73,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> <!-- end menu -->
 
             <div class="ko-content">
                 <div ng-view></div>
