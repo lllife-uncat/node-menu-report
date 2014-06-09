@@ -119,8 +119,11 @@ app.directive("touchGraph", function(){
       return graph;
     }
 
+    $scope.graph = {};
+
     $scope.$on("displayGraph", function(event, datas){
       var graph = normal(datas);
+      $scope.graph = graph;
       renderGraph(graph, $scope.chartType);
     });
   }

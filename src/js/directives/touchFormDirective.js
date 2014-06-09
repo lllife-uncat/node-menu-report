@@ -143,6 +143,8 @@ app.directive("touchForm", function(models, collections, dbService){
           appendDefaultProduct(data);
           form.products = data;
           form.product = data[0];
+
+          console.log(form.products);
         });
       }
     };

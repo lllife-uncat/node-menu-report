@@ -127,10 +127,11 @@ div.ui.menu {
 }
 
 .ko-field label {
-  font-size: 80%;
-  width: 60px;
+  font-size: 90%;
+  width: 80px;
   display: inline-block;
   text-align: right;
+  color: hsla(180, 50%, 20%, 0.8);
 }
 
 .ko-report-type {
@@ -139,7 +140,7 @@ div.ui.menu {
 }
 
 .ko-report-type span.active {
-  background-color: hsla(130,70%,50%,.9);
+  background-color: hsla(130,60%,50%,.8);
   box-shadow: 0px -1px 5px lightgray;
   border-width: 0;
   color: white;
@@ -249,7 +250,7 @@ body {
 }
 
 .field input[type=text] {
-  height: 3r00px;
+  height: 350px;
 }
 
 .ui.form .fields .field > span{
