@@ -1,0 +1,32 @@
+<section class="ko-table" ng-if="records.datas">
+    <table class="ui small table segment">
+        <thead>
+            <tr>
+                <th><i class="ui bolt icon"></i></th>
+                <th ng-repeat="column in records.columns" class="ko-inline">
+                    <span class="ko-inline">{{column}}</span>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="device in devices | orderBy:'deviceId': false">
+                <td nowrap>{{device.deviceId}}</td>
+
+                <td ng-repeat="column in records.columns">
+                    <span class="ko-right">{{getRecord(device.serialNumber, $index) | number:0 }}</span>
+                </td>
+            </tr>
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td>Totals</td>
+                <td ng-repeat="column in records.columns">
+                   <span class="ko-right animated fadeInUp">{{ getSum($index) | number: 0 }}</span>
+                </td>
+            </tr>
+        </tfoot>
+
+    </table>
+</section>

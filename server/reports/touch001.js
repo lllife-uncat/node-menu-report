@@ -94,13 +94,18 @@ function Touch001(cons) {
 
     if(categoryA) {
 
-      // Find all top level category.
+      // Find all B level category.
       var cbs = q.findAllCategory({ parentId: categoryA });
       var cbIds = _.map(cbs, function(x) { return x._id.toString() });
 
-      // Find all child level.
+      // Find all C level.
       var ccs = q.findAllCategory( { parentId: { $in: cbIds } } );
       var ccIds = _.map(ccs, function(x) { return x._id.toString() });
+
+      if(categoryB) {
+        ccs = _.filter(ccs, function(x){ return x.parentId == categoryB; });
+        ccIds = _.map(ccs, function(x){ return x._id.toString(); });
+      }
 
       // Find all product under child level.
       var pros = q.findAllProduct({

@@ -1,37 +1,30 @@
+
 /**
 * @controller touch003Controller -
 */
-app.controller("touch003Controller", function($scope, models, $rootScope, dbService){
+app.controller("touch004Controller", function($scope, models, $rootScope, dbService){
 
-  /**
-  * Find all category B in database.
-  * Keep reference on $scope.categoriesB.
-  */
-  dbService.findAllCategoryByExample({ delete: false}, function(cats){
-    var categoriesA = _.filter(cats, function(x){ return x.parentId === undefined;});
-    var ids = _.map(categoriesA, function(x) { return x._id; });
-    var categoriesB = _.filter(cats, function(x){ return ids.indexOf(x.parentId) != -1; });
-
-    $scope.categories = cats;
-    $scope.categoriesB = categoriesB;
-    $scope.allCategoriesB = categoriesB;
+  dbService.findAllCategoryByExample({ delete: false}, function(data){
+    $scope.categories = data;
+    var aa = _.filter(data, function(x){ return x.parentId == null; });
+    var aaids = _.map(aa, function(x){ return x._id; });
+    var bb = _.filter(data, function(x) { return aaids.indexOf(x.parentId) != -1; });
+    var bbids = _.map(bb, function(x) { return x._id; });
+    var cc = _.filter(data, function(x){ return bbids.indexOf(x.parentId) != -1;});
+    $scope.allCategoriesC = cc;
   });
 
-  dbService.findAllProductByExample({delete:false, archive:false}, function(products){
-    $scope.products = products;
+  dbService.findAllProductByExample({delete: false}, function(data){
+    $scope.products = data;
   });
 
   /**
-  * Scrop variables.
-  * @variable {Array} categoriesB - Current category B.
-  * @variable {Array} categories - All categories.
-  * @variable {Array} allCategoriesB
-  * @variable {Array} product
+  * Scrop variable.
   */
-  $scope.categoriesB = [];
+  $scope.categoriesC = [];
   $scope.categories = [];
-  $scope.allCategoriesB = [];
   $scope.products = [];
+  $scope.allCategoriesC = [];
 
   /**
   * Check is product is under specific category.
@@ -39,16 +32,15 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
   * @param {String} categoryId.
   * @return {Boolean}.
   */
-  $scope.isInCategoryB = function(productId, categoryId) {
+  $scope.isInCategoryC = function(productId, categoryId) {
+
     var all = $scope.categories;
     var products = $scope.products;
     var product = _.filter(products, function(x) { return x._id == productId })[0];
 
     if(!product) return false;
-
     var c = _.filter(all, function(x) { return product.categoryIds.indexOf(x._id) != -1; })[0];
-    var b = _.filter(all, function(x) { return c.parentId == x._id; })[0];
-    return b._id == categoryId;
+    return c._id == categoryId;
   };
 
   /**
@@ -61,13 +53,13 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
     * Parse form data as specific query (can understand by server).
     */
     var query = models.parseQuery(form);
-    var levelAId= form.categoryA._id;
-    if(levelAId){
+    var levelBId= form.categoryB._id;
+    if(levelBId){
       var all = $scope.categories;
-      var nbs = _.filter(all, function(x){ return x.parentId === levelAId; });
-      $scope.categoriesB = nbs;
+      var nbs = _.filter(all, function(x){ return x.parentId === levelBId; });
+      $scope.categoriesC = nbs;
     }else {
-      $scope.categoriesB = $scope.allCategoriesB;
+      $scope.categoriesC = $scope.allCategoriesC;
     }
 
     /**
@@ -75,7 +67,7 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
     * Endpoint - /report/touch001
     * Return - List of touch information.
     */
-    dbService.post("/report/touch001", query, function(data){
+    dbService.post("/report/touch001", query, function(record){
 
       /**
       * Get column summary.
@@ -83,7 +75,7 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
       * @return {Number} - Caculation result.
       */
       function getBranchSum(column) {
-        var columnDatas= data.datas[column];
+        var columnDatas= record.datas[column];
         if(!columnDatas) return 0;
         return columnDatas.length;
       }
@@ -97,15 +89,15 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
       */
       function getBranchRecord(column, $index) {
 
-        var columnDatas = data.datas[column];
+        var columnDatas = record.datas[column];
         var rows = [];
 
         if(!columnDatas) return 0;
 
         var rs = 0;
         columnDatas.forEach(function(el){
-          var catB = columnIds[$index];
-          var ok = $scope.isInCategoryB(el.objectId, catB);
+          var catC = columnIds[$index];
+          var ok = $scope.isInCategoryC(el.objectId, catC);
           if(ok) rs ++;
         });
 
@@ -131,17 +123,18 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
       * Pass addition info into directive template.
       */
       function showTable(columns, values) {
-        data.rows = columns;
-        data.getBranchRecord = getBranchRecord;
-        data.getBranchSum = getBranchSum;
-        $rootScope.$broadcast("displayTable", data);
+        record.rows = columns;
+        record.getBranchRecord = getBranchRecord;
+        record.getBranchSum = getBranchSum;
+        $rootScope.$broadcast("displayTable", record);
       }
 
       /**
       * Transform original data into prefer format.
       */
-      var columns =  _.map($scope.categoriesB, function(x) { return x.title; });
-      var columnIds = _.map($scope.categoriesB, function(x) { return x._id; });
+      var inx = 1;
+      var columns =  _.map($scope.categoriesC, function(x) { return (inx++) + " " + x.title; });
+      var columnIds = _.map($scope.categoriesC, function(x) { return x._id; });
       var values = [];
 
       /**
@@ -150,9 +143,9 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
       var index = 0;
       columnIds.forEach(function(column){
         var length = 1;
-        data.datas.forEach(function(touchs){
+        record.datas.forEach(function(touchs){
           touchs.forEach(function(touch){
-            var match = $scope.isInCategoryB(touch.objectId, column);
+            var match = $scope.isInCategoryC(touch.objectId, column);
             if(match) length ++;
           });
         });

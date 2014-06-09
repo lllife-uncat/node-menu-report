@@ -2,19 +2,19 @@
 
     <!-- Type -->
     <div class="ko-report-type">
-        <span ng-click="setType('Daily')" ng-class="{active: isSet('Daily')}">Daily</span>
-        <span ng-click="setType('Monthly')" ng-class="{active: isSet('Monthly')}">Monthly</span>
-        <span ng-click="setType('Yearly')" ng-class="{active: isSet('Yearly')}">Yearly</span>
+        <span ng-click="setType('Daily')" ng-class="{active: isSet('Daily')}">รายวัน</span>
+        <span ng-click="setType('Monthly')" ng-class="{active: isSet('Monthly')}">รายเดือน</span>
+        <span ng-click="setType('Yearly')" ng-class="{active: isSet('Yearly')}">รายปี</span>
     </div>
 
     <!-- Dialy -->
     <div class="ko-inline-field animated " ng-if="isSet('Daily')">
         <div class="ko-field">
-            <label for="">Month</label>
+            <label for="">เดือน</label>
             <select name="" id="" ng-options="e.value for e in form.months" ng-model="form.dailyMonth"></select>
         </div>
         <div class="ko-field">
-            <label for="">Year</label>
+            <label for="">ปี</label>
             <select name="" id="" ng-options="e.value for e in form.years" ng-model="form.dailyYear"></select>
         </div>
     </div>
@@ -22,11 +22,11 @@
     <!-- Monthly-->
     <div class="ko-inline-field animated " ng-if="isSet('Monthly')">
         <div class="ko-field">
-            <label for="">Month</label>
+            <label for="">เดือน</label>
             <select name="" id="" ng-options="e.value for e in form.months" ng-model="form.monthlyFrom"></select>
         </div>
         <div class="ko-field">
-            <label for="">To</label>
+            <label for="">ถึง</label>
             <select name="" id="" ng-options="e.value for e in form.months" ng-model="form.monthlyTo"></select>
         </div>
     </div>
@@ -34,11 +34,11 @@
     <!-- Yearly -->
     <div class="ko-inline-field animated " ng-if="isSet('Yearly')">
         <div class="ko-field">
-            <label for="">Year</label>
+            <label for="">ปี</label>
             <select name="" id="" ng-options="e.value for e in form.years" ng-model="form.yearlyFrom"></select>
         </div>
         <div class="ko-field">
-            <label for="">To</label>
+            <label for="">ถึง</label>
             <select name="" id="" ng-options="e.value for e in form.years" ng-model="form.yearlyTo"></select>
         </div>
     </div>
@@ -46,23 +46,23 @@
     <!-- Yearly -->
     <div class="ko-inline-field animated fadeIn">
         <div class="ko-field">
-            <label for="">Time</label>
+            <label for="">เวลา</label>
             <select name="" id="" ng-options="e.value for e in form.times" ng-model="form.timeFrom"></select>
         </div>
         <div class="ko-field">
-            <label for="">To</label>
-            <select name="" id="" ng-options="e.value for e in form.times" ng-model="form.timeTo"></select>
+            <label for="">ถึง</label>
+            <select name="" id=""ซ ng-options="e.value for e in form.times" ng-model="form.timeTo"></select>
         </div>
     </div>
 
      <!-- Branch -->
     <div class="ko-inline-field animated fadeIn">
         <div class="ko-field">
-            <label for="">Branch</label>
+            <label for="">สาขา</label>
             <select name="" id="" ng-options="e.name for e in form.branchs" ng-model="form.branch" ng-change="changeBranch()"></select>
         </div>
         <div class="ko-field animated fadeIn" ng-if="isBranchSet()">
-            <label for="">Device</label>
+            <label for="">อุปกรณ์</label>
             <select name="" id="" ng-options="e.deviceId for e in form.devicesInBranch" ng-model="form.device"></select>
         </div>
     </div>
@@ -70,19 +70,19 @@
       <!-- Category -->
     <div class="ko-inline-field animated fadeIn" ng-if="showCategoryA">
         <div class="ko-field animated fadeIn" ng-if="show('A')">
-            <label for="">Main</label>
+            <label for="">ประเภท</label>
             <select name="" id="" ng-options="e.title for e in form.categoriesA" ng-model="form.categoryA" ng-change="changeCategory('A')"></select>
         </div>
         <div class="ko-field animated fadeIn" ng-if="show('B')">
-            <label for="">Sub</label>
+            <label for="">หมวดหมู่</label>
             <select name="" id="" ng-options="e.title for e in form.categoriesB" ng-model="form.categoryB" ng-change="changeCategory('B')"></select>
         </div>
         <div class="ko-field animated fadeIn"  ng-if="show('C')">
-            <label for="">Category</label>
+            <label for="">หมวดหมู่ย่อย</label>
             <select name="" id="" ng-options="e.title for e in form.categoriesC" ng-model="form.categoryC" ng-change="changeCategory('C')"></select>
         </div>
         <div class="ko-field animated fadeIn" ng-if="show('P')">
-            <label for="">Product</label>
+            <label for="">สินค้า</label>
             <select name="" id="" ng-options="e.name for e in form.products" ng-model="form.product"></select>
         </div>
     </div>

@@ -2,7 +2,7 @@
 * Directive "touchTable".
 * Render input data as html table.
 */
-app.directive("touchTable", function(){
+app.directive("touchTable", function($compile, $http){
 
   /**
   * Function controller.
@@ -58,22 +58,35 @@ app.directive("touchTable", function(){
     */
     $scope.datas = {};
     $scope.devices = [];
+    $scope.htmlTemplate = "/views/directives/touchTableDirective.html";
   }
 
   /**
   * Function link()
   * Directive linking function.
+  * Load template dynamic from htmlTemplate attribute.
+  * Then compile template with current scope.
+  * @param {Object} $scope - Scrop variable.
+  * @param {Object} element - Directive element.
+  * @param {Object} attributes - Directive attrbiutes.
   */
-  function link() {  }
-
+  function link($scope, element, attributes) {
+    var url = attributes.htmlTemplate;
+    var request = $http.get(url);
+    request.success(function(data){
+      element.html(data);
+      $compile(element.contents())($scope);
+    });
+  }
 
   /**
   * Return directive definition here.
+  * TODO: Change tempalte url dynaimically.
   */
   return {
     restrict: "E",
     controller: controller,
-    link: link,
-    templateUrl: "/views/directives/touchTableDirective.html"
+    link: link
+    //templateUrl: '<ng-include src="{{htmlTemplate}}></ng-include>'
   };
 });

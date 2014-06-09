@@ -21,6 +21,11 @@ app.config(function($routeProvider){
     controller: "touch003Controller"
   });
 
+  $routeProvider.when("/touch/004", {
+    templateUrl: "views/touches/touch004.html",
+    controller: "touch004Controller"
+  });
+
 	$routeProvider.otherwise({
 		redirectTo : "/"
 	});
@@ -29,5 +34,21 @@ app.config(function($routeProvider){
     k: 300,
     n: 500,
     z: 800
+  };
+});
+
+
+/**
+* Override console object.
+*/
+(function(window){
+  var konsole = window.console;
+  window.console = {
+    log: function(msg) {
+      konsole.log(msg);
+    },
+    error:function(msg){
+      konsole.error(msg);
+    }
   };
 });
