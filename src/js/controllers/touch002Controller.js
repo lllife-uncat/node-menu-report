@@ -1,7 +1,7 @@
 /**
-* @controller touch001Controller -
+* @controller touch002Controller -
 */
-app.controller("touch001Controller", function($scope, models, $rootScope, dbService){
+app.controller("touch002Controller", function($scope, models, $rootScope, dbService){
 
   /**
   * Start query.
@@ -9,10 +9,10 @@ app.controller("touch001Controller", function($scope, models, $rootScope, dbServ
   */
   $scope.$on("startQuery", function(event, data){
 
-    // Parse query
+    // Parse query.
     var query = models.parseQuery(data);
 
-    // Request...
+    // Start request.
     dbService.post("/report/touch001", query, function(data){
       $rootScope.$broadcast("displayGraph", data);
       $rootScope.$broadcast("displayTable", data);
@@ -20,4 +20,3 @@ app.controller("touch001Controller", function($scope, models, $rootScope, dbServ
 
   });
 });
-

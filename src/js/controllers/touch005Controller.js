@@ -55,6 +55,8 @@ app.controller("touch005Controller", function($scope, models, $rootScope, dbServ
     */
     dbService.post("/report/touch001", query, function(record){
 
+      var columnIds = [];
+
       /**
       * Get column summary.
       * @param {String} column - Column value use as query key.
@@ -74,20 +76,17 @@ app.controller("touch005Controller", function($scope, models, $rootScope, dbServ
       * @return {Number} - Caculation result.
       */
       function getBranchRecord(column, $index) {
-
         var columnDatas = record.datas[column];
         var rows = [];
 
         if(!columnDatas) return 0;
 
-        var rs = 0;
-        columnDatas.forEach(function(el){
+        var matchs = _.filter(columnDatas, function(x){
           var product = columnIds[$index];
-          var ok = product == el.objectId;
-          if(ok) rs ++;
+          return product == x.objectId;
         });
 
-        return rs;
+        return matchs.length;
       }
 
       /**
@@ -118,44 +117,56 @@ app.controller("touch005Controller", function($scope, models, $rootScope, dbServ
       /**
       * Transform original data into prefer format.
       */
-      var products = _.filter(form.products, function(x) { return typeof(x._id) != "undefined"; });
-      var finals = [];
+      function getProducts() {
+        var products = _.filter(form.products, function(x) { return typeof(x._id) != "undefined"; });
+        var finals = [];
 
-      if(form.categoryC._id) {
-        finals = _.filter(products, function(x) { return x.categoryIds.indexOf(form.categoryC._id) != -1; });
-      }else {
-        finals = allProducts;
+        if(form.categoryC._id) {
+          finals = _.filter(products, function(x) { return x.categoryIds.indexOf(form.categoryC._id) != -1; });
+        }else {
+          finals = allProducts;
+        }
+
+        return finals;
       }
 
       /**
       * Create rows....
       */
-      var idx = 1;
-      var columns =  _.map(finals, function(x) { return  (idx++) + " " + x.name; });
-      var columnIds = _.map(finals, function(x) { return x._id; });
-      var values = [];
+      function createRowAndValue() {
+        var products = getProducts();
+        var idx = 1;
+        var columns =  _.map(products, function(x) { return  (idx++) + ". " + x.name; });
+        var columnIds = _.map(products, function(x) { return x._id; });
+        var values = [];
 
-      /**
-      * Create graph values.
-      */
-      var index = 0;
-      columnIds.forEach(function(column){
-        var length = 1;
-        record.datas.forEach(function(touchs){
-          touchs.forEach(function(touch){
-            var match = touch.objectId === column;
-            if(match) length ++;
+        var index = 0;
+        columnIds.forEach(function(column){
+          var length = 1;
+          record.datas.forEach(function(touchs){
+            touchs.forEach(function(touch){
+              var match = touch.objectId === column;
+              if(match) length ++;
+            });
           });
+
+          values[index++] = length;
         });
 
-        values[index++] = length;
-      });
+        return {
+          columns: columns,
+          values: values,
+          columnIds: columnIds
+        };
+      };
 
       /**
-      * Render to screen.
+      * Render grap and table here.
       */
-      showGraph(columns, values);
-      showTable(columns, values);
+      var rv = createRowAndValue();
+      columnIds = rv.columnIds;
+      showGraph(rv.columns, rv.values);
+      showTable(rv.columns, rv.values);
 
     });
   });

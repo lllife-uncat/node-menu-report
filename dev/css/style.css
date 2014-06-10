@@ -154,8 +154,9 @@ div.ui.menu {
 .ko-report-type span {
   color: gray;
 /*   width: 80px; */
-  height: 20px;
-  vertical-align: middle;
+  height: 25px;
+  line-height: 20px;
+/*   vertical-align: middle; */
   display: inline-block;
   font-size: 80%;
   font-weight: bolder;
@@ -268,7 +269,7 @@ body {
 }
 
 .ui.segment {
-  padding:10px;
+/*   padding:10px; */
   background-image: url("/images/white_wall_hash.png");
   background-repeat: repeat;
 }
@@ -292,6 +293,7 @@ table.ui.table > tbody > tr > td.right {
   font-style: normal;
 }
 
+/*
 .wrapper {
   overflow-y: hidden;
   white-space: nowrap;
@@ -302,3 +304,4 @@ table.ui.table > tbody > tr > td.right {
   vertical-align: middle;
   padding: 10px;
 }
+*/

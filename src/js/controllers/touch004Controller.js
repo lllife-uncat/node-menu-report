@@ -69,6 +69,8 @@ app.controller("touch004Controller", function($scope, models, $rootScope, dbServ
     */
     dbService.post("/report/touch001", query, function(record){
 
+      var columnIds = [];
+
       /**
       * Get column summary.
       * @param {String} column - Column value use as query key.
@@ -129,35 +131,45 @@ app.controller("touch004Controller", function($scope, models, $rootScope, dbServ
         $rootScope.$broadcast("displayTable", record);
       }
 
-      /**
+      function createRowAndValue() {
+        /**
       * Transform original data into prefer format.
       */
-      var inx = 1;
-      var columns =  _.map($scope.categoriesC, function(x) { return (inx++) + " " + x.title; });
-      var columnIds = _.map($scope.categoriesC, function(x) { return x._id; });
-      var values = [];
+        var inx = 1;
+        var columns =  _.map($scope.categoriesC, function(x) { return (inx++) + ". " + x.title; });
+        var columnIds = _.map($scope.categoriesC, function(x) { return x._id; });
+        var values = [];
 
-      /**
+        /**
       * Create graph values.
       */
-      var index = 0;
-      columnIds.forEach(function(column){
-        var length = 1;
-        record.datas.forEach(function(touchs){
-          touchs.forEach(function(touch){
-            var match = $scope.isInCategoryC(touch.objectId, column);
-            if(match) length ++;
+        var index = 0;
+        columnIds.forEach(function(column){
+          var length = 1;
+          record.datas.forEach(function(touchs){
+            touchs.forEach(function(touch){
+              var match = $scope.isInCategoryC(touch.objectId, column);
+              if(match) length ++;
+            });
           });
+
+          values[index++] = length;
         });
 
-        values[index++] = length;
-      });
+        return {
+          columns: columns,
+          columnIds: columnIds,
+          values: values
+        };
+      }
 
       /**
       * Render to screen.
       */
-      showGraph(columns, values);
-      showTable(columns, values);
+      var rv = createRowAndValue();
+      columnIds = rv.columnIds;
+      showGraph(rv.columns, rv.values);
+      showTable(rv.columns, rv.values);
 
     });
   });

@@ -1,18 +1,17 @@
 <div class="">
-    <div class="ui small animated fadeIn" style="text-transform: none" ng-if="!currentQuery.groupByTime">
-        <i class="ui payment icon "></i> รายงาน RIP เปรียบเทียบกับ Touch Screen ตามจำนวนคลิก
+    <div class="ko-title-message" ng-if="!currentQuery.groupByTime">
+        <i class="grid layout icon "></i> รายงานเปรียเทียบ PIR, Ultra Sonic และ Touch Screen
     </div>
-    <div class="ui small animated fadeIn" style="text-transform: none" ng-if="currentQuery.groupByTime">
-        <i class="ui payment icon "></i> รายงาน RIP เปรียบเทียบกับ Touch Screen ตามจำนวนคลิกแบ่งแต่ละช่วงเวลา
+    <div class="ko-title-message" ng-if="currentQuery.groupByTime">
+        <i class="grid layout icon "></i> รายงานเปรียเทียบ PIR, Ultra Sonic และ Touch Screen แบ่งแต่ละช่วงเวลา
     </div>
-
     <div class="ui segment" ng-include src="'views/homes/controls.html'" style="padding-top:5px;"></div>
 </div>
 
 <br/>
 <div class="animated fadeInUp" ng-if="true" style="z-index: 10">
-    <div class="ui small " style="text-transform: none">
-        <i class="ui Ellipsis Vertical icon "></i> กราฟแสดง RIP เปรียบเทียบกับ Touch Screen ตามจำนวนคลิก
+    <div class="ko-title-message">
+        <i class="grid layout icon"></i> กราฟเปรียเทียบ PIR, Ultra Sonic และ Touch Screen
     </div>
     <div class="ui segment ko-graph" ng-include src="'views/homes/chart.html'" style="padding-top:5px;"></div>
 </div>
@@ -20,14 +19,8 @@
 <br/>
 
 <div ng-if="sum.devices">
-
-    <div class="ui small " style="text-transform: none; ">
-        <i class="ui reorder icon "></i> ตารางแสดงการคลิกของแต่ละสาขา
+    <div class="ko-title-message">
+        <i class="grid layout icon"></i> รายการแต่ละสาขา
     </div>
-
-    <div class="wrapper">
-        <div class="scroll">
-            <div class="ui " ng-include src="'views/homes/table.html'" style="padding-top:5px;"></div>
-        </div>
-    </div>
+    <div class="ui " ng-include src="'views/homes/table.html'" style="padding-top:5px;"></div>
 </div>

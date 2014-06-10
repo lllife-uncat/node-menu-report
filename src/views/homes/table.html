@@ -1,108 +1,106 @@
-<table class="ui small table segment">
-    <thead>
-        <tr>
-            <th>
-                <span class="">
-                    <i class="ui tablet icon"></i>
-                    <i class="ui icon time"></i>
-                </span>
-            </th>
-            <th colspan="3" ng-repeat="column in sum.columnNames" style="text-align: center">
-                <span style="white-space: nowrap">
-                    {{column}}
-                </span>
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+<div class="ko-table">
+    <table class="ui small table segment">
+        <thead>
+            <tr>
+                <th>
+                    <span class="">
+                        <i class="ui tablet icon"></i>
+                        <i class="ui icon time"></i>
+                    </span>
+                </th>
+                <th colspan="3" ng-repeat="column in sum.columnNames" style="text-align: center">
+                    <span style="white-space: nowrap">
+                        {{column}}
+                    </span>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
 
-    <tbody>
-        <tr>
-            <td style="text-align: left" ng-if="true">
-                <span style="white-space: nowrap" ng-if="false">
-                    PIR & Touch
-                </span>
-            </td>
-            <td ng-repeat=" column in [] | range: sum.columnNames.length * 3" class="right header">
+        <tbody>
+            <tr>
+                <td style="text-align: left" ng-if="true">
+                    <span style="white-space: nowrap" ng-if="false">
+                        PIR & Touch
+                    </span>
+                </td>
+                <td ng-repeat=" column in [] | range: sum.columnNames.length * 3" class="right header">
 
-                <div ng-if="($index % 3 == 0)" class="ui tiny circular image animated fadeInLeft">
-                    <img src="images/pir.png" alt=""/>
-                </div>
-                <div ng-if="($index % 3 == 1)" class="ui tiny circular image">
-                    <img src="images/pir.png" alt=""/>
-                </div>
-                <div ng-if="($index % 3 == 2)" class="ui tiny circular image">
-                    <img src="images/touch.png" alt=""/>
-                </div>
-            </td>
-            <td></td>
-        </tr>
+                    <div ng-if="($index % 3 == 0)" class="ui tiny circular image animated fadeInLeft">
+                        <img src="images/pir.png" alt=""/>
+                    </div>
+                    <div ng-if="($index % 3 == 1)" class="ui tiny circular image">
+                        <img src="images/pir.png" alt=""/>
+                    </div>
+                    <div ng-if="($index % 3 == 2)" class="ui tiny circular image">
+                        <img src="images/touch.png" alt=""/>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
 
-        <tr ng-repeat="device in sum.devices" class="animated fadeIn">
-            <td>
-                <span class="ui black" style="white-space: nowrap" ng-if="false">
-                    <!--<i class="ui location icon"></i>-->
-                    {{device.createBy}}
-                </span>
-                <br/>
-                <span style="white-space: nowrap">
-                    <i class="ui tablet icon"></i>
-                    {{device.createBy}}
-                </span>
-            </td>
+            <tr ng-repeat="device in sum.devices" class="animated fadeIn">
+                <td>
+                    <span class="ui black" style="white-space: nowrap" ng-if="false">
+                        <!--<i class="ui location icon"></i>-->
+                        {{device.createBy}}
+                    </span>
+                    <span style="white-space: nowrap"><i class="ui tablet icon"></i>{{device.createBy}}</span>
+                </td>
 
-            <td ng-repeat="column in getDuplicateColumns()" class="right">
+                <td ng-repeat="column in getDuplicateColumns()" class="right">
 
-                <!-- Pir information -->
-                <span ng-if="$index % 3 == 0">
-                    {{ getPirInfos(column.replace('pir', '') , device).length }}
-                </span>
+                    <!-- Pir information -->
+                    <span ng-if="$index % 3 == 0">
+                        {{ getPirInfos(column.replace('pir', '') , device).length }}
+                    </span>
 
-                <!-- Sonic information -->
-                <span ng-if="$index % 3 == 1">
-                    {{ getSonicInfos(column.replace('sonic', '') ,device).length }}
-                </span>
+                    <!-- Sonic information -->
+                    <span ng-if="$index % 3 == 1">
+                        {{ getSonicInfos(column.replace('sonic', '') ,device).length }}
+                    </span>
 
-                <!-- Touch information -->
-                <span ng-if="$index % 3 == 2">
-                    {{ getTouchInfos(column.replace('touch', '') ,device).length }}
-                </span>
+                    <!-- Touch information -->
+                    <span ng-if="$index % 3 == 2">
+                        {{ getTouchInfos(column.replace('touch', '') ,device).length }}
+                    </span>
 
-                <span ng-if="$index == sum.columnNames.length * 3 -1">
-                </span>
+                    <span ng-if="$index == sum.columnNames.length * 3 -1">
+                    </span>
 
-            </td>
+                </td>
 
-            <td></td>
+                <td></td>
 
-        </tr>
-    </tbody>
+            </tr>
+        </tbody>
 
-    <tfoot>
-        <tr>
-            <th style="font-style: normal">
-                <i class="ui add icon"></i> Totals
-            </th>
-            <th ng-repeat="column in getDuplicateColumns()" class="right">
+        <tfoot>
+            <tr>
+                <th style="font-style: normal">
+                    <i class="ui add icon"></i> Totals
+                </th>
+                <th ng-repeat="column in getDuplicateColumns()" class="right">
 
-                <!-- Sum of pirs -->
-                <span ng-if="$index % 3 == 0">
-                    {{sum.pirInfos[column.replace('pir','')].length}}
-                </span>
+                    <!-- Sum of pirs -->
+                    <span ng-if="$index % 3 == 0">
+                        {{sum.pirInfos[column.replace('pir','')].length}}
+                    </span>
 
-                <!-- Sum of sonics -->
-                <span ng-if="$index % 3 == 1">
-                    {{sum.sonicInfos[column.replace('sonic','')].length}}
-                </span>
+                    <!-- Sum of sonics -->
+                    <span ng-if="$index % 3 == 1">
+                        {{sum.sonicInfos[column.replace('sonic','')].length}}
+                    </span>
 
-                <!-- Sum of touchs -->
-                <span ng-if="$index % 3 == 2">
-                    {{sum.touchInfos[column.replace('touch','')].length }}
-                </span>
+                    <!-- Sum of touchs -->
+                    <span ng-if="$index % 3 == 2">
+                        {{sum.touchInfos[column.replace('touch','')].length }}
+                    </span>
 
-            </th>
-            <th></th>
-        </tr>
-    </tfoot>
-</table>
+                </th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
 
+</div>
