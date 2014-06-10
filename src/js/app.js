@@ -31,6 +31,11 @@ app.config(function($routeProvider){
     controller: "touch005Controller"
   });
 
+  $routeProvider.when("/touch/006",{
+    templateUrl: "views/touches/touch006.html",
+    controller: "touch006Controller"
+  });
+
 	$routeProvider.otherwise({
 		redirectTo : "/"
 	});

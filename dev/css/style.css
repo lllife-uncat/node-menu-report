@@ -81,6 +81,11 @@
   text-align: right;
 }
 
+.ko-center {
+  display: block;
+  text-align: center;
+}
+
 .ko-table {
   padding: 20px;
   padding-bottom: 40px;
