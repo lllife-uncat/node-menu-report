@@ -16,7 +16,10 @@
     "fibers": "~1.0.1",
     "lodash": "~2.4.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt-nodemon": "~0.2.1",
+    "grunt-concurrent": "~0.5.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

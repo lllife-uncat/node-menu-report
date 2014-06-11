@@ -11,7 +11,7 @@ var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
 var route = require("./server/route");
 var app = express();
-var port = 8080;
+var port = 8088;
 
 /**
 * Config express application.
@@ -33,3 +33,4 @@ route.init(app);
 * Just show server port...
 */
 console.log("server start @0.0.0.0:" + port);
+console.log("test concurrent...");
