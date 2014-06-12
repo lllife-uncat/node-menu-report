@@ -3,6 +3,8 @@
 */
 app.controller("touch001Controller", function($scope, models, $rootScope, dbService){
 
+  $scope.message = "Hello message";
+
   /**
   * Start query.
   * Trigger when user click ((display)) button.

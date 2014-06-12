@@ -15,6 +15,7 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
     $scope.categories = cats;
     $scope.categoriesB = categoriesB;
     $scope.allCategoriesB = categoriesB;
+
   });
 
   dbService.findAllProductByExample({delete:false, archive:false}, function(products){

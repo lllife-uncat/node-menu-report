@@ -1110,6 +1110,8 @@ app.controller("mainController", function($scope, collections){
 */
 app.controller("touch001Controller", function($scope, models, $rootScope, dbService){
 
+  $scope.message = "Hello message";
+
   /**
   * Start query.
   * Trigger when user click ((display)) button.
@@ -1169,6 +1171,7 @@ app.controller("touch003Controller", function($scope, models, $rootScope, dbServ
     $scope.categories = cats;
     $scope.categoriesB = categoriesB;
     $scope.allCategoriesB = categoriesB;
+
   });
 
   dbService.findAllProductByExample({delete:false, archive:false}, function(products){
@@ -1522,6 +1525,10 @@ app.controller("touch005Controller", function($scope, models, $rootScope, dbServ
 
   var allProducts = [];
 
+  /**
+  * Find all category C.
+  * Keep reference on $scope.allCategoriesC.
+  */
   dbService.findAllCategoryByExample({ delete: false}, function(data){
     $scope.categories = data;
     var aa = _.filter(data, function(x){ return x.parentId == null; });
@@ -1532,6 +1539,10 @@ app.controller("touch005Controller", function($scope, models, $rootScope, dbServ
     $scope.allCategoriesC = cc;
   });
 
+  /*
+  * Find all prodcuts.
+  * Keep reference on $scope.products && allProducts.
+  */
   dbService.findAllProductByExample({delete: false}, function(data){
     $scope.products = data;
     allProducts = data;
@@ -1731,6 +1742,8 @@ app.controller("touch006Controller", function($scope, dbService, models, $rootSc
 
     /**
     * Parse form data as specific query (can understand by server).
+    * If category B was selected, filter only category under B.
+    * Otherwise use all category in level C.
     */
     var query = models.parseQuery(form);
     var levelBId= form.categoryB._id;
@@ -1750,6 +1763,15 @@ app.controller("touch006Controller", function($scope, dbService, models, $rootSc
     dbService.post("/report/touch001", query, function(record){
 
       var columnIds = [];
+
+      function sortTouch(counts) {
+        var sortable = [];
+        for(var key in counts) {
+          sortable.push([key, counts[key]]);
+        }
+        sortable.sort(function(a,b){ return b[1] - a[1] });
+        return sortable;
+      }
 
       /**
       * Get column summary.
@@ -1826,15 +1848,6 @@ app.controller("touch006Controller", function($scope, dbService, models, $rootSc
         return finals;
       }
 
-      function sortTouch(counts) {
-        var sortable = [];
-        for(var key in counts) {
-          sortable.push([key, counts[key]]);
-        }
-        sortable.sort(function(a,b){ return b[1] - a[1] });
-        return sortable;
-      }
-
       /**
       * Function createRowAndValue()
       * Create rows and values.
@@ -1881,8 +1894,6 @@ app.controller("touch006Controller", function($scope, dbService, models, $rootSc
       var columns = rv.columns.slice(0,10);
       var values = rv.values.slice(0,10);
       columnIds = rv.columnIds.slice(0,10);
-
-      console.log(rv);
 
       showGraph(columns, values);
       showTable(columns, values);

@@ -6,6 +6,10 @@ app.controller("touch005Controller", function($scope, models, $rootScope, dbServ
 
   var allProducts = [];
 
+  /**
+  * Find all category C.
+  * Keep reference on $scope.allCategoriesC.
+  */
   dbService.findAllCategoryByExample({ delete: false}, function(data){
     $scope.categories = data;
     var aa = _.filter(data, function(x){ return x.parentId == null; });
@@ -16,6 +20,10 @@ app.controller("touch005Controller", function($scope, models, $rootScope, dbServ
     $scope.allCategoriesC = cc;
   });
 
+  /*
+  * Find all prodcuts.
+  * Keep reference on $scope.products && allProducts.
+  */
   dbService.findAllProductByExample({delete: false}, function(data){
     $scope.products = data;
     allProducts = data;
